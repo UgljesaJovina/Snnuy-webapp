@@ -1,6 +1,6 @@
 namespace Repositories.Enums;
 
-public enum CustomCardState
+public enum CustomCardApprovalState
 {
     Pending,
     Cancelled,

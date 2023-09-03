@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Repositories.DAL;
+using WebApi.Utils;
+using WebApi.Utils.MiddleWare;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings")); 
+// ovo je forma DI gde u konstruktor ide IOptions<AppSettings> i onda trazim value property od objekta 
 
 // builder.Services.Configure<IdentityOptions>(options => {
 //     options.Password
@@ -31,15 +36,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(p => p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
-app.UseHttpsRedirection();
+app.UseMiddleware<JWTMiddleware>();
 
-app.UseAuthorization();
+app.UseHttpsRedirection();
 
 app.MapControllers();
 
-app.UseStaticFiles(new StaticFileOptions()
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Path.GetDirectoryName(Directory.GetCurrentDirectory()), "Repositories", "public")),
+app.UseStaticFiles(new StaticFileOptions() {
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "public")),
     RequestPath = new PathString("/public")
 });
 
