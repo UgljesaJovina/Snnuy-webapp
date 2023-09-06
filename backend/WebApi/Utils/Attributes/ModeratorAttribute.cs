@@ -11,7 +11,7 @@ sealed class ModeratorAttribute : Attribute, IAuthorizationFilter
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         // UserAccount mora da postoji posto se mod check ne bi desio ako authorisation check ne prodje
-        if ((context.HttpContext.Items["User"] as UserAccount).Permissions != UserPermissions.Moderator)
+        if (((UserAccount)context.HttpContext.Items["User"]!).Permissions != UserPermissions.Moderator)
             context.Result = new JsonResult(new { message = "Requires moderator privileges" }) { StatusCode = StatusCodes.Status403Forbidden };
     }
 }

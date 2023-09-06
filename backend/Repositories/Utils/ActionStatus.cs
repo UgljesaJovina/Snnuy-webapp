@@ -17,6 +17,7 @@ internal class ActionStatus<TResult> where TResult : class
     public ActionStatus(string error, StatusCodes code) {
         ErrorMessage = error;
         StatusCode = code;
+        
     }
 }
 

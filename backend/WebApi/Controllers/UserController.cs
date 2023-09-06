@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Repositories.Models;
 using WebApi.Utils.Attributes;
 
 namespace WebApi.Controllers;
@@ -8,5 +9,11 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class UserController: ControllerBase
 {
-    
+    [Authorize]
+    [Moderator]
+    [HttpGet]
+    public ActionResult Func()
+    {
+        return Ok();
+    }
 }

@@ -1,5 +1,3 @@
-namespace Repositories.Enums;
-
 public enum CardRarity
 {
     Common = 100,

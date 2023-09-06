@@ -1,0 +1,6 @@
+struktura:
+    @low 
+    ☐ jedna ideja je da umesto sto imam Card i DeckItem tabele, za svaki dek samo imam kolonu za JSON koji je oblika [{code, count}, {code, count}...], bio bi ogroman string i moram razmisliti da li je bolje da ja licno serijalizujem string u objekat koji mi treba ili da samo ostavim ove tabele
+    @high
+    ✘ naci nacin da cim se server startuje iscitam vrednosti iz onih 10-ak JSONa i mogu ih vrv smestiti u repository/utils, ai treba napisati klasu za deserijalizaciju, ona bi mogla da zameni Card klasu/tabelu kompletno @cancelled(23-09-04 12:31)
+    // ovo cu raditi preko posebnog projekta koji ce samo da ucita sve karte odmah u bazu

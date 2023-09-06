@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Repositories.DAL;
 using Repositories.Interfaces;
 using Repositories.Models;
@@ -30,18 +31,16 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         await card.FileSteam!.CopyToAsync(stream);
     }
 
-    public async Task<CustomCardOTD> SetCustomCardOfTheDay(Guid cardId, Guid? accountId)
+    public async Task<CustomCardOTD> SetCustomCardOfTheDay(Guid cardId, UserAccount? account)
     {
-        CustomCard? card = await ctx.CustomCards.FindAsync(cardId);
+        CustomCard? card = await table.FindAsync(cardId);
         if (card is null) throw new KeyNotFoundException("That card was not found!");
 
         CustomCardOTD ccOTD;
 
-        if (accountId is null) 
+        if (account is null) 
             ccOTD = new CustomCardOTD(card, true);
         else {
-            UserAccount? account = await ctx.UserAccounts.FindAsync(accountId);
-            if (account is null) throw new KeyNotFoundException("That account was not found!");
             if ((account.Permissions & Enums.UserPermissions.SetCustomCardOfTheDay) == 0) throw new NotAuthorizedException("You do not have permissions for this!");
             ccOTD = new CustomCardOTD(card, false, account);
         }
@@ -51,13 +50,11 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         return ccOTD;
     }
 
-    public async Task<CustomCard> ValidateCustomCard(Guid cardId, Guid accountId, Enums.CustomCardApprovalState state)
+    public async Task<CustomCard> ValidateCustomCard(Guid cardId, UserAccount account, Enums.CustomCardApprovalState state)
     {
-        CustomCard? card = await ctx.CustomCards.FindAsync(cardId);
+        CustomCard? card = await table.FindAsync(cardId);
         if (card is null) throw new KeyNotFoundException("That card was not found!");
         
-        UserAccount? account = await ctx.UserAccounts.FindAsync(accountId);
-        if (account is null) throw new KeyNotFoundException("That account was not found!");
         if ((account.Permissions & Enums.UserPermissions.ValidateCustomCard) == 0) throw new NotAuthorizedException("You do not have permissions for this!");
 
         card.State = state;
