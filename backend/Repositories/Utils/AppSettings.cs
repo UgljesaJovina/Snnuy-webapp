@@ -1,4 +1,4 @@
-namespace WebApi.Utils;
+namespace Repositories.Utility;
 
 public class AppSettings
 {

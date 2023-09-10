@@ -1,7 +1,9 @@
-using System.ComponentModel;
+using System.Text.Json;
+using System.Timers;
+using Repositories.Enums;
 using Repositories.Models;
 
-namespace Repositories.Utils;
+namespace Repositories.Utility;
 
 public static class Utils
 {
@@ -10,13 +12,71 @@ public static class Utils
     // moved to CustomCardOTD (of the day) and DeckOTD
 
     public static readonly string CUSTOM_CARD_PATH = @".\public\customCards\";
-    public static readonly string CARD_JSON_PATH = @".\JSONs\";
+    public static readonly string JSON_CARD_PATH = @".\JSONs\";
     public static readonly TimeSpan AUTOMATIC_CARDOTD_DELAY = new(24, 0, 0);
     public static readonly TimeSpan AUTOMATIC_DECKOTD_DELAY = new(24, 0, 0);
-    [Description("The maximum size of an uploaded file in bytes")]
+    public static DateTime LAST_CARDOTD_SET { get; set; } = DateTime.Now;
+    public static DateTime LAST_DECKOTD_SET { get; set; } = DateTime.Now;
     public static readonly ulong MAXIMUM_FILE_SIZE = 2_097_152; // 2 MB
+    public static readonly ICollection<Card> Cards = new List<Card>();
+    public static readonly System.Timers.Timer Timer = new(70 * 60 * 1000);
 
-    public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action) {
+    static Utils()
+    {
+        List<JSONCards> jsonCards = new();
+        foreach (var json in Directory.GetFiles(JSON_CARD_PATH))
+        {
+            jsonCards.AddRange(JsonSerializer.Deserialize<List<JSONCards>>(File.ReadAllText(json)).Where(x => x.collectible));
+        }
+
+        Dictionary<string, CardRegions> cardRegions = new() {
+            { "Ionia", CardRegions.Ionia },
+            { "Noxus", CardRegions.Noxus },
+            { "Demacia", CardRegions.Demacia },
+            { "PiltoverZaun", CardRegions.PNZ },
+            { "BandleCity", CardRegions.Bandle_City },
+            { "Freljord", CardRegions.Freljord },
+            { "ShadowIsles", CardRegions.Shadow_Isles },
+            { "Bilgewater", CardRegions.Bilgewater },
+            { "Targon", CardRegions.Targon },
+            { "Shurima", CardRegions.Shurima },
+            { "Runeterra", CardRegions.Runeterra },
+        };
+
+        Dictionary<string, CardTypes> cardTypes = new() {
+            { "Spell", CardTypes.Spell },
+            { "Landmark", CardTypes.Landmark },
+            { "Equipment", CardTypes.Equipment },
+            { "Unit", CardTypes.Follower },
+        };
+
+        Dictionary<string, CardRarity> cardRarity = new() {
+            { "Common", CardRarity.Common },
+            { "Champion", CardRarity.Champion },
+            { "Rare", CardRarity.Rare },
+            { "Epic", CardRarity.Epic },
+        };
+
+        foreach (var i in jsonCards)
+        {
+            CardRegions regions = CardRegions.None;
+            foreach (var k in i.regionRefs) 
+                regions |= cardRegions[k];
+
+            CardTypes type = cardTypes[i.type];
+
+            if (cardRarity[i.rarityRef] == CardRarity.Champion) type = CardTypes.Champion;
+
+            CardRarity rarity = cardRarity[i.rarityRef];
+
+            Cards.Add(new(i.cardCode, i.name, i.cost, i.attack, i.health, i.assets[0].gameAbsolutePath, regions, type, rarity));
+        }
+
+        Timer.Start();
+    }
+
+    public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+    {
         foreach (var i in enumerable)
             action(i);
     }

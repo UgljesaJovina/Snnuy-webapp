@@ -5,5 +5,4 @@ public enum CardTypes
     Spell,
     Landmark,
     Equipment,
-    Unit = Follower | Champion
 }

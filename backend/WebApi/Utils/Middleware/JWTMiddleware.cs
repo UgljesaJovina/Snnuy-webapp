@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Repositories.Models;
+using Repositories.Utility;
 
 namespace WebApi.Utils.MiddleWare;
 

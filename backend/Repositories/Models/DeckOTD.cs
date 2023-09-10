@@ -6,7 +6,7 @@ public class DeckOTD
     public Deck Deck { get; set; }
     public DateTime SettingDate { get; set; }
     public bool SetAutomatically { get; set; }
-    public UserAccount DeckSetter { get; set; }
+    public UserAccount? DeckSetter { get; set; }
 
     public DeckOTD() { }
 

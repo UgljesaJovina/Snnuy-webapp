@@ -11,10 +11,10 @@ public class UserAccount
     [MaxLength(25)]
     public string Password { get; set; }
     public UserPermissions Permissions { get; set; }
-    public virtual ICollection<CustomCard> OwnedCustomCards { get; set; }
-    public virtual ICollection<CustomCard> LikedCustomCards { get; set; }
-    public virtual ICollection<Deck> OwnedDecks { get; set; }
-    public virtual ICollection<Deck> LikedDecks { get; set; }
+    public virtual ICollection<CustomCard> OwnedCustomCards { get; set; } = new List<CustomCard>();
+    public virtual ICollection<CustomCard> LikedCustomCards { get; set; } = new List<CustomCard>();
+    public virtual ICollection<Deck> OwnedDecks { get; set; } = new List<Deck>();
+    public virtual ICollection<Deck> LikedDecks { get; set; } = new List<Deck>();
 
     public UserAccount() {}
 

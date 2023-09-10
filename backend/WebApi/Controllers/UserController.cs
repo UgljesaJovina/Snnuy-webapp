@@ -10,7 +10,6 @@ namespace WebApi.Controllers;
 public class UserController: ControllerBase
 {
     [Authorize]
-    [Moderator]
     [HttpGet]
     public ActionResult Func()
     {

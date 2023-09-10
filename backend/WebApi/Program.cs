@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Repositories.DAL;
-using WebApi.Utils;
+using Repositories.Utility;
 using WebApi.Utils.MiddleWare;
 
 var builder = WebApplication.CreateBuilder(args);

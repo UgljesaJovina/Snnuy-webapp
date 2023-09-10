@@ -1,14 +1,17 @@
+using System.Timers;
 using Microsoft.EntityFrameworkCore;
 using Repositories.DAL;
 using Repositories.Interfaces;
 using Repositories.Models;
-using Repositories.Utils;
+using Repositories.Utility;
 
 namespace Repositories.Repositories;
 
 public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 {
-    public CustomCardRepo(DataContext _ctx) : base(_ctx) { }
+    public CustomCardRepo(DataContext _ctx) : base(_ctx) { 
+        Utils.Timer.Elapsed += AutomaticCardSet;
+    }
 
     public async override Task<CustomCard> Create(CustomCard? card)
     {
@@ -27,13 +30,13 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     async Task SaveCard(CustomCard card)
     {
         string fileName = card.Id.ToString();
-        using var stream = File.Create(Utils.Utils.CUSTOM_CARD_PATH + fileName);
+        using var stream = File.Create(Utils.CUSTOM_CARD_PATH + fileName);
         await card.FileSteam!.CopyToAsync(stream);
     }
 
-    public async Task<CustomCardOTD> SetCustomCardOfTheDay(Guid cardId, UserAccount? account)
+    public async Task<CustomCardOTD> SetCustomCardOfTheDay(Guid cardId, UserAccount? account = null, CustomCard? card = null)
     {
-        CustomCard? card = await table.FindAsync(cardId);
+        card ??= await table.FindAsync(cardId);
         if (card is null) throw new KeyNotFoundException("That card was not found!");
 
         CustomCardOTD ccOTD;
@@ -47,6 +50,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 
         await ctx.CustomCardsOTD.AddAsync(ccOTD);
         await SaveAsync();
+        Utils.LAST_CARDOTD_SET = DateTime.Now;
         return ccOTD;
     }
 
@@ -61,4 +65,19 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         await SaveAsync();
         return card;
     }
+
+    private async void AutomaticCardSet(object? sender, ElapsedEventArgs e)
+    {
+        if (DateTime.Now - Utils.LAST_CARDOTD_SET >= Utils.AUTOMATIC_CARDOTD_DELAY) {
+            IEnumerable<CustomCard> cards = (await GetAll()).Where(c => !ctx.CustomCardsOTD.Select(cotd => cotd.Card).Contains(c));
+
+            if (cards.Count() == 0) return;
+
+            CustomCard newCardOTD = cards.OrderBy(x => Guid.NewGuid()).First();
+            await SetCustomCardOfTheDay(newCardOTD.Id, card: newCardOTD);
+        }
+    }
+
+    // SUSCRIBE TO ELAPSED EVENT FROM UTILS!!!, SAME FOR DECKOTD
+
 }

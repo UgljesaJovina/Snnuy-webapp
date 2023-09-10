@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "b27gWfPwIXFV6GQ0Wd0LjiiipM7D/EVjll2K3PhwASqrs8wKA1drsXP+Pmg1zsqK5pcUpmqPvT1Fi5LAdOjCPQ==",
+  "dgSpecHash": "st1q/HFIEYHNbzCCi/WpdHTkU56U7po34JRdZvJs9c+yVCVaW8AIxbx358hPeGXIn1Zz6nO7RQYp0nPAQNEelQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Ugljesa\\Desktop\\Snnuy-webapp\\backend\\Services\\Services.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ugljesa\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\Ugljesa\\.nuget\\packages\\communitytoolkit.highperformance\\8.1.0\\communitytoolkit.highperformance.8.1.0.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Ugljesa\\.nuget\\packages\\kunc.riotgames.lor.deckcodes\\0.2.2\\kunc.riotgames.lor.deckcodes.0.2.2.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\microsoft.data.sqlclient\\5.0.2\\microsoft.data.sqlclient.5.0.2.nupkg.sha512",

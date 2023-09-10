@@ -3,6 +3,7 @@
 
 namespace Repositories.Models;
 
+[Obsolete]
 class CustomKeywords
 {
     public Guid Id { get; set; } = Guid.NewGuid(); 

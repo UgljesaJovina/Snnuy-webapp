@@ -6,5 +6,5 @@ public enum CardTypes
     Champion,
     Spell,
     Landmark,
-    Equipment
+    Equipment,
 }

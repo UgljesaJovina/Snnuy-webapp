@@ -9,7 +9,7 @@ public class DataContext : DbContext {
     public DbSet<UserAccount> UserAccounts { get; set; }
     public DbSet<CustomCard> CustomCards { get; set; }
     public DbSet<CustomCardOTD> CustomCardsOTD { get; set; }
-    public DbSet<Card> Cards { get; set; }
+    // public DbSet<Card> Cards { get; set; }
     public DbSet<Deck> Decks { get; set; }
     public DbSet<DeckOTD> DecksOTD { get; set; }
 

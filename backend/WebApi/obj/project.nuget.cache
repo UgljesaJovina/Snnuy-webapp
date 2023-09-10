@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "BhOfWBCWufN7AkJISn1GxqlxgibZX2CgzZkw0DWIQZfWdx9JZYeEThVTpI8gQ4597plqq6RKyJpCNcx+7U+YJw==",
+  "dgSpecHash": "9P2mlVDMxzq7ocswhtSEC/G/Ra2uju1a4ixBIGGM5gYmThJSGf/bMpVhni6tMqSPcJ8EMLTBjCQPUiFlRBY4rw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Ugljesa\\Desktop\\Snnuy-webapp\\backend\\WebApi\\WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ugljesa\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\Ugljesa\\.nuget\\packages\\communitytoolkit.highperformance\\8.1.0\\communitytoolkit.highperformance.8.1.0.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Ugljesa\\.nuget\\packages\\kunc.riotgames.lor.deckcodes\\0.2.2\\kunc.riotgames.lor.deckcodes.0.2.2.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.10\\microsoft.aspnetcore.openapi.7.0.10.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

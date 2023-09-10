@@ -1,6 +1,6 @@
 using Azure.Identity;
 
-namespace Repositories.Utils;
+namespace Repositories.Utility;
 
 [System.Serializable]
 public class NotAuthorizedException : Exception

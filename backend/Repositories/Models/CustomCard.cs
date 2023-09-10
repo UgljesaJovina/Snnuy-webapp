@@ -28,7 +28,7 @@ public class CustomCard
     public CustomCardApprovalState State { get; set; }
 
     public UserAccount OwnerAccount { get; set; }
-    public virtual ICollection<UserAccount> LikedUsers { get; set; }
+    public virtual ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
     // public virtual ICollection<Keywords> Keywords { get; set; }
     // public virtual ICollection<CustomKeywords> CustomKeywords { get; set; }
 }

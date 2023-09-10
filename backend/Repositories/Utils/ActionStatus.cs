@@ -1,6 +1,6 @@
 // ovo je pristup koji necu koristiti, radicu preko Exceptiona
 
-namespace Repositories.Utils;
+namespace Repositories.Utility;
 
 [Obsolete("Use Exceptions instead of this class")]
 internal class ActionStatus<TResult> where TResult : class
