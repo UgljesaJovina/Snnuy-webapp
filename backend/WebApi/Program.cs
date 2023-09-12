@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Repositories.DAL;
+using Repositories.Interfaces;
+using Repositories.Repositories;
 using Repositories.Utility;
+using Services.Utils.Hashing;
+using Services.Utils.JWT;
 using WebApi.Utils.MiddleWare;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,17 +17,24 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings")); 
-// ovo je forma DI gde u konstruktor ide IOptions<AppSettings> i onda trazim value property od objekta 
 
-// builder.Services.Configure<IdentityOptions>(options => {
-//     options.Password
-// });
+#region Dependency Injection
 
-builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-    x => x.MigrationsAssembly("Repositories"))
-);
+    builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings")); 
+    // ovo je forma DI gde u konstruktor ide IOptions<AppSettings> i onda trazim value property od objekta 
+
+    builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+    builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
+    builder.Services.AddScoped<ICustomCardRepo, CustomCardRepo>();
+    builder.Services.AddScoped<IDeckRepo, DeckRepo>();
+    builder.Services.AddScoped<IUserRepo, UserRepo>();  
+
+    builder.Services.AddDbContext<DataContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        x => x.MigrationsAssembly("Repositories"))
+    );
+
+#endregion
 
 var app = builder.Build();
 

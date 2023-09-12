@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Repositories.Interfaces;
 using Repositories.Models;
 using Repositories.Utility;
 
@@ -17,16 +18,16 @@ public class JWTMiddleware
         appSettings = _appSettings.Value;
     }
 
-    public async Task Invoke(HttpContext context) { // Ovde ce jos preko DI da se doda IUserServices
+    public async Task Invoke(HttpContext context, IUserRepo userRepo) { // Ovde ce jos preko DI da se doda IUserServices
         string? token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
         if (token is not null) 
-            AttachUserToContext(context, token);
+            AttachUserToContext(context, token, userRepo);
         
         await next(context);
     }
 
-    private void AttachUserToContext(HttpContext context, string token/*, IUserService userService*/)
+    private void AttachUserToContext(HttpContext context, string token, IUserRepo userRepo)
     {
         try {
             JwtSecurityTokenHandler tokenHandler = new();
@@ -43,7 +44,7 @@ public class JWTMiddleware
             JwtSecurityToken jwtToken = (JwtSecurityToken)validatedToken;
             Guid userId = Guid.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
-            context.Items["User"] = new UserAccount(); // TODO: kad uradim services, treba da bude fazon userService.Get(id)
+            context.Items["User"] = userRepo.GetById(userId).Result;
         } catch {
             // ako se desi greska, desila se vrv u validaciji tokena --> user nije validan
         }

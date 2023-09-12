@@ -34,7 +34,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         await card.FileSteam!.CopyToAsync(stream);
     }
 
-    public async Task<CustomCardOTD> SetCustomCardOfTheDay(Guid cardId, UserAccount? account = null, CustomCard? card = null)
+    public async Task<CustomCardOTD> SetCustomCardOTD(Guid cardId, UserAccount? account = null, CustomCard? card = null)
     {
         card ??= await table.FindAsync(cardId);
         if (card is null) throw new KeyNotFoundException("That card was not found!");
@@ -74,8 +74,26 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
             if (cards.Count() == 0) return;
 
             CustomCard newCardOTD = cards.OrderBy(x => Guid.NewGuid()).First();
-            await SetCustomCardOfTheDay(newCardOTD.Id, card: newCardOTD);
+            await SetCustomCardOTD(newCardOTD.Id, card: newCardOTD);
         }
+    }
+
+    public async Task<ICollection<CustomCardOTD>> GetAllCustomCardsOTD()
+    {
+        return await ctx.CustomCardsOTD.ToListAsync();
+    }
+
+    public async Task<CustomCardOTD> GetLastCustomCardOTD()
+    {
+        return await ctx.CustomCardsOTD.FirstAsync();
+    }
+
+    public async Task LikeACard(Guid id, UserAccount account) {
+        CustomCard? card = await table.FindAsync(id);
+        if (card is null) throw new KeyNotFoundException("Card was not found");
+
+        card.LikedUsers.Add(account);
+        await SaveAsync();
     }
 
     // SUSCRIBE TO ELAPSED EVENT FROM UTILS!!!, SAME FOR DECKOTD

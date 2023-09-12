@@ -1,8 +1,6 @@
-using Azure.Identity;
-
 namespace Repositories.Utility;
 
-[System.Serializable]
+[Serializable]
 public class NotAuthorizedException : Exception
 {
     public NotAuthorizedException() { }

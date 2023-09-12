@@ -13,12 +13,14 @@ public class DataContext : DbContext {
     public DbSet<Deck> Decks { get; set; }
     public DbSet<DeckOTD> DecksOTD { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        modelBuilder.Entity<UserAccount>().HasMany<CustomCard>(x => x.OwnedCustomCards).WithOne(x => x.OwnerAccount);
-        modelBuilder.Entity<UserAccount>().HasMany<CustomCard>(x => x.LikedCustomCards).WithMany(x => x.LikedUsers);
+        builder.Entity<UserAccount>().HasMany<CustomCard>(x => x.OwnedCustomCards).WithOne(x => x.OwnerAccount);
+        builder.Entity<UserAccount>().HasMany<CustomCard>(x => x.LikedCustomCards).WithMany(x => x.LikedUsers);
 
-        modelBuilder.Entity<UserAccount>().HasMany<Deck>(x => x.OwnedDecks).WithOne(x => x.OwnerAccount);
-        modelBuilder.Entity<UserAccount>().HasMany<Deck>(x => x.LikedDecks).WithMany(x => x.LikedUsers);
+        builder.Entity<UserAccount>().HasMany<Deck>(x => x.OwnedDecks).WithOne(x => x.OwnerAccount);
+        builder.Entity<UserAccount>().HasMany<Deck>(x => x.LikedDecks).WithMany(x => x.LikedUsers);
+
+        builder.Entity<UserAccount>().HasIndex(a => a.Username).IsUnique();
     }
 }

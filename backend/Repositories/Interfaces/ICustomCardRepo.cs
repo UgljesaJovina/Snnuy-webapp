@@ -6,6 +6,9 @@ public interface ICustomCardRepo : IRepository<CustomCard>
 {
     // public Task<CustomCard?> SaveCard(Stream stream);
     // nalazi se u customCardRepo-u, ali je private
-    public Task<CustomCardOTD> SetCustomCardOfTheDay(Guid cardId, UserAccount? account = null, CustomCard? card = null);
+    public Task<CustomCardOTD> SetCustomCardOTD(Guid cardId, UserAccount? account = null, CustomCard? card = null);
+    public Task<ICollection<CustomCardOTD>> GetAllCustomCardsOTD();
+    public Task<CustomCardOTD> GetLastCustomCardOTD();
     public Task<CustomCard> ValidateCustomCard(Guid cardId, UserAccount account, Enums.CustomCardApprovalState state);
+    public Task LikeACard(Guid id, UserAccount account);
 }

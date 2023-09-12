@@ -1,6 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Repositories.Enums;
+using LorDeckEncoder = Kunc.RiotGames.Lor.DeckCodes.LorDeckEncoder;
+using KuncDeckItem = Kunc.RiotGames.Lor.DeckCodes.DeckItem;
+using Repositories.Utility;
 
 namespace Repositories.Models;
 
@@ -17,4 +20,9 @@ public class Deck
     [NotMapped]
     public ICollection<DeckItem> DeckContent { get; set; }
     public DeckType Type { get; set; }
+
+    public Deck() {
+        var deckItems = new LorDeckEncoder().GetDeckFromCode<KuncDeckItem>(DeckCode);
+        DeckContent = deckItems.Select(x => new DeckItem() { Count = x.Count, Card = Utils.Cards.First(c => c.CardCode == x.CardCode) }).ToList();
+    }
 }

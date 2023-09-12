@@ -6,10 +6,10 @@ namespace Repositories.Models;
 public class UserAccount
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    [MaxLength(25)]
+    [MaxLength(50)]
     public string Username { get; set; }
-    [MaxLength(25)]
-    public string Password { get; set; }
+    [MaxLength(500)]
+    public string HashedPassword { get; set; }
     public UserPermissions Permissions { get; set; }
     public virtual ICollection<CustomCard> OwnedCustomCards { get; set; } = new List<CustomCard>();
     public virtual ICollection<CustomCard> LikedCustomCards { get; set; } = new List<CustomCard>();
@@ -18,8 +18,9 @@ public class UserAccount
 
     public UserAccount() {}
 
-    public UserAccount(string username, string password) {
+    public UserAccount(string username, string password, UserPermissions permissions = UserPermissions.Normal) {
         Username = username;
-        Password = password;
+        HashedPassword = password;
+        Permissions = permissions;
     }
 }

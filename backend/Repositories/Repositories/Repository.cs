@@ -14,10 +14,8 @@ public class Repository<T> : IRepository<T> where T : class
         table = ctx.Set<T>();
     }
 
-    public virtual async Task<T> Create(T? obj)
+    public virtual async Task<T> Create(T obj)
     {
-        if (obj is null) throw new ArgumentNullException();
-
         await table.AddAsync(obj);
         await SaveAsync();
         return obj;
@@ -37,11 +35,10 @@ public class Repository<T> : IRepository<T> where T : class
         return instance;
     }
 
-    public virtual async Task<T> Update(Guid id, T? obj)
+    public virtual async Task<T> Update(Guid id, T obj)
     {
         T? instance = await table.FindAsync(id);
 
-        if (obj is null) throw new ArgumentNullException();
         if (instance is null) throw new KeyNotFoundException();
 
         instance = obj;
@@ -49,7 +46,7 @@ public class Repository<T> : IRepository<T> where T : class
         return  instance;
     }
 
-    public virtual async Task<bool> Delete(Guid id)
+    public virtual async Task Delete(Guid id)
     {
         T? instance = await table.FindAsync(id);
 
@@ -57,7 +54,6 @@ public class Repository<T> : IRepository<T> where T : class
 
         table.Remove(instance);
         await SaveAsync();
-        return true;
     }
 
 

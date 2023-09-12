@@ -1,43 +1,53 @@
-using System.IdentityModel.Tokens.Jwt;
-using Repositories.Utility;
 using Repositories.Interfaces;
 using Repositories.Models;
 using Services.DTOs;
 using Services.Interfaces;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
+using Services.Utils.Hashing;
+using Services.Utils.JWT;
 
 namespace Services.Services;
 
 public class UserService : IUserService
 {
     private readonly IUserRepo userRepo;
-    private readonly AppSettings appSettings;
+    private readonly IJwtGenerator jwtGenerator;
+    private readonly IPasswordHasher passwordHasher;
 
-    public UserService(IUserRepo _userRepo, IOptions<AppSettings> _appSettings) {
+    public UserService(IUserRepo _userRepo, IJwtGenerator _jwtGenerator, IPasswordHasher _passwordHashser) {
         userRepo = _userRepo;
-        appSettings = _appSettings.Value;
+        jwtGenerator = _jwtGenerator;
+        passwordHasher = _passwordHashser;
     }
 
     public async Task<AuthenticationResponse> Authenticate(AuthenticationRequest request)
     {
-        UserAccount account = await userRepo.Authenticate(request.Username, request.Password);
-        string token = GenerateJWTToken(account);
+        string passwordHash = passwordHasher.Hash(request.Password);
+
+        UserAccount account = await userRepo.GetByUsername(request.Username);
+
+        if (!passwordHasher.Verify(account.HashedPassword, request.Password)) throw new KeyNotFoundException("Password does not match with this username");
+
+        string token = jwtGenerator.GenerateJWTToken(account);
         return new(account.Username, account.Permissions, token);
     }
 
-    private string GenerateJWTToken(UserAccount account)
+    public async Task<AuthenticationResponse> Register(AuthenticationRequest request) {
+        string passwordHash = passwordHasher.Hash(request.Password);
+
+        UserAccount account = await userRepo.Create(new UserAccount(request.Username, passwordHash));
+        string token = jwtGenerator.GenerateJWTToken(account);
+        return new(account.Username, account.Permissions, token);
+    }
+
+    public async Task Update(UpdateAccountRequest request)
     {
-        JwtSecurityTokenHandler tokenHandler = new() { SetDefaultTimesOnTokenCreation = false };
-        byte[] key = System.Text.Encoding.ASCII.GetBytes(appSettings.Secret);
-        SecurityTokenDescriptor tokenDescriptor = new()
-        {
-            Subject = new ClaimsIdentity(new[] { new Claim("id", account.Id.ToString()) }),
-            Expires = DateTime.UtcNow.AddYears(40),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-        SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        if (!string.IsNullOrEmpty(request.Password)) request.Password = passwordHasher.Hash(request.Password);
+
+        await userRepo.Update(request.Id, request.GetUserAccount());
+    }
+
+    public Task Delete(Guid id)
+    {
+        throw new NotImplementedException();
     }
 }

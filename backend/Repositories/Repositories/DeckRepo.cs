@@ -1,9 +1,8 @@
 using Repositories.DAL;
 using Repositories.Models;
-using LorDeckEncoder = Kunc.RiotGames.Lor.DeckCodes.LorDeckEncoder;
-using KuncDeckItem = Kunc.RiotGames.Lor.DeckCodes.DeckItem;
 using Repositories.Interfaces;
 using Repositories.Utility;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repositories.Repositories;
 
@@ -14,7 +13,6 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
     public override async Task<Deck> GetById(Guid id)
     {
         Deck deck = await base.GetById(id);
-        deck.DeckContent = GetCardsFromCode(deck.DeckCode);
         return deck;
     }
 
@@ -38,10 +36,21 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
         return dOTD;
     }
 
-    private ICollection<DeckItem> GetCardsFromCode(string deckCode)
+    public async Task<DeckOTD> GetLastDeckOTD()
     {
-        var deckItems = new LorDeckEncoder().GetDeckFromCode<KuncDeckItem>(deckCode);
-        ICollection<DeckItem> deck = deckItems.Select(x => new DeckItem() { Count = x.Count, Card = Utility.Utils.Cards.First(c => c.CardCode == x.CardCode) }).ToList();
-        return deck;
+        return await ctx.DecksOTD.FirstAsync();
+    }
+
+    public async Task<ICollection<DeckOTD>> GetAllDecksOTD()
+    {
+        return await ctx.DecksOTD.ToListAsync();
+    }
+
+    public async Task LikeADeck(Guid id, UserAccount account) {
+        Deck? deck = await table.FindAsync(id);
+        if (deck is null) throw new KeyNotFoundException("The deck was not found");
+
+        deck.LikedUsers.Add(account);
+        await SaveAsync();
     }
 }

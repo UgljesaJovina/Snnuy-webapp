@@ -1,4 +1,5 @@
 using Repositories.Enums;
+using Repositories.Models;
 
 namespace Services.DTOs;
 
