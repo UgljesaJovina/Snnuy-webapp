@@ -69,7 +69,9 @@ public static class Utils
 
             CardRarity rarity = cardRarity[i.rarityRef];
 
-            Cards.Add(new(i.cardCode, i.name, i.cost, i.attack, i.health, i.assets[0].gameAbsolutePath, regions, type, rarity));
+            bool standard = i.formats.Contains("Standard");
+
+            Cards.Add(new(i.cardCode, i.name, i.cost, i.attack, i.health, i.assets[0].gameAbsolutePath, standard, regions, type, rarity));
         }
 
         Timer.Start();

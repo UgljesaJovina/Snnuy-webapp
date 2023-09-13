@@ -1,3 +1,4 @@
+using Repositories.Enums;
 using Repositories.Interfaces;
 using Repositories.Models;
 using Services.DTOs;
@@ -46,8 +47,23 @@ public class UserService : IUserService
         await userRepo.Update(request.Id, request.GetUserAccount());
     }
 
-    public Task Delete(Guid id)
+    public async Task<ICollection<UserShortObject>> GetAll()
     {
-        throw new NotImplementedException();
+        return (await userRepo.GetAll()).Select(x => new UserShortObject(x)).ToList();
+    }
+
+    public async Task Delete(Guid id)
+    {
+        await userRepo.Delete(id);
+    }
+
+    public async Task<DetailedUserDTO> GetById(Guid id)
+    {
+        return new DetailedUserDTO(await userRepo.GetById(id));
+    }
+
+    public async Task ChangeUserPermissions(Guid userId, int permissions)
+    {
+        (await userRepo.GetById(userId)).Permissions = (UserPermissions)permissions;
     }
 }

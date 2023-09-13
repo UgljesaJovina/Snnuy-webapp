@@ -14,7 +14,7 @@ public class Deck
     [MaxLength(50)]
     public string DeckName { get; set; }
     public DateTime PostingDate { get; set; }
-    public bool Eternal { get; set; }
+    public bool Standard { get; set; }
     public UserAccount OwnerAccount { get; set; }
     public virtual ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
     [NotMapped]
@@ -24,5 +24,6 @@ public class Deck
     public Deck() {
         var deckItems = new LorDeckEncoder().GetDeckFromCode<KuncDeckItem>(DeckCode);
         DeckContent = deckItems.Select(x => new DeckItem() { Count = x.Count, Card = Utils.Cards.First(c => c.CardCode == x.CardCode) }).ToList();
+        Standard = !DeckContent.Select(x => x.Card).Any(x => !x.Standard);
     }
 }

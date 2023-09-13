@@ -26,6 +26,10 @@ public class Repository<T> : IRepository<T> where T : class
         return await table.ToListAsync();
     }
 
+    public virtual async Task<ICollection<T>> GetAll(Func<T, bool> predicate) {
+        return (await table.ToListAsync()).Where(predicate).ToList();
+    }
+
     public virtual async Task<T> GetById(Guid id)
     {
         T? instance = await table.FindAsync(id);

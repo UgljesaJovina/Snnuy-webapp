@@ -11,8 +11,8 @@ public enum UserPermissions
     ValidateCustomCard = 0b_0001_0000,
     SetDecoOfTheDay = 0b_0010_0000,
     SetCustomCardOfTheDay = 0b_0100_0000,
-    SetModerators = 0b_1000_0000,
+    ChangePermissions = 0b_1000_0000,
     Normal = SubmitDeck | SubmitCustomCard | RateDeck | RateCustomCard,
     Moderator = Normal | SetDecoOfTheDay | SetCustomCardOfTheDay | ValidateCustomCard,
-    Admin = Moderator | SetModerators
+    Admin = Moderator | ChangePermissions
 }
