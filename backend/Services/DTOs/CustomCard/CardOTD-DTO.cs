@@ -3,7 +3,7 @@ using Repositories.Models;
 
 namespace Services.DTOs;
 
-public class CardOTDDTO
+public class CustomCardOTDDTO
 {
 
     public Guid Id { get; set; }
@@ -15,9 +15,9 @@ public class CardOTDDTO
     public bool SetAutomatically { get; set; }
     public UserShortObject? SettingUser { get; set; }
 
-    public CardOTDDTO() { }
+    public CustomCardOTDDTO() { }
 
-    public CardOTDDTO(Guid id, string cardName, DateTime postingDate, UserAccount owner,
+    public CustomCardOTDDTO(Guid id, string cardName, DateTime postingDate, UserAccount owner,
         CardTypes type, DateTime settingDate, bool setAutomatically, UserAccount? cardSetter)
     {
         Id = id;
@@ -30,5 +30,6 @@ public class CardOTDDTO
         SettingUser = cardSetter is null ? null : new(cardSetter);
     }
 
-    public CardOTDDTO(CustomCardOTD card) :this(card.Id, card.Card.CardName, card.Card.PostingDate) { }
+    public CustomCardOTDDTO(CustomCardOTD card) :this(card.Id, card.Card.CardName, card.Card.PostingDate, card.Card.OwnerAccount,
+        card.Card.Type, card.SettingDate, card.SetAutomatically, card.CardSetter) { }
 }

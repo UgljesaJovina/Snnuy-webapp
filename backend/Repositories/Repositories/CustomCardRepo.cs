@@ -13,6 +13,11 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         Utils.Timer.Elapsed += AutomaticCardSet;
     }
 
+    public async override Task<ICollection<CustomCard>> GetAll() {
+        
+        return await table.Include(x => x.LikedUsers).ToListAsync();
+    }
+
     public async override Task<CustomCard> Create(CustomCard? card)
     {
         if (card is null) throw new ArgumentNullException();
@@ -73,7 +78,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 
             if (cards.Count() == 0) return;
 
-            CustomCard newCardOTD = cards.OrderBy(x => Guid.NewGuid()).First();
+            CustomCard newCardOTD = cards.OrderBy(x => x.LikedUsers.Count).First();
             await SetCustomCardOTD(newCardOTD.Id, card: newCardOTD);
         }
     }

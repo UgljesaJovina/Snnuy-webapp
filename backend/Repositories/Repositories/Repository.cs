@@ -27,7 +27,7 @@ public class Repository<T> : IRepository<T> where T : class
     }
 
     public virtual async Task<ICollection<T>> GetAll(Func<T, bool> predicate) {
-        return (await table.ToListAsync()).Where(predicate).ToList();
+        return await Task.Run(() => table.Where(predicate).ToList());
     }
 
     public virtual async Task<T> GetById(Guid id)

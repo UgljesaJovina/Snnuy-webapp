@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6kzOCvHnzuO6mF8Y2SdcRsZzgvulhgtO+bmptpaSdUheZSDqakSx+WSXehhQwgGzgbw8X4iXftOdxtX57PsOVA==",
+  "dgSpecHash": "o/wJoFa96eid17EX15fqM4cMGthIS3yeUO1ZmmCekJf536kKs9AU4fVif/2aPFx/Zzdb3tcsh3qe/gfXUmOD1g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Ugljesa\\Desktop\\Snnuy webapp\\backend\\Repositories\\Repositories.csproj",
+  "projectFilePath": "c:\\Users\\Ugljesa\\Desktop\\Snnuy webapp\\backend\\Repositories\\Repositories.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ugljesa\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Ugljesa\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
