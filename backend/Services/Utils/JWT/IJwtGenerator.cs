@@ -1,6 +1,6 @@
 using Repositories.Models;
 
-namespace Services.Utils.JWT;
+namespace Services.Utility.JWT;
 
 public interface IJwtGenerator
 {

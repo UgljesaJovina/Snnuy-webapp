@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Repositories.Models;
 using Repositories.Utility;
 
-namespace Services.Utils.JWT;
+namespace Services.Utility.JWT;
 
 public class JwtGenerator : IJwtGenerator
 {

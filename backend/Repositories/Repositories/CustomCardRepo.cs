@@ -18,25 +18,15 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         return await table.Include(x => x.LikedUsers).ToListAsync();
     }
 
-    public async override Task<CustomCard> Create(CustomCard? card)
-    {
-        if (card is null) throw new ArgumentNullException();
-
-        await table.AddAsync(card);
-
-        if (card.FileSteam is null) throw new ArgumentException("The image was not readable");
-        if ((card.OwnerAccount.Permissions & Enums.UserPermissions.SubmitCustomCard) == 0) throw new NotAuthorizedException("You do not have permissions for this");
-
-        await SaveCard(card);
-        await SaveAsync();
-        return card;
-    }
-
-    async Task SaveCard(CustomCard card)
+    public async override Task<CustomCard> Create(CustomCard card)
     {
         string fileName = card.Id.ToString();
         using var stream = File.Create(Utils.CUSTOM_CARD_PATH + fileName);
-        await card.FileSteam!.CopyToAsync(stream);
+        await card.FileSteam.CopyToAsync(stream);
+
+        await table.AddAsync(card);
+        await SaveAsync();
+        return card;
     }
 
     public async Task<CustomCardOTD> SetCustomCardOTD(Guid cardId, UserAccount? account = null, CustomCard? card = null)
@@ -64,8 +54,6 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         CustomCard? card = await table.FindAsync(cardId);
         if (card is null) throw new KeyNotFoundException("That card was not found!");
         
-        if ((account.Permissions & Enums.UserPermissions.ValidateCustomCard) == 0) throw new NotAuthorizedException("You do not have permissions for this!");
-
         card.State = state;
         await SaveAsync();
         return card;

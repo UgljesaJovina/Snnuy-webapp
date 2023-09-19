@@ -4,8 +4,8 @@ using Repositories.DAL;
 using Repositories.Interfaces;
 using Repositories.Repositories;
 using Repositories.Utility;
-using Services.Utils.Hashing;
-using Services.Utils.JWT;
+using Services.Utility.Hashing;
+using Services.Utility.JWT;
 using WebApi.Utils.MiddleWare;
 
 var builder = WebApplication.CreateBuilder(args);

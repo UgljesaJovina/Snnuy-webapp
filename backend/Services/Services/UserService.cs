@@ -3,8 +3,8 @@ using Repositories.Interfaces;
 using Repositories.Models;
 using Services.DTOs;
 using Services.Interfaces;
-using Services.Utils.Hashing;
-using Services.Utils.JWT;
+using Services.Utility.Hashing;
+using Services.Utility.JWT;
 
 namespace Services.Services;
 

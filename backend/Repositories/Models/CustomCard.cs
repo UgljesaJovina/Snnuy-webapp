@@ -21,7 +21,7 @@ public class CustomCard
     // public string CardImageName { get; set; } koristicu id karte
 
     [NotMapped]
-    public Stream? FileSteam { get; set; } 
+    public Stream FileSteam { get; set; } 
     // Stream se dobije od IFormFile.GetReadableSteam() il tako nesto, treba da sluzi samo da kad dodje karta moze odmah da se zapise, razmislicu da uklonim polje skroz
 
     public CardTypes Type { get; set; }
@@ -31,4 +31,18 @@ public class CustomCard
     public virtual ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
     // public virtual ICollection<Keywords> Keywords { get; set; }
     // public virtual ICollection<CustomKeywords> CustomKeywords { get; set; }
+
+    public CustomCard() { }
+
+    public CustomCard(string cardName, DateTime postingDate, string cardDescription, Stream fileStream, 
+        CardTypes type, CustomCardApprovalState state, UserAccount account) 
+    {
+        CardName = cardName;
+        PostingDate = postingDate;
+        CardDescription = cardDescription;
+        FileSteam = fileStream;
+        Type = type;
+        State = state;
+        OwnerAccount = account;
+    }
 }
