@@ -1,6 +1,7 @@
 using Repositories.Interfaces;
 using Repositories.Models;
 using Services.DTOs;
+using Repositories.Enums;
 
 namespace Services.Services;
 
@@ -35,6 +36,22 @@ public class CardService : ICardService
     public async Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset, Stream stream)
     {
         if (requset.CardDescription.Length > 500 || requset.CardName.Length > 50) throw new ArgumentException("Card description or card name is too long!");
-        
+
+        CustomCard card = new() { 
+            CardName = requset.CardName, 
+            CardDescription = requset.CardDescription, 
+            Type = requset.CardType, 
+            State = CustomCardApprovalState.Pending, 
+            PostingDate = DateTime.Now,
+            OwnerAccount = requset.Owner,
+            FileSteam = stream 
+        };
+
+        return new CustomCardDTO(await cardRepo.Create(card));
+    }
+
+    public async Task LikeACard(Guid id, UserAccount account)
+    {
+        await cardRepo.LikeACard(id, account);
     }
 }

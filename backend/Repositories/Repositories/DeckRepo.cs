@@ -12,7 +12,10 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
 
     public override async Task<Deck> GetById(Guid id)
     {
-        Deck deck = await base.GetById(id);
+        Deck? deck = await table.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == id);
+
+        if (deck is null) throw new KeyNotFoundException();
+
         return deck;
     }
 
