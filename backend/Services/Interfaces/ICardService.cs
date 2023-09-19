@@ -8,6 +8,6 @@ public interface ICardService
     public Task<ICollection<CustomCardDTO>> GetAllCardsFromUser(Guid id);
     public Task<CustomCardOTDDTO> GetLatestCardOfTheDay();
     public Task<ICollection<CustomCardOTDDTO>> GetAllCardsOfTheDay();
-    public Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset, Stream stream);
+    public Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset);
     public Task LikeACard(Guid id, UserAccount account);
 }

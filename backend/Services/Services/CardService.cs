@@ -1,5 +1,6 @@
 using Repositories.Interfaces;
 using Repositories.Models;
+using Repositories.Utility;
 using Services.DTOs;
 using Repositories.Enums;
 
@@ -33,7 +34,7 @@ public class CardService : ICardService
         return (await cardRepo.GetAllCustomCardsOTD()).Select(x => new CustomCardOTDDTO(x)).ToList();
     }
 
-    public async Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset, Stream stream)
+    public async Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset)
     {
         if (requset.CardDescription.Length > 500 || requset.CardName.Length > 50) throw new ArgumentException("Card description or card name is too long!");
 
@@ -44,7 +45,7 @@ public class CardService : ICardService
             State = CustomCardApprovalState.Pending, 
             PostingDate = DateTime.Now,
             OwnerAccount = requset.Owner,
-            FileSteam = stream 
+            FileSteam = requset.DataStream
         };
 
         return new CustomCardDTO(await cardRepo.Create(card));

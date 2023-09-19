@@ -1,4 +1,4 @@
-namespace Services.Utils.Hashing;
+namespace Services.Utility.Hashing;
 
 public interface IPasswordHasher
 {

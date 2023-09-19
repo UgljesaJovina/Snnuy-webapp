@@ -17,7 +17,7 @@ public static class Utils
     public static readonly TimeSpan AUTOMATIC_DECKOTD_DELAY = new(24, 0, 0);
     public static DateTime LAST_CARDOTD_SET { get; set; } = DateTime.Now;
     public static DateTime LAST_DECKOTD_SET { get; set; } = DateTime.Now;
-    public static readonly ulong MAXIMUM_FILE_SIZE = 2_097_152; // 2 MB
+    public static readonly long MAXIMUM_FILE_SIZE = 2_097_152; // 2 MB
     public static readonly ICollection<Card> Cards = new List<Card>();
     public static readonly System.Timers.Timer Timer = new(70 * 60 * 1000);
 

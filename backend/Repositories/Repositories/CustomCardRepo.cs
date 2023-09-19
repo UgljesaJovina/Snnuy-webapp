@@ -43,7 +43,10 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     {
         string fileName = card.Id.ToString() + ".png";
         using var stream = File.Create(Utils.CUSTOM_CARD_PATH + fileName);
-        await card.FileSteam!.CopyToAsync(stream);
+        await card.FileSteam.CopyToAsync(stream);
+
+        await table.AddAsync(card);
+        await SaveAsync();
     }
 
     public async Task<CustomCardOTD> SetCustomCardOTD(Guid cardId, UserAccount? account = null, CustomCard? card = null)
@@ -71,8 +74,6 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         CustomCard? card = await table.FindAsync(cardId);
         if (card is null) throw new KeyNotFoundException("That card was not found!");
         
-        if ((account.Permissions & Enums.UserPermissions.ValidateCustomCard) == 0) throw new NotAuthorizedException("You do not have permissions for this!");
-
         card.State = state;
         await SaveAsync();
         return card;

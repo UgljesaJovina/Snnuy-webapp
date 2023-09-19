@@ -27,6 +27,11 @@ public class UserRepo : Repository<UserAccount>, IUserRepo
         UserAccount? account = await table.FindAsync(id);
         if (account is null) throw new KeyNotFoundException("That account was not found");
 
-        if (string.IsNullOrEmpty(updatedAccount.Username)) updatedAccount.Username
+        if (string.IsNullOrEmpty(updatedAccount.Username)) updatedAccount.Username = account.Username;
+        
+        account = updatedAccount;
+        await SaveAsync();
+
+        return account;
     }
 }

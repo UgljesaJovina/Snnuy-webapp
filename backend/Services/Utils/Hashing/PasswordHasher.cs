@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace Services.Utils.Hashing;
+namespace Services.Utility.Hashing;
 
 public class PasswordHasher : IPasswordHasher
 {

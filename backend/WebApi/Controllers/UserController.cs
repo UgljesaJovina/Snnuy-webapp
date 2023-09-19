@@ -13,7 +13,7 @@ public class UserController: ControllerBase
     [HttpPost]
     public ActionResult Func([FromBody] UpdateAccountRequest user)
     {
-        Console.WriteLine($"name: {user.UserName}, Id: {user.Id}, Permissions: {user.Permissions}, password: {user.Password}");
+        Console.WriteLine($"name: {user.UserName}, Id: {user.Id}, password: {user.Password}");
         return Ok(user);
     }
 }
