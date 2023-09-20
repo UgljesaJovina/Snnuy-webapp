@@ -8,10 +8,10 @@ public class DetailedUserDTO
     public Guid Id { get; set; }
     public string Username { get; set; }
     public string Permissions { get; set; }
-    public virtual ICollection<CustomCardDTO> OwnedCards { get; set; } = new List<CustomCardDTO>();
-    public virtual ICollection<CustomCardDTO> LikedCards { get; set; } = new List<CustomCardDTO>();
-    public virtual ICollection<DeckShortObject> OwnedDecks { get; set; } = new List<DeckShortObject>();
-    public virtual ICollection<DeckShortObject> LikedDecks { get; set; } = new List<DeckShortObject>();
+    public ICollection<CustomCardDTO> OwnedCards { get; set; }
+    public ICollection<CustomCardDTO> LikedCards { get; set; }
+    public ICollection<DeckDTO> OwnedDecks { get; set; }
+    public ICollection<DeckDTO> LikedDecks { get; set; }
 
     public DetailedUserDTO() { }
 
@@ -21,8 +21,8 @@ public class DetailedUserDTO
         Permissions = permissions.ToString();
         OwnedCards = ownedCards.Select(x => new CustomCardDTO(x)).ToList();
         LikedCards = likedCards.Select(x => new CustomCardDTO(x)).ToList();
-        OwnedDecks = ownedDecks.Select(x => new DeckShortObject(x)).ToList();
-        LikedDecks = likedDecks.Select(x => new DeckShortObject(x)).ToList();
+        OwnedDecks = ownedDecks.Select(x => new DeckDTO(x)).ToList();
+        LikedDecks = likedDecks.Select(x => new DeckDTO(x)).ToList();
     }
 
     public DetailedUserDTO(UserAccount account) :this(account.Id, account.Username, account.Permissions, account.OwnedCustomCards, account.LikedCustomCards, account.OwnedDecks, account.LikedDecks) { }

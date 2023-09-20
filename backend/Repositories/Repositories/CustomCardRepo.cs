@@ -15,11 +15,11 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 
     public async override Task<ICollection<CustomCard>> GetAll() {
         
-        return await table.Include(x => x.LikedUsers).ToListAsync();
+        return await table.ToListAsync();
     }
 
     public async override Task<CustomCard> GetById(Guid id) {
-        CustomCard? card = await table.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == id);
+        CustomCard? card = await table.FindAsync(id);
 
         if (card is null) throw new KeyNotFoundException("The card was not found in the database");
 
@@ -57,10 +57,10 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         CustomCardOTD ccOTD;
 
         if (account is null) 
-            ccOTD = new CustomCardOTD(card, true);
+            ccOTD = new CustomCardOTD(card);
         else {
             if ((account.Permissions & Enums.UserPermissions.SetCustomCardOfTheDay) == 0) throw new NotAuthorizedException("You do not have permissions for this!");
-            ccOTD = new CustomCardOTD(card, false, account);
+            ccOTD = new CustomCardOTD(card, account);
         }
 
         await ctx.CustomCardsOTD.AddAsync(ccOTD);
@@ -82,7 +82,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     private async void AutomaticCardSet(object? sender, ElapsedEventArgs e)
     {
         if (DateTime.Now - Utils.LAST_CARDOTD_SET >= Utils.AUTOMATIC_CARDOTD_DELAY) {
-            IEnumerable<CustomCard> cards = (await GetAll()).Where(c => !ctx.CustomCardsOTD.Select(cotd => cotd.Card).Contains(c));
+            IEnumerable<CustomCard> cards = (await GetAll()).Where(c => !ctx.CustomCardsOTD.Select(cotd => cotd.Id).Contains(c.Id));
 
             if (cards.Count() == 0) return;
 
@@ -105,10 +105,9 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         CustomCard? card = await table.FindAsync(id);
         if (card is null) throw new KeyNotFoundException("Card was not found");
 
-        card.LikedUsers.Add(account);
+        if (card.LikedUsers.Contains(account)) card.LikedUsers.Remove(account);
+        else card.LikedUsers.Add(account);
+        
         await SaveAsync();
     }
-
-    // SUSCRIBE TO ELAPSED EVENT FROM UTILS!!!, SAME FOR DECKOTD
-
 }

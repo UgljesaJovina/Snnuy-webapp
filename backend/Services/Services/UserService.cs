@@ -29,7 +29,7 @@ public class UserService : IUserService
         if (!passwordHasher.Verify(account.HashedPassword, request.Password)) throw new KeyNotFoundException("Password does not match with this username");
 
         string token = jwtGenerator.GenerateJWTToken(account);
-        return new(account.Username, account.Permissions, token);
+        return new(account.Username, token, account.LikedCustomCards.Select(x => x.Id), account.LikedDecks.Select(x => x.Id));
     }
 
     public async Task<AuthenticationResponse> Register(AuthenticationRequest request) {
@@ -37,7 +37,7 @@ public class UserService : IUserService
 
         UserAccount account = await userRepo.Create(new UserAccount(request.Username, passwordHash));
         string token = jwtGenerator.GenerateJWTToken(account);
-        return new(account.Username, account.Permissions, token);
+        return new(account.Username, token, new List<Guid>(), new List<Guid>());
     }
 
     public async Task Update(UpdateAccountRequest request)

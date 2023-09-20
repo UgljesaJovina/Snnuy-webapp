@@ -13,6 +13,7 @@ public class CustomCardCreationRequset
     public UserAccount Owner;
 
     public CustomCard GetCustomCard() {
-        return new(CardName, DateTime.Now, CardDescription, DataStream, CardType, CustomCardApprovalState.Pending, Owner);
+        return new(CardName, CardDescription, CardType, CustomCardApprovalState.Pending, Owner) 
+            { FileSteam = DataStream };
     }
 }

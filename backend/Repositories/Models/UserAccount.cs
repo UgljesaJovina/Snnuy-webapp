@@ -11,10 +11,12 @@ public class UserAccount
     [MaxLength(500)]
     public string HashedPassword { get; set; }
     public UserPermissions Permissions { get; set; }
-    public virtual ICollection<CustomCard> OwnedCustomCards { get; set; } = new List<CustomCard>();
-    public virtual ICollection<CustomCard> LikedCustomCards { get; set; } = new List<CustomCard>();
-    public virtual ICollection<Deck> OwnedDecks { get; set; } = new List<Deck>();
-    public virtual ICollection<Deck> LikedDecks { get; set; } = new List<Deck>();
+    public ICollection<CustomCard> OwnedCustomCards { get; set; } = new List<CustomCard>();
+    public ICollection<CustomCard> LikedCustomCards { get; set; } = new List<CustomCard>();
+    // public ICollection<CustomCardOTD> SetCustomCards { get; set; } = new List<CustomCardOTD>();
+    public ICollection<Deck> OwnedDecks { get; set; } = new List<Deck>();
+    public ICollection<Deck> LikedDecks { get; set; } = new List<Deck>();
+    // public ICollection<DeckOTD> SetDecks { get; set; } = new List<DeckOTD>();
 
     public UserAccount() {}
 

@@ -1,0 +1,34 @@
+using Repositories.Enums;
+using Repositories.Models;
+
+namespace Services.DTOs;
+
+public class DeckDetailedDTO
+{
+    public Guid Id { get; set; }
+    public string DeckCode { get; set; }
+    public string DeckName { get; set; }
+    public DateTime PostingDate { get; set; }
+    public bool Standard { get; set; }
+    public UserShortObject Owner { get; set; }
+    public int NumberOfLikes { get; set; }
+    public ICollection<DeckItemDTO> DeckContent { get; set; }
+    public string DeckType { get; set; }
+    public int DekcCost { get { return DeckContent.Select(x => x.Rarity).Sum(); }}
+
+    public DeckDetailedDTO() { }
+
+    public DeckDetailedDTO(Guid id, string deckCode, string deckName, DateTime postingDate, bool standard, UserAccount owner, int numberOfLikes, ICollection<DeckItem> deckContent, DeckType type) {
+        Id = id;
+        DeckCode = deckCode;
+        DeckName = deckName;
+        PostingDate = postingDate;
+        Standard = standard;
+        Owner = new(owner);
+        NumberOfLikes = numberOfLikes;
+        DeckContent = deckContent.Select(x => new DeckItemDTO(x)).ToList();
+        DeckType = type.ToString();
+    }
+
+    public DeckDetailedDTO(Deck deck) :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, deck.LikedUsers.Count, deck.DeckContent, deck.Type) { }
+}

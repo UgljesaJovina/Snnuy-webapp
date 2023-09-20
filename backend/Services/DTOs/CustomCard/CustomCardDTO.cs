@@ -8,7 +8,7 @@ public class CustomCardDTO
     public Guid Id { get; set; }
     public string CardName { get; set; }
     public DateTime PostingDate { get; set; }
-    public string Owner { get; set; }
+    public UserShortObject Owner { get; set; }
     public string CardType { get; set; }
     public string CardApprovalState { get; set; }
     public int NumberOfLikes { get; set; }
@@ -19,7 +19,7 @@ public class CustomCardDTO
         Id = id;
         CardName = cardName;
         PostingDate = postingDate;
-        Owner = owner.Username;
+        Owner = new(owner);
         CardType = type.ToString();
         CardApprovalState = state.ToString();
         NumberOfLikes = numberOfLikes;

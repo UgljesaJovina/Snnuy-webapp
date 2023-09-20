@@ -4,6 +4,8 @@ using Repositories.DAL;
 using Repositories.Interfaces;
 using Repositories.Repositories;
 using Repositories.Utility;
+using Services.Interfaces;
+using Services.Services;
 using Services.Utility.Hashing;
 using Services.Utility.JWT;
 using WebApi.Utils.MiddleWare;
@@ -28,6 +30,9 @@ builder.Services.AddSwaggerGen();
     builder.Services.AddScoped<ICustomCardRepo, CustomCardRepo>();
     builder.Services.AddScoped<IDeckRepo, DeckRepo>();
     builder.Services.AddScoped<IUserRepo, UserRepo>();  
+    builder.Services.AddScoped<ICustomCardService, CustomCardService>();
+    builder.Services.AddScoped<IDeckService, DeckService>();
+    builder.Services.AddScoped<IUserService, UserService>();  
 
     builder.Services.AddDbContext<DataContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),

@@ -1,13 +1,14 @@
 using Repositories.Models;
+using Services.DTOs;
 
-namespace Services.DTOs;
+namespace Services.Interfaces;
 
-public interface ICardService
+public interface ICustomCardService
 {
     public Task<ICollection<CustomCardDTO>> GetAll();
     public Task<ICollection<CustomCardDTO>> GetAllCardsFromUser(Guid id);
     public Task<CustomCardOTDDTO> GetLatestCardOfTheDay();
     public Task<ICollection<CustomCardOTDDTO>> GetAllCardsOfTheDay();
-    public Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset);
     public Task LikeACard(Guid id, UserAccount account);
+    public Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset);
 }

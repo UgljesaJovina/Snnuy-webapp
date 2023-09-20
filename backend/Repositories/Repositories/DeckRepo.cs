@@ -12,7 +12,7 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
 
     public override async Task<Deck> GetById(Guid id)
     {
-        Deck? deck = await table.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == id);
+        Deck? deck = await table.FindAsync(id);
 
         if (deck is null) throw new KeyNotFoundException();
 
@@ -27,10 +27,10 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
         DeckOTD dOTD;
 
         if (account is null) 
-            dOTD = new DeckOTD(deck, true);
+            dOTD = new DeckOTD(deck);
         else {
             if ((account.Permissions & Enums.UserPermissions.SetCustomCardOfTheDay) == 0) throw new NotAuthorizedException("You do not have permissions for this!");
-            dOTD = new DeckOTD(deck, false, account);
+            dOTD = new DeckOTD(deck, account);
         }
 
         await ctx.DecksOTD.AddAsync(dOTD);
@@ -39,7 +39,7 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
         return dOTD;
     }
 
-    public async Task<DeckOTD> GetLastDeckOTD()
+    public async Task<DeckOTD> GetLatestDeckOTD()
     {
         return await ctx.DecksOTD.FirstAsync();
     }
@@ -53,7 +53,9 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
         Deck? deck = await table.FindAsync(id);
         if (deck is null) throw new KeyNotFoundException("The deck was not found");
 
-        deck.LikedUsers.Add(account);
+        if (deck.LikedUsers.Contains(account)) deck.LikedUsers.Remove(account);
+        else deck.LikedUsers.Add(account);
+
         await SaveAsync();
     }
 }

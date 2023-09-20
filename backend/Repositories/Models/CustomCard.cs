@@ -9,7 +9,7 @@ public class CustomCard
     public Guid Id { get; set; } = Guid.NewGuid();
     [MaxLength(50)]
     public string CardName { get; set; }
-    public DateTime PostingDate { get; set; }
+    public DateTime PostingDate { get; set; } = DateTime.Now;
     // [MaxLength(250)]
     // public string EffectText { get; set; }
     // public int ManaCost { get; set; }
@@ -28,21 +28,19 @@ public class CustomCard
     public CustomCardApprovalState State { get; set; }
 
     public UserAccount OwnerAccount { get; set; }
-    public virtual ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
+    public ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
     // public virtual ICollection<Keywords> Keywords { get; set; }
     // public virtual ICollection<CustomKeywords> CustomKeywords { get; set; }
 
     public CustomCard() { }
 
-    public CustomCard(string cardName, DateTime postingDate, string cardDescription, Stream fileStream, 
-        CardTypes type, CustomCardApprovalState state, UserAccount account) 
+    public CustomCard(string cardName, string cardDescription, 
+        CardTypes type, CustomCardApprovalState state, UserAccount owner) 
     {
         CardName = cardName;
-        PostingDate = postingDate;
         CardDescription = cardDescription;
-        FileSteam = fileStream;
         Type = type;
         State = state;
-        OwnerAccount = account;
+        OwnerAccount = owner;
     }
 }

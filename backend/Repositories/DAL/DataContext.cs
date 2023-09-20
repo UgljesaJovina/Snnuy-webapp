@@ -22,5 +22,19 @@ public class DataContext : DbContext {
         builder.Entity<UserAccount>().HasMany<Deck>(x => x.LikedDecks).WithMany(x => x.LikedUsers);
 
         builder.Entity<UserAccount>().HasIndex(a => a.Username).IsUnique();
+
+        builder.Entity<CustomCardOTD>().HasOne(x => x.CardSetter).WithMany();
+        builder.Entity<DeckOTD>().HasOne(x => x.DeckSetter).WithMany();
+
+        builder.Entity<UserAccount>().Navigation(acc => acc.LikedCustomCards).AutoInclude();
+        builder.Entity<UserAccount>().Navigation(acc => acc.OwnedCustomCards).AutoInclude();
+        builder.Entity<UserAccount>().Navigation(acc => acc.LikedDecks).AutoInclude();
+        builder.Entity<UserAccount>().Navigation(acc => acc.OwnedDecks).AutoInclude();
+
+        builder.Entity<Deck>().Navigation(deck => deck.LikedUsers).AutoInclude();
+        builder.Entity<Deck>().Navigation(deck => deck.OwnerAccount).AutoInclude();
+
+        builder.Entity<CustomCard>().Navigation(card => card.LikedUsers).AutoInclude();
+        builder.Entity<CustomCard>().Navigation(card => card.OwnerAccount).AutoInclude();
     }
 }

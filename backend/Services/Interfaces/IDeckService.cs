@@ -3,10 +3,13 @@ using Services.DTOs;
 
 namespace Services.Interfaces;
 
-public interface IDeckRepo
+public interface IDeckService
 {
-    public Task<ICollection<DeckShortObject>> GetAllDecksOTD();
-    public Task<DeckShortObject> GetLastDeckOTD();
+    public Task<ICollection<DeckDTO>> GetAll();
+    public Task<ICollection<DeckDTO>> GetAllFromUser(Guid userId);
+    public Task<DeckOTDDTO> GetLatestDeckOTD();
+    public Task<ICollection<DeckOTDDTO>> GetAllDecksOTD();
     public Task LikeADeck(Guid id, UserAccount account);
-    public Task<DeckDetailObject> GetDeckInfo(Guid id);
+    public Task<DeckDTO> CreateDeck(DeckCreationRequest request);
+    public Task<DeckDetailedDTO> GetDeckInfo(Guid id);
 }

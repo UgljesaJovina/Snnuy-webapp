@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Repositories.Models;
 using WebApi.Utils.Attributes;
 using Services.DTOs;
+using Services.Interfaces;
 
 namespace WebApi.Controllers;
 
@@ -10,10 +11,9 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class UserController: ControllerBase
 {
-    [HttpPost]
-    public ActionResult Func([FromBody] UpdateAccountRequest user)
-    {
-        Console.WriteLine($"name: {user.UserName}, Id: {user.Id}, password: {user.Password}");
-        return Ok(user);
+    private readonly IUserService userService;
+
+    public UserController(IUserService service) {
+        userService = service;
     }
 }

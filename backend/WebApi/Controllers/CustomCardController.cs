@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Repositories.Models;
 using WebApi.Utils.Attributes;
-using Services.DTOs;
+using Services.Interfaces;
 
 namespace WebApi.Controllers;
 
@@ -10,9 +10,11 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class CustomCardController: ControllerBase
 {
-    [HttpPost("CreateCard")]
-    public void CreateCard(IFormFile file) {
-        using var stream = System.IO.File.Create(file.FileName);
-        file.CopyTo(stream);
+    private readonly ICustomCardService cardService;
+
+    public CustomCardController(ICustomCardService service) {
+        cardService = service;
     }
+
+    
 }
