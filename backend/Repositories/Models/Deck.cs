@@ -15,7 +15,6 @@ public class Deck
     public string DeckName { get; set; }
     public DateTime PostingDate { get; set; } = DateTime.Now;
     public UserAccount OwnerAccount { get; set; }
-    public ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
     ICollection<DeckItem> deckContent;
     
     [NotMapped]
@@ -32,6 +31,8 @@ public class Deck
         } 
     }
     public DeckType Type { get; set; }
+    public int NumberOfLikes { get; set; } = 0;
+    public ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
 
     public Deck() { }
 

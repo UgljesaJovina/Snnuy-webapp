@@ -27,5 +27,5 @@ public class DeckDTO
         NumberOfLikes = numberOfLikes;
     }
 
-    public DeckDTO(Deck deck) :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, deck.Type, deck.LikedUsers.Count()) { }
+    public DeckDTO(Deck deck) :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, deck.Type, deck.NumberOfLikes) { }
 }

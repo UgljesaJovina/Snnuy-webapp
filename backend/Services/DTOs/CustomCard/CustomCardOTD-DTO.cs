@@ -21,5 +21,5 @@ public class CustomCardOTDDTO : CustomCardDTO
     }
 
     public CustomCardOTDDTO(CustomCardOTD card) :this(card.Id, card.CardName, card.PostingDate, card.OwnerAccount,
-        card.Type, card.SettingDate, card.SetAutomatically, card.CardSetter, card.LikedUsers.Count) { }
+        card.Type, card.SettingDate, card.SetAutomatically, card.CardSetter, card.NumberOfLikes) { }
 }

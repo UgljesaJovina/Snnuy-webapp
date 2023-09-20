@@ -3,12 +3,20 @@ using Repositories.Models;
 using Repositories.Interfaces;
 using Repositories.Utility;
 using Microsoft.EntityFrameworkCore;
+using System.Timers;
 
 namespace Repositories.Repositories;
 
 public class DeckRepo : Repository<Deck>, IDeckRepo
 {
-    public DeckRepo(DataContext _ctx) : base(_ctx) { }
+    static bool subscribed = false;
+
+    public DeckRepo(DataContext _ctx) : base(_ctx) { 
+        if (!subscribed) {
+            Utils.DeckTimer.Elapsed += AutomaticDeckSet;
+            subscribed = true;
+        }
+    }
 
     public override async Task<Deck> GetById(Guid id)
     {
@@ -19,9 +27,9 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
         return deck;
     }
 
-    public async Task<DeckOTD> SetDeckOfTheDay(Guid deckId, UserAccount? account = null)
+    public async Task<DeckOTD> SetDeckOfTheDay(Guid deckId, UserAccount? account = null, Deck? deck = null)
     {
-        Deck? deck = await table.FindAsync(deckId);
+        deck ??= await table.FindAsync(deckId);
         if (deck is null) throw new KeyNotFoundException("That card was not found!");
 
         DeckOTD dOTD;
@@ -53,9 +61,22 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
         Deck? deck = await table.FindAsync(id);
         if (deck is null) throw new KeyNotFoundException("The deck was not found");
 
-        if (deck.LikedUsers.Contains(account)) deck.LikedUsers.Remove(account);
-        else deck.LikedUsers.Add(account);
+        if (deck.LikedUsers.Contains(account)) { deck.LikedUsers.Remove(account); deck.NumberOfLikes -= 1; }
+        else { deck.LikedUsers.Add(account); deck.NumberOfLikes += 1; }
 
         await SaveAsync();
+    }
+
+    private async void AutomaticDeckSet(object? sender, ElapsedEventArgs e)
+    {
+        if (DateTime.Now - Utils.LAST_CARDOTD_SET >= Utils.AUTOMATIC_CARDOTD_DELAY) {
+            IEnumerable<Deck> decks = (await GetAll()).Where(d => !ctx.DecksOTD.Select(dotd => dotd.Id).Contains(d.Id));
+
+            if (decks.Count() == 0) return;
+
+            Deck newDeckOTD = decks.OrderBy(x => x.NumberOfLikes).First();
+            await SetDeckOfTheDay(newDeckOTD.Id, deck: newDeckOTD);
+            Utils.LAST_DECKOTD_SET = DateTime.Now;
+        }
     }
 }

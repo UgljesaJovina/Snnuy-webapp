@@ -20,5 +20,5 @@ public class DeckOTDDTO : DeckDTO
 
     public DeckOTDDTO(DeckOTD deck) 
         :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, 
-        deck.Type, deck.LikedUsers.Count, deck.SettingDate, deck.SetAutomatically, deck.DeckSetter) { }
+        deck.Type, deck.NumberOfLikes, deck.SettingDate, deck.SetAutomatically, deck.DeckSetter) { }
 }

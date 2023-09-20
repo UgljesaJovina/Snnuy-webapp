@@ -19,7 +19,8 @@ public static class Utils
     public static DateTime LAST_DECKOTD_SET { get; set; } = DateTime.Now;
     public static readonly long MAXIMUM_FILE_SIZE = 2_097_152; // 2 MB
     public static readonly ICollection<Card> Cards = new List<Card>();
-    public static readonly System.Timers.Timer Timer = new(70 * 60 * 1000);
+    public static readonly System.Timers.Timer CardTimer = new(70 * 60 * 1000);
+    public static readonly System.Timers.Timer DeckTimer = new(70 * 60 * 1000);
 
     static Utils()
     {
@@ -74,7 +75,8 @@ public static class Utils
             Cards.Add(new(i.cardCode, i.name, i.cost, i.attack, i.health, i.assets[0].gameAbsolutePath, standard, regions, type, rarity));
         }
 
-        Timer.Start();
+        CardTimer.Start();
+        DeckTimer.Start();
     }
 
     public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)

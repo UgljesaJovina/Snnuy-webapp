@@ -15,7 +15,7 @@ public class CustomCardService : ICustomCardService
         cardRepo = _cardRepo;
     }
 
-    public async Task<ICollection<CustomCardDTO>> GetAll()
+    public async Task<ICollection<CustomCardDTO>> GetAllCards()
     {
         return (await cardRepo.GetAll()).Select(x => new CustomCardDTO(x)).ToList();
     }
@@ -39,7 +39,7 @@ public class CustomCardService : ICustomCardService
     {
         if (requset.CardDescription.Length > 500 || requset.CardName.Length > 50) throw new ArgumentException("Card description or card name is too long!");
 
-        return new CustomCardDTO(await cardRepo.Create(requset.GetCustomCard()));
+       return new CustomCardDTO(await cardRepo.Create(requset.GetCustomCard()));
     }
 
     public async Task LikeACard(Guid id, UserAccount account)

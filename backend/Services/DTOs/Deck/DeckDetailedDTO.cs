@@ -30,5 +30,5 @@ public class DeckDetailedDTO
         DeckType = type.ToString();
     }
 
-    public DeckDetailedDTO(Deck deck) :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, deck.LikedUsers.Count, deck.DeckContent, deck.Type) { }
+    public DeckDetailedDTO(Deck deck) :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, deck.NumberOfLikes, deck.DeckContent, deck.Type) { }
 }

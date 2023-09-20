@@ -21,7 +21,7 @@ public class JwtGenerator : IJwtGenerator
         byte[] key = System.Text.Encoding.ASCII.GetBytes(appSettings.Secret);
         SecurityTokenDescriptor tokenDescriptor = new()
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("id", account.Id.ToString()) }),
+            Subject = new ClaimsIdentity(new Claim[] { new("id", account.Id.ToString()) }),
             Expires = DateTime.UtcNow.AddYears(40),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };

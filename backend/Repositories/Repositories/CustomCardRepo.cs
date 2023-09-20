@@ -9,30 +9,31 @@ namespace Repositories.Repositories;
 
 public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 {
-    public CustomCardRepo(DataContext _ctx) : base(_ctx) { 
-        Utils.Timer.Elapsed += AutomaticCardSet;
-    }
+    static bool subscribed = false;
 
-    public async override Task<ICollection<CustomCard>> GetAll() {
-        
-        return await table.ToListAsync();
+    public CustomCardRepo(DataContext _ctx) : base(_ctx) { 
+        if (!subscribed) {
+            Utils.CardTimer.Elapsed += AutomaticCardSet;
+            subscribed = true;
+        }
     }
 
     public async override Task<CustomCard> GetById(Guid id) {
-        CustomCard? card = await table.FindAsync(id);
+        CustomCard? card = await table
+            .Include(x => x.LikedUsers)
+            .Include(x => x.OwnerAccount)
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         if (card is null) throw new KeyNotFoundException("The card was not found in the database");
 
         return card;
     }
 
-    public async override Task<CustomCard> Create(CustomCard? card)
+    public async override Task<CustomCard> Create(CustomCard card)
     {
-        if (card is null) throw new ArgumentNullException();
+        if (card.FileSteam is null) throw new ArgumentException("The image was not readable");
 
         await table.AddAsync(card);
-
-        if (card.FileSteam is null) throw new ArgumentException("The image was not readable");
         
         await SaveCard(card);
         await SaveAsync();
@@ -44,9 +45,6 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         string fileName = card.Id.ToString() + ".png";
         using var stream = File.Create(Utils.CUSTOM_CARD_PATH + fileName);
         await card.FileSteam.CopyToAsync(stream);
-
-        await table.AddAsync(card);
-        await SaveAsync();
     }
 
     public async Task<CustomCardOTD> SetCustomCardOTD(Guid cardId, UserAccount? account = null, CustomCard? card = null)
@@ -79,6 +77,34 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         return card;
     }
 
+    public async Task<ICollection<CustomCardOTD>> GetAllCustomCardsOTD()
+    {
+        return await ctx.CustomCardsOTD
+            .Include(x => x.OwnerAccount)
+            .Include(x => x.CardSetter)
+            .Include(x => x.LikedUsers)
+            .ToListAsync();
+    }
+
+    public async Task<CustomCardOTD> GetLastCustomCardOTD()
+    {
+        return await ctx.CustomCardsOTD
+            .Include(x => x.OwnerAccount)
+            .Include(x => x.CardSetter)
+            .Include(x => x.LikedUsers)
+            .FirstAsync();
+    }
+
+    public async Task LikeACard(Guid id, UserAccount account) {
+        CustomCard? card = await table.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == id);
+        if (card is null) throw new KeyNotFoundException("Card was not found");
+
+        if (card.LikedUsers.Contains(account)) { card.LikedUsers.Remove(account); card.NumberOfLikes -= 1; }
+        else { card.LikedUsers.Add(account); card.NumberOfLikes += 1; }
+        
+        await SaveAsync();
+    }
+
     private async void AutomaticCardSet(object? sender, ElapsedEventArgs e)
     {
         if (DateTime.Now - Utils.LAST_CARDOTD_SET >= Utils.AUTOMATIC_CARDOTD_DELAY) {
@@ -86,28 +112,9 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 
             if (cards.Count() == 0) return;
 
-            CustomCard newCardOTD = cards.OrderBy(x => x.LikedUsers.Count).First();
+            CustomCard newCardOTD = cards.OrderBy(x => x.NumberOfLikes).First();
             await SetCustomCardOTD(newCardOTD.Id, card: newCardOTD);
+            Utils.LAST_CARDOTD_SET = DateTime.Now;
         }
-    }
-
-    public async Task<ICollection<CustomCardOTD>> GetAllCustomCardsOTD()
-    {
-        return await ctx.CustomCardsOTD.ToListAsync();
-    }
-
-    public async Task<CustomCardOTD> GetLastCustomCardOTD()
-    {
-        return await ctx.CustomCardsOTD.FirstAsync();
-    }
-
-    public async Task LikeACard(Guid id, UserAccount account) {
-        CustomCard? card = await table.FindAsync(id);
-        if (card is null) throw new KeyNotFoundException("Card was not found");
-
-        if (card.LikedUsers.Contains(account)) card.LikedUsers.Remove(account);
-        else card.LikedUsers.Add(account);
-        
-        await SaveAsync();
     }
 }
