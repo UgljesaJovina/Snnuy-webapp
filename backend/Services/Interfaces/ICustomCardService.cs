@@ -11,4 +11,5 @@ public interface ICustomCardService
     public Task<ICollection<CustomCardOTDDTO>> GetAllCardsOfTheDay();
     public Task LikeACard(Guid id, UserAccount account);
     public Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset);
+    public Task<CustomCardDTO> ValidateCustomCard(Guid cardId, UserAccount account, bool approvalState);
 }

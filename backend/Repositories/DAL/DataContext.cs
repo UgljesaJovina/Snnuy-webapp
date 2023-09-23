@@ -25,5 +25,12 @@ public class DataContext : DbContext {
 
         builder.Entity<CustomCardOTD>().HasOne(x => x.CardSetter).WithMany();
         builder.Entity<DeckOTD>().HasOne(x => x.DeckSetter).WithMany();
+
+        builder.Entity<CustomCard>().Navigation(x => x.OwnerAccount).AutoInclude();
+        builder.Entity<CustomCardOTD>().Navigation(x => x.Card).AutoInclude();
+        builder.Entity<CustomCardOTD>().Navigation(x => x.CardSetter).AutoInclude();
+        builder.Entity<Deck>().Navigation(x => x.OwnerAccount).AutoInclude();
+        builder.Entity<DeckOTD>().Navigation(x => x.Deck).AutoInclude();
+        builder.Entity<DeckOTD>().Navigation(x => x.DeckSetter).AutoInclude();
     }
 }

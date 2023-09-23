@@ -1,2 +1,2 @@
 struktura:
-    ☐ Promeniti modele tako da vise ne koriste nasledjivanje posto: a. ne mogu da se cuvaju pod istim ID-jem b. ima puno prekopiranih vrednosti izmedju redova
+    ✔ Promeniti modele tako da vise ne koriste nasledjivanje posto: a. ne mogu da se cuvaju pod istim ID-jem b. ima puno prekopiranih vrednosti izmedju redova @done(23-09-22 17:27)

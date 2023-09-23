@@ -70,13 +70,13 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
     private async void AutomaticDeckSet(object? sender, ElapsedEventArgs e)
     {
         if (DateTime.Now - Utils.LAST_CARDOTD_SET >= Utils.AUTOMATIC_CARDOTD_DELAY) {
-            IEnumerable<Deck> decks = (await GetAll()).Where(d => !ctx.DecksOTD.Select(dotd => dotd.Id).Contains(d.Id));
+            var deckOTDIds = ctx.DecksOTD.Select(dotd => dotd.Deck.Id);
+            IEnumerable<Deck> decks = (await GetAll()).Where(d => !deckOTDIds.Contains(d.Id));
 
             if (decks.Count() == 0) return;
 
             Deck newDeckOTD = decks.OrderBy(x => x.NumberOfLikes).First();
             await SetDeckOfTheDay(newDeckOTD.Id, deck: newDeckOTD);
-            Utils.LAST_DECKOTD_SET = DateTime.Now;
         }
     }
 }

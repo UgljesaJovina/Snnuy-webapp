@@ -20,6 +20,6 @@ public class CustomCardOTDDTO : CustomCardDTO
         SettingUser = cardSetter is null ? null : new(cardSetter);
     }
 
-    public CustomCardOTDDTO(CustomCardOTD card) :this(card.Id, card.CardName, card.PostingDate, card.OwnerAccount,
-        card.Type, card.SettingDate, card.SetAutomatically, card.CardSetter, card.NumberOfLikes) { }
+    public CustomCardOTDDTO(CustomCardOTD card) :this(card.Id, card.Card.CardName, card.Card.PostingDate, card.Card.OwnerAccount,
+        card.Card.Type, card.SettingDate, card.SetAutomatically, card.CardSetter, card.Card.NumberOfLikes) { }
 }

@@ -21,7 +21,6 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     public async override Task<CustomCard> GetById(Guid id) {
         CustomCard? card = await table
             .Include(x => x.LikedUsers)
-            .Include(x => x.OwnerAccount)
             .FirstOrDefaultAsync(x => x.Id == id);
 
         if (card is null) throw new KeyNotFoundException("The card was not found in the database");
@@ -67,32 +66,24 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         return ccOTD;
     }
 
-    public async Task<CustomCard> ValidateCustomCard(Guid cardId, UserAccount account, Enums.CustomCardApprovalState state)
+    public async Task<CustomCard> ValidateCustomCard(Guid cardId, UserAccount account, bool approvalState)
     {
         CustomCard? card = await table.FindAsync(cardId);
         if (card is null) throw new KeyNotFoundException("That card was not found!");
         
-        card.State = state;
+        card.State = approvalState ? Enums.CustomCardApprovalState.Approved : Enums.CustomCardApprovalState.Cancelled;
         await SaveAsync();
         return card;
     }
 
     public async Task<ICollection<CustomCardOTD>> GetAllCustomCardsOTD()
     {
-        return await ctx.CustomCardsOTD
-            .Include(x => x.OwnerAccount)
-            .Include(x => x.CardSetter)
-            .Include(x => x.LikedUsers)
-            .ToListAsync();
+        return await ctx.CustomCardsOTD.ToListAsync();
     }
 
     public async Task<CustomCardOTD> GetLastCustomCardOTD()
     {
-        return await ctx.CustomCardsOTD
-            .Include(x => x.OwnerAccount)
-            .Include(x => x.CardSetter)
-            .Include(x => x.LikedUsers)
-            .FirstAsync();
+        return await ctx.CustomCardsOTD.FirstAsync();
     }
 
     public async Task LikeACard(Guid id, UserAccount account) {
@@ -108,13 +99,13 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     private async void AutomaticCardSet(object? sender, ElapsedEventArgs e)
     {
         if (DateTime.Now - Utils.LAST_CARDOTD_SET >= Utils.AUTOMATIC_CARDOTD_DELAY) {
-            IEnumerable<CustomCard> cards = (await GetAll()).Where(c => !ctx.CustomCardsOTD.Select(cotd => cotd.Id).Contains(c.Id));
+            var cardOTDIds = ctx.CustomCardsOTD.Select(cotd => cotd.Card.Id);
+            IEnumerable<CustomCard> cards = (await GetAll()).Where(c => !cardOTDIds.Contains(c.Id));
 
             if (cards.Count() == 0) return;
 
             CustomCard newCardOTD = cards.OrderBy(x => x.NumberOfLikes).First();
             await SetCustomCardOTD(newCardOTD.Id, card: newCardOTD);
-            Utils.LAST_CARDOTD_SET = DateTime.Now;
         }
     }
 }

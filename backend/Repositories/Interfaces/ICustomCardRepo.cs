@@ -9,6 +9,6 @@ public interface ICustomCardRepo : IRepository<CustomCard>
     public Task<CustomCardOTD> SetCustomCardOTD(Guid cardId, UserAccount? account = null, CustomCard? card = null);
     public Task<ICollection<CustomCardOTD>> GetAllCustomCardsOTD();
     public Task<CustomCardOTD> GetLastCustomCardOTD();
-    public Task<CustomCard> ValidateCustomCard(Guid cardId, UserAccount account, Enums.CustomCardApprovalState state);
+    public Task<CustomCard> ValidateCustomCard(Guid cardId, UserAccount account, bool approvalState);
     public Task LikeACard(Guid id, UserAccount account);
 }

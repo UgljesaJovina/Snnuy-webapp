@@ -6,6 +6,7 @@ using Services.Interfaces;
 using Services.DTOs;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using Repositories.Enums;
 
 namespace WebApi.Controllers;
 
@@ -25,10 +26,10 @@ public class CustomCardController: ControllerBase
         return await cardService.GetAllCards();
     }
 
-    [HttpGet("GetAllFromUser")]
+    [HttpGet("GetAllFromUser/{userId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ICollection<CustomCardDTO>> GetAllCardsFromUser(Guid id) {
-        return await cardService.GetAllCardsFromUser(id);
+    public async Task<ICollection<CustomCardDTO>> GetAllCardsFromUser(Guid userId) {
+        return await cardService.GetAllCardsFromUser(userId);
     }
 
     [HttpGet("GetLatestCardOTD")]
@@ -43,10 +44,10 @@ public class CustomCardController: ControllerBase
         return await cardService.GetAllCardsOfTheDay();
     }
 
-    [HttpPatch("LikeACard")]
+    [HttpPatch("LikeACard/{cardId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
-    [Authorize(Repositories.Enums.UserPermissions.RateCustomCard)]
+    [Authorize(UserPermissions.RateCustomCard)]
     public async Task<IActionResult> LikeACard(Guid cardId) {
         try {
             await cardService.LikeACard(cardId, (UserAccount)HttpContext.Items["User"]!);
@@ -59,7 +60,7 @@ public class CustomCardController: ControllerBase
     [HttpPost("CreateACard")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
-    [Authorize(Repositories.Enums.UserPermissions.SubmitCustomCard)]
+    [Authorize(UserPermissions.SubmitCustomCard)]
     public async Task<ActionResult<CustomCardDTO>> CreateACard([FromForm]CustomCardExtendedRequest request) {
         try {
             request.DataStream = request.ImageFile.OpenReadStream();
@@ -68,6 +69,18 @@ public class CustomCardController: ControllerBase
             return Ok(await cardService.CreateCard(request));
         } catch (ArgumentException ex) {
             return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPut("ValidateACard/{cardId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+    [Authorize(UserPermissions.ValidateCustomCard)]
+    public async Task<ActionResult<CustomCardDTO>> ValidateACard(Guid cardId, [FromQuery]bool approvalState) {
+        try {
+            return Ok(await cardService.ValidateCustomCard(cardId, (UserAccount)HttpContext.Items["User"]!, approvalState));
+        } catch(KeyNotFoundException ex) {
+            return NotFound(ex.Message);
         }
     }
 }

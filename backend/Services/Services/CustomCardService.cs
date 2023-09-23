@@ -46,4 +46,8 @@ public class CustomCardService : ICustomCardService
     {
         await cardRepo.LikeACard(id, account);
     }
+
+    public async Task<CustomCardDTO> ValidateCustomCard(Guid cardId, UserAccount account, bool approvalState) {
+        return new(await cardRepo.ValidateCustomCard(cardId, account, approvalState));
+    }
 }
