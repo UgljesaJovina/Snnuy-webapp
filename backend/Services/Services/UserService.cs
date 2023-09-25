@@ -26,23 +26,25 @@ public class UserService : IUserService
 
         UserAccount account = await userRepo.GetByUsername(request.Username);
 
-        if (!passwordHasher.Verify(account.HashedPassword, request.Password)) throw new KeyNotFoundException("Password does not match with this username");
+        if (!passwordHasher.Verify(account.HashedPassword, request.Password)) throw new ArgumentException("Password does not match with this username");
 
         string token = jwtGenerator.GenerateJWTToken(account);
-        return new(account.Username, token, account.LikedCustomCards.Select(x => x.Id), account.LikedDecks.Select(x => x.Id));
+        return new(token);
     }
 
     public async Task<AuthenticationResponse> Register(AuthenticationRequest request) {
+        if (request.Password.Length < 8) throw new ArgumentException("The passwordmust be at least 8 characters long!");
+
         string passwordHash = passwordHasher.Hash(request.Password);
 
         UserAccount account = await userRepo.Create(new UserAccount(request.Username, passwordHash));
         string token = jwtGenerator.GenerateJWTToken(account);
-        return new(account.Username, token, new List<Guid>(), new List<Guid>());
+        return new(token);
     }
 
     public async Task Update(UpdateAccountRequest request)
     {
-        if (!string.IsNullOrEmpty(request.Password)) request.Password = passwordHasher.Hash(request.Password);
+        if (!string.IsNullOrEmpty(request.Password) && request.Password.Length >= 8) request.Password = passwordHasher.Hash(request.Password);
 
         await userRepo.Update(request.Id, request.GetUserAccount());
     }
@@ -59,7 +61,7 @@ public class UserService : IUserService
 
     public async Task<DetailedUserDTO> GetById(Guid id)
     {
-        return new DetailedUserDTO(await userRepo.GetById(id));
+        return new(await userRepo.GetById(id));
     }
 
     public async Task ChangeUserPermissions(Guid userId, int permissions)

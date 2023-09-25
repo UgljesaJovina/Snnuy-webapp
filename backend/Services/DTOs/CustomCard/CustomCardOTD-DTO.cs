@@ -11,7 +11,7 @@ public class CustomCardOTDDTO : CustomCardDTO
 
     public CustomCardOTDDTO() { }
 
-    public CustomCardOTDDTO(Guid id, string cardName, DateTime postingDate, UserAccount owner,
+    public CustomCardOTDDTO(Guid id, string cardName, DateTime postingDate, UserAccount? owner,
         CardTypes type, DateTime settingDate, bool setAutomatically, UserAccount? cardSetter, int numberOfLikes)
         :base(id, cardName, postingDate, owner, type, CustomCardApprovalState.Approved, numberOfLikes)
     {

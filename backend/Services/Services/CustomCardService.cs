@@ -25,6 +25,11 @@ public class CustomCardService : ICustomCardService
         return (await cardRepo.GetAll(x => x.OwnerAccount.Id == id)).Select(x => new CustomCardDTO(x)).ToList();
     }
 
+    public async Task<ICollection<CustomCardDTO>> GetAllNonValidated() 
+    {
+        return (await cardRepo.GetAll(x => x.State != CustomCardApprovalState.Approved)).Select(x => new CustomCardDTO(x)).ToList();
+    }
+
     public async Task<CustomCardOTDDTO> GetLatestCardOfTheDay()
     {
         return new(await cardRepo.GetLastCustomCardOTD());

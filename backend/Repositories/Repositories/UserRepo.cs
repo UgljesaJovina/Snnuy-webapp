@@ -11,7 +11,10 @@ public class UserRepo : Repository<UserAccount>, IUserRepo
 
     public async Task<UserAccount> GetByUsername(string username)
     {
-        UserAccount? account = await table.FirstOrDefaultAsync(x => x.Username == username);
+        UserAccount? account = await table
+            .Include(x => x.LikedCustomCards)
+            .Include(x => x.LikedDecks)
+            .FirstOrDefaultAsync(x => x.Username == username);
 
         if (account is null) throw new KeyNotFoundException("That username does not exist");
 
@@ -27,9 +30,9 @@ public class UserRepo : Repository<UserAccount>, IUserRepo
         UserAccount? account = await table.FindAsync(id);
         if (account is null) throw new KeyNotFoundException("That account was not found");
 
-        if (string.IsNullOrEmpty(updatedAccount.Username)) updatedAccount.Username = account.Username;
+        if (!string.IsNullOrEmpty(updatedAccount.Username)) account.Username = updatedAccount.Username;
+        if (!string.IsNullOrEmpty(updatedAccount.HashedPassword)) account.HashedPassword = updatedAccount.HashedPassword;
         
-        account = updatedAccount;
         await SaveAsync();
 
         return account;

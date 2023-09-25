@@ -11,8 +11,8 @@ public class DeckOTDDTO : DeckDTO
 
     public DeckOTDDTO() { }
 
-    public DeckOTDDTO(Guid id, string deckCode, string deckName, DateTime postingDate, bool standard, UserAccount owner, DeckType type, int numberOfLikes, DateTime settingDate, bool setAutomatically, UserAccount? settingUser)
-    :base(id, deckCode, deckName, postingDate, standard, owner, type, numberOfLikes) {
+    public DeckOTDDTO(Guid id, string deckCode, string deckName, DateTime postingDate, bool standard, UserAccount? owner, DeckType type, CardRegions deckRegions, int numberOfLikes, DateTime settingDate, bool setAutomatically, UserAccount? settingUser)
+    :base(id, deckCode, deckName, postingDate, standard, owner, type, deckRegions, numberOfLikes) {
         SettingDate = settingDate;
         SetAutomatically = setAutomatically;
         SettingUser = settingUser is null ? null : new(settingUser);
@@ -20,5 +20,5 @@ public class DeckOTDDTO : DeckDTO
 
     public DeckOTDDTO(DeckOTD deck) 
         :this(deck.Id, deck.Deck.DeckCode, deck.Deck.DeckName, deck.Deck.PostingDate, deck.Deck.Standard, deck.Deck.OwnerAccount, 
-        deck.Deck.Type, deck.Deck.NumberOfLikes, deck.SettingDate, deck.SetAutomatically, deck.DeckSetter) { }
+        deck.Deck.Type, deck.Deck.DeckRegions, deck.Deck.NumberOfLikes, deck.SettingDate, deck.SetAutomatically, deck.DeckSetter) { }
 }

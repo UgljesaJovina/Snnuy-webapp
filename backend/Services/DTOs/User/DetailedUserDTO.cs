@@ -7,7 +7,7 @@ public class DetailedUserDTO
 {
     public Guid Id { get; set; }
     public string Username { get; set; }
-    public string Permissions { get; set; }
+    public ICollection<string> Permissions { get; set; } = new List<string>();
     public ICollection<CustomCardDTO> OwnedCards { get; set; }
     public ICollection<CustomCardDTO> LikedCards { get; set; }
     public ICollection<DeckDTO> OwnedDecks { get; set; }
@@ -18,7 +18,13 @@ public class DetailedUserDTO
     public DetailedUserDTO(Guid id, string username, UserPermissions permissions, ICollection<CustomCard> ownedCards, ICollection<CustomCard> likedCards, ICollection<Deck> ownedDecks, ICollection<Deck> likedDecks) {
         Id = id;
         Username = username;
-        Permissions = permissions.ToString();
+        
+        foreach (UserPermissions permission in Enum.GetValues(typeof(UserPermissions)))
+        {
+            if ((permission & permissions) != 0)
+                Permissions.Add(permission.ToString());
+        }
+
         OwnedCards = ownedCards.Select(x => new CustomCardDTO(x)).ToList();
         LikedCards = likedCards.Select(x => new CustomCardDTO(x)).ToList();
         OwnedDecks = ownedDecks.Select(x => new DeckDTO(x)).ToList();

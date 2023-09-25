@@ -8,5 +8,5 @@ public enum DeckType
     Agro_Swarm = 0b_0000_0010,
     Midrange = 0b_0000_0100,
     Control = 0b_0000_1000,
-    Aro = Agro_Swarm | Aggro_Burn
+    Agro = Agro_Swarm | Aggro_Burn
 }

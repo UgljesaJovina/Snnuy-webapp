@@ -14,7 +14,7 @@ public class Deck
     [MaxLength(50)]
     public string DeckName { get; set; }
     public DateTime PostingDate { get; set; } = DateTime.Now;
-    public UserAccount OwnerAccount { get; set; }
+    public UserAccount? OwnerAccount { get; set; }
     ICollection<DeckItem> deckContent;
     
     [NotMapped]
@@ -30,13 +30,17 @@ public class Deck
             return deckContent;
         } 
     }
+    [NotMapped] // nalazim sve karte koje imaju samo jedan region, i onda postavljam njihove regione kao regione deka, malo glupo al jbg
+    public CardRegions DeckRegions { get {
+        return (CardRegions)DeckContent.Select(x => (int)x.Card.Regions).Where(x => (x & (x - 1)) == 0).Distinct().Sum();
+    } }
     public DeckType Type { get; set; }
     public int NumberOfLikes { get; set; } = 0;
     public ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
 
     public Deck() { }
 
-    public Deck(string deckCode, string deckName, UserAccount owner, DeckType type) : this() {
+    public Deck(string deckCode, string deckName, UserAccount owner, DeckType type) {
         DeckCode = deckCode;
         DeckName = deckName;
         OwnerAccount = owner;
@@ -46,10 +50,9 @@ public class Deck
     public bool CheckIfValidCode() {
         try {
             new LorDeckEncoder().GetDeckFromCode<KuncDeckItem>(DeckCode);
-        } catch (ArgumentException) {
+            return true;
+        } catch (Exception) {
             return false;
         }
-
-        return true;
     }
 }

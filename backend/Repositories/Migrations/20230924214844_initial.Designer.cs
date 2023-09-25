@@ -12,8 +12,8 @@ using Repositories.DAL;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230903224623_CardNDeckOTD")]
-    partial class CardNDeckOTD
+    [Migration("20230924214844_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,55 +42,17 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("DeckUserAccount", b =>
                 {
-                    b.Property<string>("LikedDecksDeckCode")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("LikedDecksId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("LikedUsersId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("LikedDecksDeckCode", "LikedUsersId");
+                    b.HasKey("LikedDecksId", "LikedUsersId");
 
                     b.HasIndex("LikedUsersId");
 
                     b.ToTable("DeckUserAccount");
-                });
-
-            modelBuilder.Entity("Repositories.Models.Card", b =>
-                {
-                    b.Property<string>("CardCode")
-                        .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
-
-                    b.Property<int>("AttackPower")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CardImageLink")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CardName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("HealthValue")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ManaCost")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rarity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Regions")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("CardCode");
-
-                    b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("Repositories.Models.CustomCard", b =>
@@ -108,6 +70,9 @@ namespace Repositories.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("NumberOfLikes")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("OwnerAccountId")
                         .HasColumnType("uniqueidentifier");
@@ -140,9 +105,6 @@ namespace Repositories.Migrations
                     b.Property<Guid?>("CardSetterId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("SetAutomatically")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("SettingDate")
                         .HasColumnType("datetime2");
 
@@ -157,16 +119,21 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("Repositories.Models.Deck", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("DeckCode")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeckName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("Eternal")
-                        .HasColumnType("bit");
+                    b.Property<int>("NumberOfLikes")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("OwnerAccountId")
                         .HasColumnType("uniqueidentifier");
@@ -177,39 +144,11 @@ namespace Repositories.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<int>("UpVotes")
-                        .HasColumnType("int");
-
-                    b.HasKey("DeckCode");
+                    b.HasKey("Id");
 
                     b.HasIndex("OwnerAccountId");
 
                     b.ToTable("Decks");
-                });
-
-            modelBuilder.Entity("Repositories.Models.DeckItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CardCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(7)");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DeckCode")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CardCode");
-
-                    b.HasIndex("DeckCode");
-
-                    b.ToTable("DeckItem");
                 });
 
             modelBuilder.Entity("Repositories.Models.DeckOTD", b =>
@@ -218,21 +157,18 @@ namespace Repositories.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DeckCode")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("DeckSetterId")
+                    b.Property<Guid>("DeckId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("SetAutomatically")
-                        .HasColumnType("bit");
+                    b.Property<Guid?>("DeckSetterId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("SettingDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeckCode");
+                    b.HasIndex("DeckId");
 
                     b.HasIndex("DeckSetterId");
 
@@ -245,20 +181,23 @@ namespace Repositories.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("HashedPassword")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("Permissions")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("UserAccounts");
                 });
@@ -282,7 +221,7 @@ namespace Repositories.Migrations
                 {
                     b.HasOne("Repositories.Models.Deck", null)
                         .WithMany()
-                        .HasForeignKey("LikedDecksDeckCode")
+                        .HasForeignKey("LikedDecksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -328,41 +267,21 @@ namespace Repositories.Migrations
                     b.Navigation("OwnerAccount");
                 });
 
-            modelBuilder.Entity("Repositories.Models.DeckItem", b =>
-                {
-                    b.HasOne("Repositories.Models.Card", "Card")
-                        .WithMany()
-                        .HasForeignKey("CardCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Repositories.Models.Deck", null)
-                        .WithMany("DeckContent")
-                        .HasForeignKey("DeckCode");
-
-                    b.Navigation("Card");
-                });
-
             modelBuilder.Entity("Repositories.Models.DeckOTD", b =>
                 {
                     b.HasOne("Repositories.Models.Deck", "Deck")
                         .WithMany()
-                        .HasForeignKey("DeckCode");
+                        .HasForeignKey("DeckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Repositories.Models.UserAccount", "DeckSetter")
                         .WithMany()
-                        .HasForeignKey("DeckSetterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DeckSetterId");
 
                     b.Navigation("Deck");
 
                     b.Navigation("DeckSetter");
-                });
-
-            modelBuilder.Entity("Repositories.Models.Deck", b =>
-                {
-                    b.Navigation("DeckContent");
                 });
 
             modelBuilder.Entity("Repositories.Models.UserAccount", b =>

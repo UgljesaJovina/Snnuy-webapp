@@ -1,26 +1,18 @@
 import React, { createRef, useEffect, useState } from 'react';
+import Card from './types/Card';
 
 function App() {
 
-    const [imgData, setData] = useState<string | ArrayBuffer | null>("");
-    const nameInput = createRef<HTMLInputElement>();
-    const passInput = createRef<HTMLInputElement>();
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYmYiOjE2OTM3MzU5MTksImV4cCI6MTY5NDM0MDcxOSwiaWF0IjoxNjkzNzM1OTE5fQ.LDd8_S92IRMM1LpDS0_8Jp6NUaA8N4nM3OwgvoBDEQM";
+    const [deckCards, setDeckCards] = useState<Card[]>([]);
 
-
-    const handleSubmit = (e:  React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        fetch("http://localhost:4000/users/", { method: "GET", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }})
-        .then(data => console.log(data.status));
-    }
+    useEffect(() => {
+        fetch("https://bsp6kg95-5016.euw.devtunnels.ms/deck/getdeckinfo/007d8d0a-eb5e-4b9d-8c35-1d4f26e81b0b")
+        .then(data => data.json())
+        .then(data => setDeckCards(data));
+    }, []);
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" name="username" ref={nameInput} />
-            <input type="text" name="password" ref={passInput} />
-            <input type="submit" />
-        </form>
+        
     );
 }
 

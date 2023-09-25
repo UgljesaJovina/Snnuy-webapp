@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Repositories.Enums;
 
 namespace Repositories.Models;
@@ -5,6 +6,7 @@ namespace Repositories.Models;
 public class DeckOTD
 {
     public Guid Id { get; set; } = Guid.NewGuid();
+    [Required]
     public Deck Deck { get; set; }
     public DateTime SettingDate { get; set; }
     public bool SetAutomatically { get { return DeckSetter is null; } }

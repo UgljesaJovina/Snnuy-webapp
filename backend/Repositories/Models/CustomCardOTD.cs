@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Repositories.Enums;
 
 namespace Repositories.Models;
@@ -5,6 +6,7 @@ namespace Repositories.Models;
 public class CustomCardOTD 
 {
     public Guid Id { get; set; } = Guid.NewGuid();
+    [Required]
     public CustomCard Card { get; set; }
     public DateTime SettingDate { get; set; } = DateTime.Now;
     public bool SetAutomatically { get { return CardSetter is null; } } // u slucaju da prodje vremenski period naveden u Utils/CUSTOM_CARD..., nova karta se bira automatski i ovaj bool se stavlja na true

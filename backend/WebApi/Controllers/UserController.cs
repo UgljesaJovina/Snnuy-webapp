@@ -4,6 +4,7 @@ using Repositories.Models;
 using WebApi.Utils.Attributes;
 using Services.DTOs;
 using Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace WebApi.Controllers;
 
@@ -15,5 +16,87 @@ public class UserController: ControllerBase
 
     public UserController(IUserService service) {
         userService = service;
+    }
+
+    [HttpPost("Register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
+    public async Task<ActionResult<AuthenticationResponse>> Register(AuthenticationRequest request) {
+        try {
+            return Ok(await userService.Register(request));
+        } catch (ArgumentException ex) {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost("Login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(object))]
+    public async Task<ActionResult<AuthenticationResponse>> Login(AuthenticationRequest request) {
+        try {
+            return Ok(await userService.Authenticate(request));
+        } catch (ArgumentException ex) {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("GetAll")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ICollection<UserShortObject>> GetAll() {
+        return await userService.GetAll();
+    }
+
+    [HttpGet("GetById/{userId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(object))]
+    public async Task<ActionResult<DetailedUserDTO>> GetById(Guid userId) {
+        try {
+            return Ok(await userService.GetById(userId));
+        } catch (KeyNotFoundException ex) {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    [HttpPut("Update")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
+    public async Task<IActionResult> Update(UpdateAccountRequest request) {
+        try {
+            request.Id = ((UserAccount)HttpContext.Items["User"]!).Id;
+            await userService.Update(request);
+            return Ok();
+        } catch (KeyNotFoundException ex) {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    [HttpDelete("Delete/{userId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
+    public async Task<IActionResult> Delete(Guid userId) {
+        if (((UserAccount)HttpContext.Items["User"]!).Id != userId) return Unauthorized("You are trying to change the account that doesn't belong to you!");
+        try {
+            await userService.Delete(userId);
+            return Ok();
+        } catch (KeyNotFoundException ex) {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    [HttpPatch("ChangeUserPermissions/{userId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Repositories.Enums.UserPermissions.ChangePermissions)]
+    public async Task<IActionResult> ChangePermissions(Guid userId, [FromQuery] int permissions) {
+        try {
+            await userService.ChangeUserPermissions(userId, permissions);
+            return Ok();
+        } catch (KeyNotFoundException ex) {
+            return NotFound(new { message = ex.Message });
+        }
     }
 }

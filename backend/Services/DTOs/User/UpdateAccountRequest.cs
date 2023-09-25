@@ -5,7 +5,7 @@ namespace Services.DTOs;
 
 public class UpdateAccountRequest
 {
-    public Guid Id { get; set; }
+    public Guid Id;
     public string? UserName { get; set; }
     public string? Password { get; set; }
 

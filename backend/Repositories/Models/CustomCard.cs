@@ -25,8 +25,7 @@ public class CustomCard
 
     public CardTypes Type { get; set; }
     public CustomCardApprovalState State { get; set; }
-
-    public UserAccount OwnerAccount { get; set; }
+    public UserAccount? OwnerAccount { get; set; }
     public int NumberOfLikes { get; set; } = 0;
     public ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
     // public virtual ICollection<Keywords> Keywords { get; set; }

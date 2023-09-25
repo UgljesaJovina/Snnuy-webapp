@@ -34,7 +34,7 @@ public class Repository<T> : IRepository<T> where T : class
     {
         T? instance = await table.FindAsync(id);
 
-        if (instance is null) throw new KeyNotFoundException();
+        if (instance is null) throw new KeyNotFoundException($"{nameof(T)} does not exist!");
 
         return instance;
     }
@@ -43,7 +43,7 @@ public class Repository<T> : IRepository<T> where T : class
     {
         T? instance = await table.FindAsync(id);
 
-        if (instance is null) throw new KeyNotFoundException();
+        if (instance is null) throw new KeyNotFoundException($"{nameof(T)} does not exist!");
 
         instance = obj;
         await SaveAsync();
@@ -54,7 +54,7 @@ public class Repository<T> : IRepository<T> where T : class
     {
         T? instance = await table.FindAsync(id);
 
-        if (instance is null) throw new KeyNotFoundException();
+        if (instance is null) throw new KeyNotFoundException($"{nameof(T)} does not exist!");
 
         table.Remove(instance);
         await SaveAsync();
