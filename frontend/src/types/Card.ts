@@ -12,4 +12,4 @@ type Card = {
     deckRegions: string
 }
 
-export default Card;
+export type { Card };

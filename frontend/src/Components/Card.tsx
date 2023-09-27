@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "../types/Card"
+import { Card } from "../types/types"
 
 const CardComponent: React.FC<{card: Card}> = ({card: Card}) => {
     return (
@@ -9,4 +9,4 @@ const CardComponent: React.FC<{card: Card}> = ({card: Card}) => {
     );
 }
 
-export default CardComponent;
+export { CardComponent };

@@ -1,0 +1,28 @@
+body {
+    margin: 0;
+    background-color: #023047;
+}
+
+.header {
+    display: flex;
+    height: 10vh;
+    justify-content: center;
+    align-items: center;
+    font-size: 26pt;
+    width: 70%;
+    margin-left: 50%;
+    transform: translate(-50%);
+    background-color: #da6821;
+    color: white;
+}
+
+.header>img {
+    margin-left: 5%;
+    margin-right: auto;
+}
+
+.hyperlink {
+    margin: 0 5%;
+    text-decoration: none;
+    color: inherit;
+}

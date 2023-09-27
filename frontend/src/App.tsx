@@ -1,18 +1,21 @@
 import React, { createRef, useEffect, useState } from 'react';
-import Card from './types/Card';
+import { Navigate, Route, Routes } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
+import { CustomCards, Decks, Header, Home } from './components/Components';
+import "./styles/main.css"
 
 function App() {
-
-    const [deckCards, setDeckCards] = useState<Card[]>([]);
-
-    useEffect(() => {
-        fetch("https://bsp6kg95-5016.euw.devtunnels.ms/deck/getdeckinfo/007d8d0a-eb5e-4b9d-8c35-1d4f26e81b0b")
-        .then(data => data.json())
-        .then(data => setDeckCards(data));
-    }, []);
-
     return (
-        
+        <BrowserRouter>
+            <Routes>
+                <Route path='/' element={<Header />}>
+                    <Route index element={<Navigate to={"/home"} />} />
+                    <Route path='/home' element={<Home />} />
+                    <Route path='/custom-cards' element={<CustomCards />} />
+                    <Route path='/decks' element={<Decks />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
     );
 }
 
