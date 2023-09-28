@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "../types/types"
+import { Card } from "../types"
 
 const CardComponent: React.FC<{card: Card}> = ({card: Card}) => {
     return (

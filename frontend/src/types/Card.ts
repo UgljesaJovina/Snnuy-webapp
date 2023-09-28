@@ -12,4 +12,18 @@ type Card = {
     deckRegions: string
 }
 
+export const defaultCard: Card = {
+    count: 0,
+    cardName: "",
+    manaCost: 0,
+    attackPower: 0,
+    healthValue: 0,
+    cardImageLink: "",
+    standard: false,
+    regions: "",
+    type: "",
+    rarity: 0,
+    deckRegions: ""
+}
+
 export type { Card };

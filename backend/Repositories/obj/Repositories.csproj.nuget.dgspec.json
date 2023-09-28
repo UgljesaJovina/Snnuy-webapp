@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ugljesa\\Desktop\\Snnuy-webapp\\backend\\Repositories\\Repositories.csproj": {}
+    "c:\\Users\\Ugljesa\\Desktop\\Snnuy webapp\\backend\\Repositories\\Repositories.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ugljesa\\Desktop\\Snnuy-webapp\\backend\\Repositories\\Repositories.csproj": {
+    "c:\\Users\\Ugljesa\\Desktop\\Snnuy webapp\\backend\\Repositories\\Repositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ugljesa\\Desktop\\Snnuy-webapp\\backend\\Repositories\\Repositories.csproj",
+        "projectUniqueName": "c:\\Users\\Ugljesa\\Desktop\\Snnuy webapp\\backend\\Repositories\\Repositories.csproj",
         "projectName": "Repositories",
-        "projectPath": "C:\\Users\\Ugljesa\\Desktop\\Snnuy-webapp\\backend\\Repositories\\Repositories.csproj",
+        "projectPath": "c:\\Users\\Ugljesa\\Desktop\\Snnuy webapp\\backend\\Repositories\\Repositories.csproj",
         "packagesPath": "C:\\Users\\Ugljesa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ugljesa\\Desktop\\Snnuy-webapp\\backend\\Repositories\\obj\\",
+        "outputPath": "c:\\Users\\Ugljesa\\Desktop\\Snnuy webapp\\backend\\Repositories\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Ugljesa\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -81,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
