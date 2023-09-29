@@ -1,4 +1,4 @@
-type Card = {
+type TCard = {
     count: number,
     cardName: string,
     manaCost: number,
@@ -12,7 +12,7 @@ type Card = {
     deckRegions: string
 }
 
-export const defaultCard: Card = {
+export const defaultCard: TCard = {
     count: 0,
     cardName: "",
     manaCost: 0,
@@ -26,4 +26,4 @@ export const defaultCard: Card = {
     deckRegions: ""
 }
 
-export type { Card };
+export type { TCard };

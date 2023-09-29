@@ -41,8 +41,12 @@ public class CustomCardController: ControllerBase
 
     [HttpGet("GetLatestCardOTD")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<CustomCardOTDDTO> GetLatestCardOTD() {
-        return await cardService.GetLatestCardOfTheDay();
+    public async Task<ActionResult<CustomCardOTDDTO>> GetLatestCardOTD() {
+        try {
+            return Ok(await cardService.GetLatestCardOfTheDay());
+        } catch(KeyNotFoundException ex) { 
+            return NotFound(new { message = ex.Message });
+        }
     }
 
     [HttpGet("GetAllCardsOTD")]

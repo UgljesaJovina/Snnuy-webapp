@@ -1,11 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router";
 import { NavLink } from "react-router-dom";
-import SnnuyLogo from "../Images/SnnuyLogo.png"
+import SnnuyLogo from "../../Images/SnnuyLogo.png"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Navigations } from "../types";
+import { TNavigations } from "../../types";
 
-const Header: React.FC<{ currentlyActive: Navigations }> = ({ currentlyActive }) => {
+const Header: React.FC<{ currentlyActive: TNavigations }> = ({ currentlyActive }) => {
     return (
         <>
             <div className="header">   

@@ -1,8 +1,24 @@
+import { useRecoilState } from "recoil";
+import { useFetchWrapper } from "../Utils/FetchWrapper"
+import { TCustomCardOTD } from "../types"
+import { LatestCustomCardAtom } from "../Atoms";
+
+export { useCustomCardActions }
+
 function useCustomCardActions() {
-    const baseUrl = "customcards/"
+    const baseUrl = "customcard/";
+    const fwrapper = useFetchWrapper();
+    const [latestCC, setLatestCC] = useRecoilState(LatestCustomCardAtom);
 
     return {
-
+        getAll,
+        getAllFromUser,
+        getAllNonValidatedCards,
+        getLatestCardOTD,
+        getAllCardsOTD,
+        likeACard,
+        createACard,
+        validateACard
     }
 
     function getAll() {
@@ -13,13 +29,13 @@ function useCustomCardActions() {
         // getAllFromUser/id
     }
 
-    function GetAllNonValidatedCards() {
+    function getAllNonValidatedCards() {
         // getAllNonValid
         // req auth
     }
 
     function getLatestCardOTD() {
-        // getLatestCardOTD
+        return fwrapper.get(baseUrl + "GetLatestCardOTD").then(data => setLatestCC(data));
     }
 
     function getAllCardsOTD() {

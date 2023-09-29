@@ -83,7 +83,9 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 
     public async Task<CustomCardOTD> GetLastCustomCardOTD()
     {
-        return await ctx.CustomCardsOTD.FirstAsync();
+        var card = await ctx.CustomCardsOTD.FirstOrDefaultAsync();
+        if (card is null) throw new KeyNotFoundException("There are no custom cards of the day");
+        return card;
     }
 
     public async Task LikeACard(Guid id, UserAccount account) {

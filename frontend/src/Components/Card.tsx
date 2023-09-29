@@ -1,7 +1,7 @@
 import React from "react";
-import { Card } from "../types"
+import { TCard } from "../types"
 
-const CardComponent: React.FC<{card: Card}> = ({card: Card}) => {
+const Card: React.FC<{card: TCard}> = ({ card }) => {
     return (
         <div>   
             
@@ -9,4 +9,4 @@ const CardComponent: React.FC<{card: Card}> = ({card: Card}) => {
     );
 }
 
-export { CardComponent };
+export { Card };

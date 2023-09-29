@@ -1,6 +1,6 @@
 import { TUserShort, defaultShortUser } from "./UserShortObject";
 
-type CustomCard = {
+type TCustomCard = {
     id: string,
     cardName: string,
     postingDate: Date,
@@ -11,7 +11,7 @@ type CustomCard = {
     numberOfLikes: number
 }
 
-export const defaultCustomCard: CustomCard = {
+export const defaultCustomCard: TCustomCard = {
     id: "",
     cardName: "",
     postingDate: new Date(),
@@ -22,4 +22,4 @@ export const defaultCustomCard: CustomCard = {
     numberOfLikes: 0
 }
 
-export type { CustomCard };
+export type { TCustomCard };

@@ -2,12 +2,12 @@ import { useRecoilState } from "recoil";
 import { authAtom } from "../Atoms";
 import Cookies from "universal-cookie";
 import { useState } from "react";
+import { baseUrl } from "./GlobalVariables";
 
 export { useFetchWrapper }
 
 function useFetchWrapper() {
-    const [auth, setAuth] = useRecoilState(authAtom);
-    const baseUrl = "http://localhost:5062/"
+    const [auth] = useRecoilState(authAtom);
 
     return {
         get: request("GET"),
@@ -40,7 +40,7 @@ function useFetchWrapper() {
 
     function handleResponse(response: Response) {
         return response.json().then(data => {
-            if (!response.ok) {
+            if (response.status !== 200) {
                 const error = data.message || response.statusText;
                 return Promise.reject(error);
             }
