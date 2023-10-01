@@ -5,3 +5,5 @@ export * from "./CustomCardOTD";
 export * from "./paths/CustomCards";
 export * from "./paths/Decks";
 export * from "./paths/Account";
+export * from "./paths/Login";
+export * from "./paths/Register";

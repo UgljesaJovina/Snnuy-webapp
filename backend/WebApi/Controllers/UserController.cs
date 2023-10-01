@@ -18,10 +18,10 @@ public class UserController: ControllerBase
         userService = service;
     }
 
-    [HttpPost("Register")]
+    [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
-    public async Task<ActionResult<AuthenticationResponse>> Register(AuthenticationRequest request) {
+    public async Task<ActionResult<RegistrationResponse>> Register(AuthenticationRequest request) {
         try {
             return Ok(await userService.Register(request));
         } catch (ArgumentException ex) {
@@ -29,24 +29,27 @@ public class UserController: ControllerBase
         }
     }
 
-    [HttpPost("Login")]
+    [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(object))]
-    public async Task<ActionResult<AuthenticationResponse>> Login(AuthenticationRequest request) {
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
+    public async Task<ActionResult<LoginResponse>> Login(AuthenticationRequest request) {
         try {
             return Ok(await userService.Authenticate(request));
-        } catch (ArgumentException ex) {
+        } catch (KeyNotFoundException ex) {
             return NotFound(new { message = ex.Message });
+        } catch (ArgumentException ex) {
+            return BadRequest(new { message = ex.Message });
         }
     }
 
-    [HttpGet("GetAll")]
+    [HttpGet("get-all")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ICollection<UserShortObject>> GetAll() {
         return await userService.GetAll();
     }
 
-    [HttpGet("GetById/{userId}")]
+    [HttpGet("get-by-id/{userId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(object))]
     public async Task<ActionResult<DetailedUserDTO>> GetById(Guid userId) {
@@ -57,7 +60,7 @@ public class UserController: ControllerBase
         }
     }
 
-    [HttpPut("Update")]
+    [HttpPut("update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -72,7 +75,7 @@ public class UserController: ControllerBase
         }
     }
 
-    [HttpDelete("Delete/{userId}")]
+    [HttpDelete("delete/{userId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -87,7 +90,7 @@ public class UserController: ControllerBase
         }
     }
 
-    [HttpPatch("ChangeUserPermissions/{userId}")]
+    [HttpPatch("change-user-permissions/{userId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(Repositories.Enums.UserPermissions.ChangePermissions)]

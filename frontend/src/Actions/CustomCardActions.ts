@@ -1,14 +1,12 @@
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { useFetchWrapper } from "../Utils/FetchWrapper"
-import { TCustomCardOTD } from "../types"
 import { LatestCustomCardAtom } from "../Atoms";
 
-export { useCustomCardActions }
 
 function useCustomCardActions() {
     const baseUrl = "customcard/";
     const fwrapper = useFetchWrapper();
-    const [latestCC, setLatestCC] = useRecoilState(LatestCustomCardAtom);
+    const setLatestCC = useSetRecoilState(LatestCustomCardAtom);
 
     return {
         getAll,
@@ -21,33 +19,33 @@ function useCustomCardActions() {
         validateACard
     }
 
-    function getAll() {
+    async function getAll() {
         // getAll
     }
 
-    function getAllFromUser(id: string) {
+    async function getAllFromUser(id: string) {
         // getAllFromUser/id
     }
 
-    function getAllNonValidatedCards() {
+    async function getAllNonValidatedCards() {
         // getAllNonValid
         // req auth
     }
 
-    function getLatestCardOTD() {
-        return fwrapper.get(baseUrl + "GetLatestCardOTD").then(data => setLatestCC(data));
+    async function getLatestCardOTD() {
+        return fwrapper.get(baseUrl + "get-latest-card-otd").then(data => setLatestCC(data));
     }
 
-    function getAllCardsOTD() {
+    async function getAllCardsOTD() {
         // getAllCardsOTD
     }
 
-    function likeACard(id: string) {
+    async function likeACard(id: string) {
         // likeACard/id
         //req auth
     }
 
-    function createACard(props: any) { // napraviti tip za creation
+    async function createACard(props: any) { // napraviti tip za creation
         /*
             public string CardName { get; set; }
             public string CardDescription { get; set; }
@@ -62,8 +60,10 @@ function useCustomCardActions() {
         // req auth
     }
 
-    function validateACard(id: string, state: boolean) {
+    async function validateACard(id: string, state: boolean) {
         // validateACard/id?state
         // req auth
     }
 }
+
+export { useCustomCardActions }

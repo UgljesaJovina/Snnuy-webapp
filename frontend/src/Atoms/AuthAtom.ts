@@ -1,11 +1,11 @@
 import { atom } from "recoil";
-import Cookies, { CookieGetOptions } from "universal-cookie";
+import Cookies from "universal-cookie";
 
-const cookies = new Cookies()
+const cookies = new Cookies();
 
-const authAtom = atom({
+const authAtom = atom<string>({
     key: "auth",
-    default: cookies.get("auth")
+    default: cookies.get("auth") ?? ""
 })
 
 export { authAtom };

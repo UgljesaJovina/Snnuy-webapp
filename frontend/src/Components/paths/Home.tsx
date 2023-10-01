@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { CustomCardOTD } from "../CustomCardOTD";
-import { TCustomCardOTD, defaultCustomCardOTD } from "../../types/CustomCardOTD";
-import { useFetchWrapper } from "../../Utils/FetchWrapper";
+import React, { useEffect } from "react";
+import { CustomCardOTD } from "..";
 import { useCustomCardActions } from "../../Actions";
 import { useRecoilState } from "recoil";
 import { LatestCustomCardAtom } from "../../Atoms";

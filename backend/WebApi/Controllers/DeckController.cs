@@ -16,33 +16,37 @@ namespace WebApi.Controllers
             deckService = service;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("get-all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ICollection<DeckDTO>> GetAll() {
             return await deckService.GetAll();
         }
 
-        [HttpGet("GetAllFromUser/{userId}")]
+        [HttpGet("get-all-from-user/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ICollection<DeckDTO>> GetAll(Guid id) {
             return await deckService.GetAllFromUser(id);
         }
 
         
-        [HttpGet("GetLatestDeckOTD")]
+        [HttpGet("get-latest-deck-otd")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<DeckOTDDTO> GetLatestDeckOTD() {
-            return await deckService.GetLatestDeckOTD();
+        public async Task<ActionResult<DeckOTDDTO>> GetLatestDeckOTD() {
+            try {
+                return Ok(await deckService.GetLatestDeckOTD());
+            } catch (KeyNotFoundException ex) {
+                return NotFound(new { message = ex.Message });
+            }
         }
 
         
-        [HttpGet("GetAllDecksOTD")]
+        [HttpGet("get-all-decks-otd")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ICollection<DeckOTDDTO>> GetAllDecksOTD() {
             return await deckService.GetAllDecksOTD();
         }
         
-        [HttpPut("LikeADeck/{deckId}")]
+        [HttpPut("like-a-deck/{deckId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(object))]
         [Authorize(UserPermissions.RateDeck)]
@@ -55,7 +59,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPost("CreateADeck")]
+        [HttpPost("create-a-deck")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
         [Authorize(UserPermissions.SubmitDeck)]
@@ -68,7 +72,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpGet("GetDeckInfo/{deckId}")]
+        [HttpGet("get-deck-info/{deckId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(object))]
         public async Task<ActionResult<DeckDetailedDTO>> GetDeckInfo(Guid deckId) {

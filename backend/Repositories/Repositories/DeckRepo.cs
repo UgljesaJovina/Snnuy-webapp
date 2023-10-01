@@ -49,7 +49,9 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
 
     public async Task<DeckOTD> GetLatestDeckOTD()
     {
-        return await ctx.DecksOTD.FirstAsync();
+        var deck = await ctx.DecksOTD.FirstOrDefaultAsync();
+        if (deck is null) throw new KeyNotFoundException("There are no decks of the day");
+        return deck;
     }
 
     public async Task<ICollection<DeckOTD>> GetAllDecksOTD()

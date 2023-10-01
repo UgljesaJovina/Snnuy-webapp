@@ -16,7 +16,7 @@ public class UserRepo : Repository<UserAccount>, IUserRepo
             .Include(x => x.LikedDecks)
             .FirstOrDefaultAsync(x => x.Username == username);
 
-        if (account is null) throw new KeyNotFoundException("That username does not exist");
+        if (account is null/* || account.Username != username*/) throw new KeyNotFoundException("That username does not exist");
 
         return account;
     }

@@ -14,10 +14,13 @@ public class DeckDTO
     public string DeckType { get; set; }
     public string DeckRegions { get; set; }
     public int NumberOfLikes { get; set; }
+    public ICollection<string> Champions { get; set; }
 
     public DeckDTO() { }
     
-    public DeckDTO(Guid id, string deckCode, string deckName, DateTime postingDate, bool standard, UserAccount? owner, DeckType type, CardRegions deckRegions, int numberOfLikes) {
+    public DeckDTO(Guid id, string deckCode, string deckName, DateTime postingDate, bool standard, UserAccount? owner, DeckType type, CardRegions deckRegions, 
+        int numberOfLikes, ICollection<DeckItem> deckContent) 
+    {
         Id = id;
         DeckCode = deckCode;
         DeckName = deckName;
@@ -27,7 +30,9 @@ public class DeckDTO
         DeckType = type.ToString();
         DeckRegions = deckRegions.ToString();
         NumberOfLikes = numberOfLikes;
+        Champions = deckContent.Where(x => x.Card.Rarity == CardRarity.Champion).Select(x => x.Card.CardName).ToList();
     }
 
-    public DeckDTO(Deck deck) :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, deck.Type, deck.DeckRegions, deck.NumberOfLikes) { }
+    public DeckDTO(Deck deck) :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, deck.Type, deck.DeckRegions, deck.NumberOfLikes, deck.DeckContent)
+        { }
 }

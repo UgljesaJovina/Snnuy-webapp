@@ -8,7 +8,7 @@ public interface ICustomCardRepo : IRepository<CustomCard>
     // nalazi se u customCardRepo-u, ali je private
     public Task<CustomCardOTD> SetCustomCardOTD(Guid cardId, UserAccount? account = null, CustomCard? card = null);
     public Task<ICollection<CustomCardOTD>> GetAllCustomCardsOTD();
-    public Task<CustomCardOTD> GetLastCustomCardOTD();
+    public Task<CustomCardOTD> GetLatestCustomCardOTD();
     public Task<CustomCard> ValidateCustomCard(Guid cardId, UserAccount account, bool approvalState);
     public Task LikeACard(Guid id, UserAccount account);
 }

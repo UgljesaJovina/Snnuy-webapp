@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Repositories.Enums;
 using Repositories.Interfaces;
 using Repositories.Models;
@@ -14,32 +15,34 @@ public class UserService : IUserService
     private readonly IJwtGenerator jwtGenerator;
     private readonly IPasswordHasher passwordHasher;
 
+    readonly string usernameMatch = @"^[a-zA-Z0-9_\.]+$";
+
     public UserService(IUserRepo _userRepo, IJwtGenerator _jwtGenerator, IPasswordHasher _passwordHashser) {
         userRepo = _userRepo;
         jwtGenerator = _jwtGenerator;
         passwordHasher = _passwordHashser;
     }
 
-    public async Task<AuthenticationResponse> Authenticate(AuthenticationRequest request)
+    public async Task<LoginResponse> Authenticate(AuthenticationRequest request)
     {
-        string passwordHash = passwordHasher.Hash(request.Password);
-
         UserAccount account = await userRepo.GetByUsername(request.Username);
 
         if (!passwordHasher.Verify(account.HashedPassword, request.Password)) throw new ArgumentException("Password does not match with this username");
 
         string token = jwtGenerator.GenerateJWTToken(account);
-        return new(token);
+        return new(account, token);
     }
 
-    public async Task<AuthenticationResponse> Register(AuthenticationRequest request) {
-        if (request.Password.Length < 8) throw new ArgumentException("The passwordmust be at least 8 characters long!");
+    public async Task<RegistrationResponse> Register(AuthenticationRequest request) {
+        if (!Regex.IsMatch(request.Username, usernameMatch)) throw new ArgumentException("The username can contain only letters, numbers, dots and underscores!");
+        if (request.Username.Length < 2 || request.Username.Length > 16) throw new ArgumentException("The username can't be longer than 16 characters or shorter than 2!");
+        if (request.Password.Length < 8 || request.Password.Length > 40) throw new ArgumentException("The password can't be shorter than 8 characters or longer than 40!");
 
         string passwordHash = passwordHasher.Hash(request.Password);
 
         UserAccount account = await userRepo.Create(new UserAccount(request.Username, passwordHash));
         string token = jwtGenerator.GenerateJWTToken(account);
-        return new(token);
+        return new(account, token);
     }
 
     public async Task Update(UpdateAccountRequest request)

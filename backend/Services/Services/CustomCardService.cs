@@ -32,7 +32,7 @@ public class CustomCardService : ICustomCardService
 
     public async Task<CustomCardOTDDTO> GetLatestCardOfTheDay()
     {
-        return new(await cardRepo.GetLastCustomCardOTD());
+        return new(await cardRepo.GetLatestCustomCardOTD());
     }
 
     public async Task<ICollection<CustomCardOTDDTO>> GetAllCardsOfTheDay()

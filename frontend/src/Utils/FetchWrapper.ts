@@ -1,10 +1,6 @@
 import { useRecoilState } from "recoil";
 import { authAtom } from "../Atoms";
-import Cookies from "universal-cookie";
-import { useState } from "react";
 import { baseUrl } from "./GlobalVariables";
-
-export { useFetchWrapper }
 
 function useFetchWrapper() {
     const [auth] = useRecoilState(authAtom);
@@ -33,7 +29,7 @@ function useFetchWrapper() {
     function setHeaders(reqAuth: boolean | undefined) {
         if (!reqAuth) return { };
 
-        const token = auth?.token;
+        const token = auth;
         
         return !token ? { } : { Autharization: `Bearer ${token}` };
     }
@@ -51,3 +47,4 @@ function useFetchWrapper() {
 }
 
 type TContentType = "application/json"
+export { useFetchWrapper }

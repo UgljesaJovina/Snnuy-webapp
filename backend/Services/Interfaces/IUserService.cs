@@ -6,8 +6,8 @@ namespace Services.Interfaces;
 
 public interface IUserService
 {
-    public Task<AuthenticationResponse> Register(AuthenticationRequest request);
-    public Task<AuthenticationResponse> Authenticate(AuthenticationRequest request);
+    public Task<RegistrationResponse> Register(AuthenticationRequest request);
+    public Task<LoginResponse> Authenticate(AuthenticationRequest request);
     public Task<ICollection<UserShortObject>> GetAll();
     public Task<DetailedUserDTO> GetById(Guid id);
     public Task Update(UpdateAccountRequest request);

@@ -1,0 +1,107 @@
+.login-page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 30%;
+    aspect-ratio: 1 / 1.25;
+    border-radius: 25px;
+    box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.5);
+    padding: 1%;
+    box-sizing: border-box;
+}
+
+.login-form-container>h3 {
+    font-size: 2rem;
+    margin-bottom: 0;
+    margin-left: 5%;
+}
+
+.login-form-container>hr {
+    margin-bottom: 5%;
+    width: 100%;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.data-input {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    margin-bottom: 5%;
+}
+
+.data-input>label {
+    margin-left: 5%;
+    margin-bottom: 2%;
+}
+
+.data-input>label::after {
+    content: "*";
+    color: rgb(255, 58, 46);
+}
+
+.login-form input {
+    border-radius: 5px;
+    font-size: 1.5rem;
+    border-width: 1px;
+    padding: 2% 5%;
+}
+
+.login-form button[type="submit"] {
+    border-radius: 5px;
+    font-size: 1.5rem;
+    border-width: 1px;
+    padding: 2% 5%;
+    background-color: var(--accept-color);
+    color: white;
+    margin-top: auto;
+    margin-bottom: 5%;
+}
+
+.redirect>* {
+    display: inline-block;
+    margin: 0 2%;
+}
+
+.input-error {
+    margin-top: 2%;
+    display: none;
+    font-size: 1rem;
+}
+
+.input-error.active {
+    display: block;
+}
+
+.input-error>* {
+    display: inline-block;
+    margin: 0 2%;
+    color: var(--reject-color);
+    word-break: break-word;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

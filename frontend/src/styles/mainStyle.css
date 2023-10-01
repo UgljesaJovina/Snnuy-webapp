@@ -1,31 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@300&display=swap');
+
+:root {
+    --header-color: #da6821;
+    --background-gradient: linear-gradient(130deg, rgba(2,48,71,1) 0%, rgba(185,183,143,1) 100%);
+    --eternal-color: #00007D;
+    --standard-color: #7D0000;
+    --accept-color: #3387ff;
+    --reject-color: #ff4b33;
+}
+
 body {
     margin: 0;
-    background-color: #023047;
+    background: var(--background-gradient);
+    font-family: 'Epilogue', sans-serif;
+    min-height: 100vh;
 }
 
 .header {
     position: relative;
     display: flex;
-    align-items: center;
-    font-size: 26pt;
+    align-items: stretch;
+    font-size: 2rem;
     width: 70%;
+    height: 5rem;
     margin-left: 50%;
     transform: translate(-50%);
-    background-color: #da6821;
+    background-color: var(--header-color);
     color: white;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
-}
-
-.header>* {
-    padding: calc((8vh - 26pt) / 2) 5%;
 }
 
 .header-logo {
     padding: 0;
     margin-left: 5%;
     margin-right: auto;
-    height: 7vh;
+    height: 80%;
     align-self: center;
 }
 
@@ -33,6 +43,8 @@ body {
     text-decoration: none;
     color: inherit;
     transition: all .3s;
+    padding: 1.5rem 3%;
+    box-sizing: border-box;
 }
 
 .hyperlink:hover,
@@ -41,9 +53,7 @@ body {
 }
 
 .hyperlink:last-of-type {
-    padding-right: 2%;
-    padding-left: 2%;
-    margin-right: 3%;
+    border-bottom-right-radius: 15px;
 }
 
 .page-container {
@@ -52,3 +62,5 @@ body {
     align-items: center;
     margin-top: 4%;
 }
+
+

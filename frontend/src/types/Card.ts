@@ -1,3 +1,5 @@
+import { CardRarity } from "../enums";
+
 type TCard = {
     count: number,
     cardName: string,
@@ -8,7 +10,7 @@ type TCard = {
     standard: boolean,
     regions: string,
     type: string,
-    rarity: number,
+    rarity: CardRarity,
     deckRegions: string
 }
 
