@@ -1,23 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@300&display=swap');
 
+@property --angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
 :root {
     --header-color: #da6821;
-    --background-gradient: linear-gradient(130deg, rgba(2,48,71,1) 0%, rgba(185,183,143,1) 100%);
+    --header-hover-color: #23a1e9;
     --eternal-color: #00007D;
     --standard-color: #7D0000;
     --accept-color: #3387ff;
     --reject-color: #ff4b33;
+    --gradient-start: #1e80c6;
+    --gradient-end: #dac421;
 }
 
 body {
     margin: 0;
-    background: var(--background-gradient);
+    background: linear-gradient(var(--angle), var(--gradient-start), var(--gradient-end));
+    /* background-size: 100vw 100vw; */
     font-family: 'Epilogue', sans-serif;
     min-height: 100vh;
+    animation: rotate-background 20s linear infinite;
+}
+
+@keyframes rotate-background {
+    to {
+        --angle: 360deg;
+    }
 }
 
 .header {
-    position: relative;
+    position: sticky;
+    top: 0;
+    left: 0;
     display: flex;
     align-items: stretch;
     font-size: 2rem;
@@ -49,7 +67,7 @@ body {
 
 .hyperlink:hover,
 .hyperlink.current {
-    background-color: #219ebc;
+    background-color: var(--header-hover-color);
 }
 
 .hyperlink:last-of-type {

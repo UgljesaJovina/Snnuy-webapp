@@ -1,0 +1,98 @@
+@property --angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+:root {
+    --header-color: #da6821;
+    --header-hover-color: #23a1e9;
+    --eternal-color: #00007D;
+    --standard-color: #7D0000;
+    --accept-color: #3387ff;
+    --reject-color: #ff4b33;
+    --gradient-start: #1b70b2;
+    --gradient-end: #d79704;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(var(--angle), var(--gradient-start), var(--gradient-end));
+    /* background-size: 100vw 100vw; */
+    font-family: 'Epilogue', sans-serif;
+    min-height: 100vh;
+    animation: rotate-background 20s linear infinite;
+}
+
+@keyframes rotate-background {
+    to {
+        --angle: 360deg;
+    }
+}
+
+.page {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    margin-top: 2vh;
+    height: calc(100vh - 5rem - 2vh);
+    width: 90%;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 5rem;
+    margin-left: 50%;
+    transform: translate(-50%);
+    background-color: var(--header-color);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.card-container {
+    display: grid;
+    height: 100%;
+    grid-template-columns: repeat(auto-fill, 250px);
+    gap: 20px;
+    justify-content: center;
+    overflow: auto;
+}
+
+.c {
+    width: 100%;
+    height: 450px;
+    background: linear-gradient(0deg, black, black),
+        linear-gradient(var(--angle), rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+    background-clip: content-box, padding-box;
+    padding: 3px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-sizing: border-box;
+    animation: rotate-background 5s linear infinite;
+}
+
+.card {
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+.card-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.card-container::-webkit-scrollbar-track {
+    display: none;
+    background: #f1f1f1;
+}
+
+.card-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 20px;
+}
+
+.card-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

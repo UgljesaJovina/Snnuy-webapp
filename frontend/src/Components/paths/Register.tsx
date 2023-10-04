@@ -59,7 +59,7 @@ const Register: React.FC = () => {
                             <p>{passwordError}</p>
                         </div>
                     </div>
-                    <button type="submit">{waitingResponse ? <FontAwesomeIcon icon={["fas", "spinner"]} className="spin" /> : "Register"}</button>
+                    <button type="submit">{waitingResponse ? <FontAwesomeIcon icon={["fas", "spinner"]} className="fa-spin" /> : "Register"}</button>
                 </form>
                 <div className="redirect">
                     <section>Already have an account?</section>

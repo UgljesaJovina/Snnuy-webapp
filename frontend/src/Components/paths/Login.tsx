@@ -59,7 +59,7 @@ const Login: React.FC = () => {
                             <p>{passwordError}</p>
                         </div>
                     </div>
-                    <button type="submit">{waitingResponse ? <FontAwesomeIcon icon={["fas", "spinner"]} className="spin" /> : "Login"}</button>
+                    <button type="submit">{waitingResponse ? <FontAwesomeIcon icon={["fas", "spinner"]} className="fa-spin" /> : "Login"}</button>
                 </form>
                 <div className="redirect">
                     <section>Don't have an account?</section>

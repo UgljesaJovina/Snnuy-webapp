@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router";
 import { NavLink } from "react-router-dom";
 import SnnuyLogo from "../../images/SnnuyLogo.png"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../../Atoms";
+import { useUserActions } from "../../Actions";
 
 const Header: React.FC = () => {
     const user = useRecoilValue(userAtom);
+    const userActions = useUserActions();
+
+    useEffect(() => {
+        if (!user.username)
+            userActions.getMyInfo().catch(err => alert(err));
+    }, []);
     
     return (
         <>

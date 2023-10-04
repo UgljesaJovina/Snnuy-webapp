@@ -13,16 +13,16 @@ function useFetchWrapper() {
     };
 
     function request(method: string) {
-        return (url: string, body?: object, reqAuth?: boolean, contentType?: TContentType) => {
+        return (req: TRequestType) => {
             const reqOptions: { method: string, headers: any, body?: string } = {
                 method,
-                headers: setHeaders(reqAuth)
+                headers: setHeaders(req.reqAuth)
             };
-            if (body) {
-                reqOptions.headers["Content-Type"] = contentType ? contentType : "application/json"
-                reqOptions.body = JSON.stringify(body);
+            if (req.body) {
+                reqOptions.headers["Content-Type"] = req.contentType ? req.contentType : "application/json"
+                reqOptions.body = JSON.stringify(req.body);
             }
-            return fetch(baseUrl + url, reqOptions).then(handleResponse);
+            return fetch(baseUrl + req.url, reqOptions).then(handleResponse);
         }
     }
 
@@ -31,7 +31,7 @@ function useFetchWrapper() {
 
         const token = auth;
         
-        return !token ? { } : { Autharization: `Bearer ${token}` };
+        return !token ? { } : { Authorization: `Bearer ${token}` };
     }
 
     function handleResponse(response: Response) {
@@ -47,4 +47,5 @@ function useFetchWrapper() {
 }
 
 type TContentType = "application/json"
+type TRequestType = { url: string, body?: object, reqAuth?: boolean, contentType?: TContentType }
 export { useFetchWrapper }

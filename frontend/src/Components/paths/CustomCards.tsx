@@ -1,10 +1,11 @@
 import React from "react";
-import { TCustomCard } from "../../types";
 
 const CustomCards: React.FC = () => {
     return (
-        <div>
-        
+        <div className="page-cotaniner">
+            <div className="custom-card-container">
+                
+            </div>
         </div>
     );
 }

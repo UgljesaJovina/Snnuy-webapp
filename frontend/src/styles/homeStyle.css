@@ -1,12 +1,17 @@
 .featured-section {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    column-gap: 5%;
     justify-content: center;
-    width: 100%;
-    min-height: 300px;
+    width: 60%;
+    margin-bottom: 5%;
 }
 
-.featured-section > * {
-    width: 30%;
-    margin: 0 5%;
+.featured-section h2 {
+    margin: 0;
+}
+
+.featured-section iframe {
+    margin: auto;
 }

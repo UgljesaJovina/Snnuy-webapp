@@ -43,6 +43,14 @@ public class UserController: ControllerBase
         }
     }
 
+    [HttpGet("get-my-info")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(object))]
+    public ActionResult<InfoResponse> GetMyInfo() {
+        UserAccount? ua = HttpContext.Items["User"] as UserAccount;
+        return ua is null ? Unauthorized(new { message = "The token you sent is either broken or doesn't exist!" }) : Ok(new InfoResponse(ua));
+    }
+
     [HttpGet("get-all")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ICollection<UserShortObject>> GetAll() {
