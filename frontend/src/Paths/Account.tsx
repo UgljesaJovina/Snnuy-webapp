@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { authAtom } from "../../Atoms";
+import { authAtom } from "../Atoms";
 import { Navigate } from "react-router";
 
 const Account: React.FC = () => {

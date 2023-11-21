@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { useKreyPress } from "../../hooks";
+import { useKreyPress } from "../Hooks";
 import { Link, useNavigate } from "react-router-dom";
-import { useUserActions } from "../../Actions";
+import { useUserActions } from "../Actions";
 
 const Login: React.FC = () => {
     const userActions = useUserActions();

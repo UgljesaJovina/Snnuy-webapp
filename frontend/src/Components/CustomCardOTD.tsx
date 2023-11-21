@@ -1,5 +1,5 @@
 import React from "react";
-import { TCustomCardOTD } from "../types";
+import { TCustomCardOTD } from "../Types";
 import { baseUrl } from "../Utils/GlobalVariables";
 import { Link } from "react-router-dom";
 

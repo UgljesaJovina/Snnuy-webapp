@@ -60,72 +60,20 @@ body {
     overflow: auto;
 }
 
-.c {
-    width: 100%;
-    height: calc(380px + 2rem);
-    background: linear-gradient(0deg, #202020, #202020),
-        linear-gradient(var(--angle), rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
-    background-clip: content-box, padding-box;
-    padding: 3px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-sizing: border-box;
-    animation: rotate-background 5s linear infinite;
-}
-
 .card {
-    overflow: hidden;
-    box-sizing: border-box;
-    border-radius: 15px;
-}
-
-.card-container::-webkit-scrollbar {
-    width: 7px;
-}
-
-.card-container::-webkit-scrollbar-track {
-    display: none;
-    background: #f1f1f1;
-}
-
-.card-container::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 20px;
-}
-
-.card-container::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-.card-info {
-    color: white;
-    width: 90%;
-    margin-left: 5%;
-    display: flex;
-    justify-content: center;
-    gap: 5%;
-}
-
-.card-info p {
-    margin: 0;
-}
-
-.author {
-    flex: 3;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    position: relative;
+    width: 100%;
+    background-image: url("Zeb.png");
+    background-size: contain;
+    aspect-ratio: 680 / 1024;
     overflow: hidden;
 }
 
-.likes {
-    display: flex;
-    flex: 1;
-}
-
-.likes>p {
-    margin-right: 5px;
-}
-
-.author a {
-    color: white;
+.shade {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: black;
 }

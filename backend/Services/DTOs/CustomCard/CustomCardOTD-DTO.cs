@@ -13,16 +13,16 @@ public class CustomCardOTDDTO
 
     public CustomCardOTDDTO() { }
 
-    public CustomCardOTDDTO(Guid id, Guid cardId, string cardName, DateTime postingDate, UserAccount? owner,
+    public CustomCardOTDDTO(Guid id, Guid cardId, string cardName, DateTime postingDate, UserAccount? owner, CardRegions regions,
         CardTypes type, DateTime settingDate, bool setAutomatically, UserAccount? cardSetter, int numberOfLikes)
     {
         Id = id;
-        Card = new(cardId, cardName, postingDate, owner, type, CustomCardApprovalState.Approved, numberOfLikes);
+        Card = new(cardId, cardName, postingDate, owner, regions, type, CustomCardApprovalState.Approved, numberOfLikes);
         SettingDate = settingDate;
         SetAutomatically = setAutomatically;
         SettingUser = cardSetter is null ? null : new(cardSetter);
     }
 
     public CustomCardOTDDTO(CustomCardOTD card) :this(card.Id, card.Card.Id, card.Card.CardName, card.Card.PostingDate, card.Card.OwnerAccount,
-        card.Card.Type, card.SettingDate, card.SetAutomatically, card.CardSetter, card.Card.NumberOfLikes) { }
+        card.Card.Regions, card.Card.Type, card.SettingDate, card.SetAutomatically, card.CardSetter, card.Card.NumberOfLikes) { }
 }

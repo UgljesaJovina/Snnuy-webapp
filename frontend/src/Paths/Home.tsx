@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { CustomCardOTD } from "..";
-import { useCustomCardActions } from "../../Actions";
+import { CustomCardOTD } from "../Components";
+import { useCustomCardActions } from "../Actions";
 import { useRecoilState } from "recoil";
-import { LatestCustomCardAtom } from "../../Atoms";
+import { LatestCustomCardAtom } from "../Atoms";
 
 const Home: React.FC = () => {
 

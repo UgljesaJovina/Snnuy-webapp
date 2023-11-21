@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useUserActions } from "../../Actions";
+import { useUserActions } from "../Actions";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useKreyPress } from "../../hooks";
+import { useKreyPress } from "../Hooks";
 
 const Register: React.FC = () => {
     const userActions = useUserActions();

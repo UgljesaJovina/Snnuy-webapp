@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import { Account, CustomCards, Decks, Header, Home, Login, Register } from './Components';
-import "./styles/mainStyle.css";
-import "./styles/customCardStyle.css";
-import "./styles/homeStyle.css";
-import "./styles/loginStyle.css";
+import { Account, CustomCards, Decks, Header, Home, Login, Register } from './Paths';
+import "./Styles/mainStyle.css";
+import "./Styles/customCardStyle.css";
+import "./Styles/homeStyle.css";
+import "./Styles/loginStyle.css";
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faTriangleExclamation, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';

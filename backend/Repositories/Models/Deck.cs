@@ -30,11 +30,11 @@ public class Deck
             return deckContent;
         } 
     }
-    CardRegions deckRegions;
+    CardRegions deckRegions = CardRegions.None;
     [NotMapped] // nalazim sve karte koje imaju samo jedan region, i onda postavljam njihove regione kao regione deka, malo glupo al jbg
     public CardRegions DeckRegions { get {
-        if (deckRegions is CardRegions.None)
-            deckRegions = (CardRegions)DeckContent.Select(x => (int)x.Card.Regions).Where(x => (x & (x - 1)) == 0).Distinct().Sum();
+        if (deckRegions == CardRegions.None)
+            DeckContent.ForEach(x => deckRegions |= x.Card.Regions);
         return deckRegions;
     } }
     public DeckType Type { get; set; }

@@ -13,17 +13,19 @@
     --standard-color: #7D0000;
     --accept-color: #3387ff;
     --reject-color: #ff4b33;
-    --gradient-start: #1e80c6;
-    --gradient-end: #dac421;
+    --gradient-start: #266b9c;
+    --gradient-end: #ae9e23;
 }
 
 body {
     margin: 0;
     background: linear-gradient(var(--angle), var(--gradient-start), var(--gradient-end));
-    /* background-size: 100vw 100vw; */
+    /* background-size: 100vw 200vh; */
     font-family: 'Epilogue', sans-serif;
+    min-width: 100vw;
     min-height: 100vh;
-    animation: rotate-background 20s linear infinite;
+    overflow-x: hidden;
+    animation: rotate-background 25s linear infinite;
 }
 
 @keyframes rotate-background {
@@ -78,7 +80,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 4%;
+    margin-top: 3vh;
 }
 
 

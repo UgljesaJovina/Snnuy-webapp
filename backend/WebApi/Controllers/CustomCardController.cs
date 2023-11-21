@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Repositories.Models;
 using WebApi.Utils.Attributes;
 using Services.Interfaces;
 using Services.DTOs;
-using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
 using Repositories.Enums;
+using System.Drawing;
 
 namespace WebApi.Controllers;
 
@@ -74,10 +72,13 @@ public class CustomCardController: ControllerBase
     [Authorize(UserPermissions.SubmitCustomCard)]
     public async Task<ActionResult<CustomCardDTO>> CreateACard([FromForm]CustomCardExtendedRequest request) {
         try {
+            using var img = Image.FromStream(request.ImageFile.OpenReadStream());
             request.DataStream = request.ImageFile.OpenReadStream();
             request.Owner = (UserAccount)HttpContext.Items["User"]!;
             return Ok(await cardService.CreateCard(request));
         } catch (ArgumentException ex) {
+            return BadRequest(new { message = ex.Message });
+        } catch (Exception ex) {
             return BadRequest(new { message = ex.Message });
         }
     }
