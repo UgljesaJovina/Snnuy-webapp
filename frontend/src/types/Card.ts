@@ -1,4 +1,4 @@
-import { CardRarity } from "../Enums";
+import { CardRarity } from "../enums";
 
 type TCard = {
     count: number,

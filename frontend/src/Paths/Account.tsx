@@ -1,15 +1,15 @@
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { authAtom } from "../Atoms";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../atoms";
 import { Navigate } from "react-router";
+import { useSearchParams } from "react-router-dom";
 
 const Account: React.FC = () => {
 
-    const auth = useRecoilValue(authAtom);
+    const user = useRecoilValue(userAtom);
+    const [params] = useSearchParams();
 
-    console.log(auth);
-
-    if (!auth) return <Navigate to="/login" />
+    if (!user.username) return <Navigate replace to={`/login?from=${params.get("from")}`} />
 
     return (
         <div>   

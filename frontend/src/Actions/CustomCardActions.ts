@@ -1,6 +1,6 @@
 import { useSetRecoilState } from "recoil";
-import { useFetchWrapper } from "../Utils/FetchWrapper"
-import { LatestCustomCardAtom } from "../Atoms";
+import { useFetchWrapper } from "../utils/FetchWrapper"
+import { LatestCustomCardAtom } from "../atoms";
 
 
 function useCustomCardActions() {

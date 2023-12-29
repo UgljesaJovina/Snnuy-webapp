@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { useKreyPress } from "../Hooks";
-import { Link, useNavigate } from "react-router-dom";
-import { useUserActions } from "../Actions";
+import { useKreyPress } from "../hooks";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useUserActions } from "../actions";
 
 const Login: React.FC = () => {
     const userActions = useUserActions();
@@ -12,6 +12,7 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [waitingResponse, setWaitingResponse] = useState(false);
+    const [params, setParams] = useSearchParams();
 
     const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ const Login: React.FC = () => {
 
         if (!usernameError && !passwordError) {
             setWaitingResponse(true);
-            userActions.login(username, password).then(data => navigate("/home")).catch(err => console.log(err)).finally(() => setWaitingResponse(false));
+            userActions.login(username, password).then(data => navigate(params.get("from") ?? "/home")).catch(err => console.log(err)).finally(() => setWaitingResponse(false));
         } 
     }
 
@@ -38,7 +39,7 @@ const Login: React.FC = () => {
     useKreyPress(["Enter"], handleKeyPress);
 
     return (
-        <div className="login-page">
+        <div className="login-page page-container">
             <div className="login-form-container">
                 <h3>Login</h3>
                 <hr />
@@ -63,7 +64,7 @@ const Login: React.FC = () => {
                 </form>
                 <div className="redirect">
                     <section>Don't have an account?</section>
-                    <Link to={"/register"}>Register</Link>
+                    <Link replace to={`/register?from=${params.get("from")}`}>Register</Link>
                 </div>
             </div>
         </div>

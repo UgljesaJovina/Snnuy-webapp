@@ -6,52 +6,70 @@
     initial-value: 0deg;
 }
 
-:root {
-    --header-color: #da6821;
-    --header-hover-color: #23a1e9;
-    --eternal-color: #00007D;
-    --standard-color: #7D0000;
-    --accept-color: #3387ff;
-    --reject-color: #ff4b33;
-    --gradient-start: #266b9c;
-    --gradient-end: #ae9e23;
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#root {
+    display: flex;
+    flex-direction: row;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #263d55;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #43668a;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #35526e;
+    border-radius: 6px;
 }
 
 body {
     margin: 0;
-    background: linear-gradient(var(--angle), var(--gradient-start), var(--gradient-end));
+    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
     /* background-size: 100vw 200vh; */
     font-family: 'Epilogue', sans-serif;
     min-width: 100vw;
     min-height: 100vh;
     overflow-x: hidden;
-    animation: rotate-background 25s linear infinite;
+
+    --header-color: #2c3e50;
+    --header-hover-color: #34495e;
+    --eternal-color: #3498db;
+    --standard-color: #2ecc71;
+    --accept-color: #27ae60;
+    --reject-color: #e74c3c;
+    --gradient-start: #141e30;
+    --gradient-end: #1f2d3d;
+    --text-color: #ecf0f1;
 }
 
-@keyframes rotate-background {
-    to {
-        --angle: 360deg;
-    }
-}
-
-.header {
+.sidebar {
     position: sticky;
     top: 0;
     left: 0;
     display: flex;
+    flex-direction: column;
     align-items: stretch;
-    font-size: 2rem;
-    width: 70%;
-    height: 5rem;
-    margin-left: 50%;
-    transform: translate(-50%);
+    font-size: 1.5rem;
+    width: 15vw;
+    height: 100vh;
+    padding-top: 2%;
     background-color: var(--header-color);
-    color: white;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    color: var(--text-color);
 }
 
-.header-logo {
+.sidebar-logo {
     padding: 0;
     margin-left: 5%;
     margin-right: auto;
@@ -63,8 +81,10 @@ body {
     text-decoration: none;
     color: inherit;
     transition: all .3s;
-    padding: 1.5rem 3%;
-    box-sizing: border-box;
+    height: 5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .hyperlink:hover,
@@ -72,15 +92,17 @@ body {
     background-color: var(--header-hover-color);
 }
 
-.hyperlink:last-of-type {
-    border-bottom-right-radius: 15px;
+.hyperlink>img,
+.hyperlink>svg {
+    height: 1.75rem;
+    margin: 0 5%;
 }
 
 .page-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 3vh;
+    margin-top: 4%;
+    width: auto;
+    color: var(--text-color);
 }
-
-

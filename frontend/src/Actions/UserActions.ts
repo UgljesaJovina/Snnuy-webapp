@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
-import { authAtom, userAtom } from "../Atoms";
-import { useFetchWrapper } from "../Utils/FetchWrapper";
-import { UserPermissions } from "../Enums";
+import { authAtom, userAtom } from "../atoms";
+import { useFetchWrapper } from "../utils/FetchWrapper";
+import { UserPermissions } from "../enums";
 import { useRef } from "react";
 import Cookies from "universal-cookie";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import {  } from "../Types"
+import {  } from "../types"
 
 const Deck: React.FC = () => {
     return (

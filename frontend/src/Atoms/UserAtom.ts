@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { TUser, defaultUser } from "../Types";
+import { TUser, defaultUser } from "../types";
 
 const userAtom = atom<TUser>({
     key: "users",

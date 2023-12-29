@@ -1,4 +1,4 @@
-import { UserPermissions } from "../Enums"
+import { UserPermissions } from "../enums"
 
 type TUser = {
     id: string,

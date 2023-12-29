@@ -1,6 +1,6 @@
 import React from "react";
-import { TCustomCardOTD } from "../Types";
-import { baseUrl } from "../Utils/GlobalVariables";
+import { TCustomCardOTD } from "../types";
+import { baseUrl } from "../utils/GlobalVariables";
 import { Link } from "react-router-dom";
 
 const CustomCardOTD: React.FC<{ card: TCustomCardOTD }> = ({ card }) => {

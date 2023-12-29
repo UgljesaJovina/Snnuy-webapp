@@ -8,6 +8,10 @@
     margin-bottom: 5%;
 }
 
+.featured-section hr {
+    margin: 3% 0;
+}
+
 .featured-section h2 {
     margin: 0;
 }

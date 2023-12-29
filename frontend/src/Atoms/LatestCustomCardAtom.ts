@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { defaultCustomCardOTD } from "../Types";
+import { defaultCustomCardOTD } from "../types";
 
 const LatestCustomCardAtom = atom({
     key: "latestCustomCardAtom",

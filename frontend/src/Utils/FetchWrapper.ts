@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { authAtom } from "../Atoms";
+import { authAtom } from "../atoms";
 import { baseUrl } from "./GlobalVariables";
 
 function useFetchWrapper() {
