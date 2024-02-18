@@ -14,6 +14,7 @@
 #root {
     display: flex;
     flex-direction: row;
+    position: relative;
 }
 
 ::-webkit-scrollbar {
@@ -36,7 +37,7 @@
 
 body {
     margin: 0;
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    background: linear-gradient(-135deg, var(--gradient-start), var(--gradient-end));
     /* background-size: 100vw 200vh; */
     font-family: 'Epilogue', sans-serif;
     min-width: 100vw;
@@ -44,14 +45,15 @@ body {
     overflow-x: hidden;
 
     --header-color: #2c3e50;
-    --header-hover-color: #34495e;
+    --header-hover-color: #496683;
     --eternal-color: #3498db;
     --standard-color: #2ecc71;
     --accept-color: #27ae60;
     --reject-color: #e74c3c;
-    --gradient-start: #141e30;
-    --gradient-end: #1f2d3d;
+    --gradient-start: #26385a;
+    --gradient-end: #0f151d;
     --text-color: #ecf0f1;
+    --custom-card-color: #233350;
 }
 
 .sidebar {
@@ -61,48 +63,67 @@ body {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    font-size: 1.5rem;
-    width: 15vw;
+    width: 10%;
     height: 100vh;
-    padding-top: 2%;
+    padding: 2% 0;
     background-color: var(--header-color);
     color: var(--text-color);
+    transition: width .35s;
 }
 
-.sidebar-logo {
-    padding: 0;
-    margin-left: 5%;
-    margin-right: auto;
-    height: 80%;
-    align-self: center;
+.sidebar.collapsed {
+    width: 2.5rem;
 }
 
-.hyperlink {
+.hyperlink-text {
+    width: 100%;
+    overflow: hidden;
+    transition: all .45s;
+    text-wrap: nowrap;
+    text-align: left;
+}
+
+.sidebar.collapsed .hyperlink-text {
+    width: 0px;
+}
+
+.hyperlink,
+.collapse-button {
     text-decoration: none;
-    color: inherit;
+    font-size: 1rem;
+    color: var(--text-color);
     transition: all .3s;
     height: 5rem;
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
 }
 
 .hyperlink:hover,
+.collapse-button:hover,
 .hyperlink.current {
     background-color: var(--header-hover-color);
 }
 
-.hyperlink>img,
-.hyperlink>svg {
-    height: 1.75rem;
-    margin: 0 5%;
+.hyperlink>*:first-child,
+.collapse-button>*:first-child {
+    height: 1.3rem;
+    margin: 0 10px 0;
 }
 
-.page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 4%;
-    width: auto;
-    color: var(--text-color);
+.collapse-button {
+    background-color: transparent;
+    border: none;
+    margin-top: auto;
+    padding: 0;
 }
+
+.collapse-icon {
+    transition: rotate .35s;
+}
+
+.sidebar.collapsed .collapse-icon {
+    rotate: 180deg;
+}
+

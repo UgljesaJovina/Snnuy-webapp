@@ -20,7 +20,7 @@ function useCustomCardActions() {
     }
 
     async function getAll() {
-        // getAll
+        return fwrapper.get({url: baseUrl + "get-all"})
     }
 
     async function getAllFromUser(id: string) {

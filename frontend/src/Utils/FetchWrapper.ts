@@ -46,6 +46,6 @@ function useFetchWrapper() {
     }
 }
 
-type TContentType = "application/json"
+type TContentType = "application/json" | "text/plain" | "multipart/form-data"
 type TRequestType = { url: string, body?: object, reqAuth?: boolean, contentType?: TContentType }
 export { useFetchWrapper }

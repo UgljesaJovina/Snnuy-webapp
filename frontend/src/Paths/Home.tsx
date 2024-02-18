@@ -14,7 +14,7 @@ const Home: React.FC = () => {
     }, []);
 
     return (
-        <div className="page-container">
+        <div className="home-page-container">
             <div className="featured-section">
                 <div>
                     <h2>Featured Card</h2>

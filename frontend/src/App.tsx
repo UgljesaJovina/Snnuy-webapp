@@ -6,11 +6,11 @@ import "./styles/customCardStyle.css";
 import "./styles/homeStyle.css";
 import "./styles/loginStyle.css";
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { faTriangleExclamation, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faTriangleExclamation, faSpinner, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { RecoilRoot } from 'recoil';
 
-library.add(faUser, faTriangleExclamation, faSpinner);
+library.add(faUser, faTriangleExclamation, faSpinner, faArrowLeft);
 
 function App() {
     return (

@@ -28,6 +28,10 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         return card;
     }
 
+    public async override Task<ICollection<CustomCard>> GetAll() {
+        return await table.Where(c => c.State == Enums.CustomCardApprovalState.Approved).ToListAsync();
+    }
+
     public async override Task<CustomCard> Create(CustomCard card)
     {
         if (card.FileSteam is null) throw new ArgumentException("The image was not readable");

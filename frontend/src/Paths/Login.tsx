@@ -39,7 +39,7 @@ const Login: React.FC = () => {
     useKreyPress(["Enter"], handleKeyPress);
 
     return (
-        <div className="login-page page-container">
+        <div className="login-page">
             <div className="login-form-container">
                 <h3>Login</h3>
                 <hr />

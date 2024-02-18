@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../atoms";
 import { useUserActions } from "../actions";
@@ -10,6 +11,7 @@ import Cards from "../images/cards.svg";
 import DeckLib from "../images/deck-lib.svg";
 
 const Sidebar: React.FC = () => {
+    const [collapsed, setCollapsed] = useState(false);
     const user = useRecoilValue(userAtom);
     const userActions = useUserActions();
     const loc = useLocation();
@@ -21,23 +23,27 @@ const Sidebar: React.FC = () => {
 
     return (
         <>
-            <div className="sidebar">
+            <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
                 <NavLink to={"/home"} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
                     <img src={Home} />
-                    Home
+                    <p className="hyperlink-text">Home</p>
                 </NavLink>
                 <NavLink to={"/custom-cards"} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
                     <img src={Cards} />
-                    Custom Cards
+                    <p className="hyperlink-text">Custom Cards</p>
                 </NavLink>
                 <NavLink to={"/decks"} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
                     <img src={DeckLib} />
-                    Deck Library
+                    <p className="hyperlink-text">Deck Library</p>
                 </NavLink>
                 <NavLink to={`/account?from=${loc.pathname}`} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
                     <FontAwesomeIcon icon={["far", "user"]} />
-                    {user.username ? user.username : "Login"}
+                    <p className="hyperlink-text">{user.username ? user.username : "Login"}</p>
                 </NavLink>
+                <button className="collapse-button" onClick={() => setCollapsed(cur => !cur)}>
+                    <FontAwesomeIcon icon={faArrowLeft} style={{marginBottom: "0"}} className="collapse-icon" />
+                    <p className="hyperlink-text">Collapse</p>
+                </button>
             </div>
             <Outlet />
         </>

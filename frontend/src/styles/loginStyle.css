@@ -66,7 +66,7 @@
     border-width: 1px;
     padding: 2% 5%;
     background-color: var(--accept-color);
-    color: white;
+    color: var(--text-color);
     margin-top: auto;
     margin-bottom: 5%;
 }

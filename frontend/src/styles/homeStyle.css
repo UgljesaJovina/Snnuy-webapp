@@ -1,3 +1,12 @@
+.home-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4%;
+    width: auto;
+    color: var(--text-color);
+}
+
 .featured-section {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -22,7 +22,7 @@ public class CustomCardService : ICustomCardService
 
     public async Task<ICollection<CustomCardDTO>> GetAllCardsFromUser(Guid id)
     {
-        return (await cardRepo.GetAll(x => x.OwnerAccount.Id == id)).Select(x => new CustomCardDTO(x)).ToList();
+        return (await cardRepo.GetAll(x => x.OwnerAccount?.Id == id)).Select(x => new CustomCardDTO(x)).ToList();
     }
 
     public async Task<ICollection<CustomCardDTO>> GetAllNonValidated() 

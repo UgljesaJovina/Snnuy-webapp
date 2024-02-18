@@ -1,3 +1,32 @@
-.custom-card-style {
-    
+.custom-card-page {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    flex-grow: 1;
+    gap: 5%;
+    margin: 5vh 0 0 5%;
+    height: 95vh;
+}
+
+.custom-card-page>* {
+    outline: 1px black solid;
+}
+
+.custom-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 240px);
+    gap: 16px;
+    justify-content: center;
+    width: 95%;
+}
+
+.custom-card {
+    width: 100%;
+    height: auto;
+    background-color: var(--custom-card-color);
+}
+
+.custom-card-image {
+    margin-left: 5%;
+    width: 90%;
 }
