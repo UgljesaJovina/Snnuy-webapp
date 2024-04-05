@@ -69,9 +69,10 @@
     color: var(--text-color);
     margin-top: auto;
     margin-bottom: 5%;
+    cursor: pointer;
 }
 
-.redirect>* {
+.redirect > * {
     display: inline-block;
     margin: 0 2%;
 }

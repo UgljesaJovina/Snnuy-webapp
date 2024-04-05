@@ -9,7 +9,7 @@ const CustomCards: React.FC = () => {
 
     useEffect(() => {
         customCardActions.getAll().then(data => setCards(data)).catch(s => console.log(s));
-    }, [customCardActions]);
+    }, []);
 
     return (
         <div className="custom-card-page">

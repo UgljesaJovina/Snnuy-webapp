@@ -9,6 +9,20 @@ public class UserRepo : Repository<UserAccount>, IUserRepo
 {
     public UserRepo(DataContext _ctx) : base(_ctx) { }
 
+    public async override Task<UserAccount> GetById(Guid id)
+    {
+        UserAccount? instance = await table
+            .Include(x => x.OwnedCustomCards)
+            .Include(x => x.OwnedDecks)
+            .Include(x => x.LikedCustomCards)
+            .Include(x => x.LikedDecks)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (instance is null) throw new KeyNotFoundException($"User does not exist!");
+
+        return instance;
+    }
+
     public async Task<UserAccount> GetByUsername(string username)
     {
         UserAccount? account = await table

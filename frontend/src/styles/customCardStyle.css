@@ -30,3 +30,35 @@
     margin-left: 5%;
     width: 90%;
 }
+
+.custom-card-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: white;
+}
+
+.like-region, .creator-region {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.created-by {
+    width: auto;
+    text-wrap: nowrap;
+    margin-left: 5px;
+}
+
+.owner-name {
+    color: white;
+    margin-left: 10px;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    overflow: hidden;
+}
+
+.likes {
+    margin-left: 5px;
+}

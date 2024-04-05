@@ -22,7 +22,8 @@ function App() {
                         <Route path='/home' element={<Home />} />
                         <Route path='/custom-cards' element={<CustomCards />} />
                         <Route path='/decks' element={<Decks />} />
-                        <Route path='/account/:id?' element={<Account />} />
+                        <Route path='/account' element={<Account />} />
+                        <Route path='/users/:id?' element={<Home />} />
                         <Route path='*' element={<Navigate to={"/home"} />} />
                     </Route>
                     <Route path='/login' element={<Login />} />

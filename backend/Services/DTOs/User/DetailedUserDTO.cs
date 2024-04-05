@@ -34,5 +34,6 @@ public class DetailedUserDTO
         LikedDecks = likedDecks.Select(x => x.Id).ToList();
     }
 
-    public DetailedUserDTO(UserAccount account) :this(account.Id, account.Username, account.Permissions, account.OwnedCustomCards, account.LikedCustomCards, account.OwnedDecks, account.LikedDecks) { }
+    public DetailedUserDTO(UserAccount account) 
+        :this(account.Id, account.Username, account.Permissions, account.OwnedCustomCards, account.LikedCustomCards, account.OwnedDecks, account.LikedDecks) { }
 }

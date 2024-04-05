@@ -32,5 +32,7 @@ public class DataContext : DbContext {
         builder.Entity<Deck>().Navigation(x => x.OwnerAccount).AutoInclude();
         builder.Entity<DeckOTD>().Navigation(x => x.Deck).AutoInclude();
         builder.Entity<DeckOTD>().Navigation(x => x.DeckSetter).AutoInclude();
+
+        // TODO: OVE AUTO-INCLUDEOVE POPRAVITI AKO POSTANU PROBLEM
     }
 }
