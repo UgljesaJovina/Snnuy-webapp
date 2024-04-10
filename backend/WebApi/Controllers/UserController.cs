@@ -78,7 +78,7 @@ public class UserController: ControllerBase
         try {
             request.Id = ((UserAccount)HttpContext.Items["User"]!).Id;
             await userService.Update(request);
-            return Ok();
+            return NoContent();
         } catch (KeyNotFoundException ex) {
             return NotFound(new { message = ex.Message });
         }
@@ -93,7 +93,7 @@ public class UserController: ControllerBase
         if (((UserAccount)HttpContext.Items["User"]!).Id != userId) return Unauthorized("You are trying to change the account that doesn't belong to you!");
         try {
             await userService.Delete(userId);
-            return Ok();
+            return NoContent();
         } catch (KeyNotFoundException ex) {
             return NotFound(new { message = ex.Message });
         }
@@ -106,7 +106,7 @@ public class UserController: ControllerBase
     public async Task<IActionResult> ChangePermissions(Guid userId, [FromQuery] int permissions) {
         try {
             await userService.ChangeUserPermissions(userId, permissions);
-            return Ok();
+            return NoContent();
         } catch (KeyNotFoundException ex) {
             return NotFound(new { message = ex.Message });
         }

@@ -53,7 +53,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult> LikeADeck(Guid deckId) {
             try {
                 await deckService.LikeADeck(deckId, (UserAccount)HttpContext.Items["User"]!);
-                return Ok();
+                return NoContent();
             } catch (KeyNotFoundException ex) {
                 return NotFound(new { message = ex.Message });
             }

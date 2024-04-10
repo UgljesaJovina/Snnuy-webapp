@@ -3,7 +3,7 @@ import { authAtom } from "../atoms";
 import { baseUrl } from "./GlobalVariables";
 
 function useFetchWrapper() {
-    const [auth] = useRecoilState(authAtom);
+const [auth] = useRecoilState(authAtom);
 
     return {
         get: request("GET"),
@@ -36,20 +36,17 @@ function useFetchWrapper() {
     }
 
     function handleResponse(response: Response) {
-        return response.text().then(data => {
-            let json;
-            try {
-                json = JSON.parse(data);
-            } catch {
-                return "";
-            }
+        if (response.status === 204) return Promise.resolve();
 
-            if (response.status !== 200) {
-                const error = json.message || response.statusText;
+        return response.json().then(data => {
+            console.log(data);
+            
+            if (!response.ok) {
+                const error = data.message || response.statusText;
                 return Promise.reject(error);
             }
 
-            return json;
+            return Promise.resolve(data);
         });
     }
 }

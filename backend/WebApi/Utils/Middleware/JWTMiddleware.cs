@@ -19,7 +19,13 @@ public class JWTMiddleware
     }
 
     public async Task Invoke(HttpContext context, IUserRepo userRepo) { // Ovde ce jos preko DI da se doda IUserServices
-        string? token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        // string? token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        string? token = context.Request.Cookies["auth"];
+        foreach (var i in context.Request.Cookies)
+        {
+            System.Console.WriteLine(i.Key);
+            System.Console.WriteLine(i.Value);
+        }
 
         if (token is not null) 
             AttachUserToContext(context, token, userRepo);

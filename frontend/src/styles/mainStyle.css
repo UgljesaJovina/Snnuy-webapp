@@ -63,15 +63,17 @@ body {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    width: 12%;
+    min-width: 13rem;
+    width: 15%;
     height: 100vh;
     padding: 2% 0 0;
     background-color: var(--header-color);
     color: var(--text-color);
-    transition: width .35s;
+    transition: min-width .35s, width .35s;
 }
 
 .sidebar.collapsed {
+    min-width: 0%;
     width: 2.5rem;
 }
 

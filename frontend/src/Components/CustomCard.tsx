@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TCustomCard } from "../types"
 import { baseUrl } from "../utils/GlobalVariables";
 import { Link } from "react-router-dom";
@@ -8,13 +8,26 @@ import { faHeart as hollowHeart } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../atoms";
 import { useCustomCardActions } from "../actions";
+import Cookies from "universal-cookie";
 
 const CustomCard: React.FC<{ card: TCustomCard }> = ({ card }) => {
     const user = useRecoilValue(userAtom);
     const customCardActions = useCustomCardActions();
+    const [liked, setLiked] = useState(user.likedCards.some(x => x === card.id));
+    const [numberOfLikes, setNumberOfLikes] = useState(card.numberOfLikes);
+
+    function likeSuccess(data: TCustomCard) { 
+        setLiked(curr => !curr); 
+        setNumberOfLikes(curr => curr + (!liked ? 1 : -1));
+        new Cookies()
+    }
 
     function like() {
-        customCardActions.likeACard(card.id); //TODO napraviti da se updateuje like
+        const currentLike = liked;
+        const currentLikes = card.numberOfLikes;
+        customCardActions.likeACard(card.id)
+            .then(likeSuccess)
+            .catch(err => { setLiked(currentLike); setNumberOfLikes(currentLikes) });
     }
 
     return (
@@ -27,10 +40,10 @@ const CustomCard: React.FC<{ card: TCustomCard }> = ({ card }) => {
                 </div>
                 <div className="like-region">
                     <div className="like" onClick={like}>
-                        <FontAwesomeIcon icon={user.likedCards.find(x => x === card.id) ? solidHeart : hollowHeart}
-                            className={user.likedCards.find(x => x === card.id) ? "liked" : ""} />
+                        <FontAwesomeIcon icon={liked ? solidHeart : hollowHeart}
+                            className={liked ? "liked" : ""} />
                     </div>
-                    <p className="likes">{card.numberOfLikes}</p>
+                    <p className="likes">{numberOfLikes}</p>
                 </div>
             </div>
         </div>

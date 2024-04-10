@@ -10,5 +10,5 @@ public interface ICustomCardRepo : IRepository<CustomCard>
     public Task<ICollection<CustomCardOTD>> GetAllCustomCardsOTD();
     public Task<CustomCardOTD> GetLatestCustomCardOTD();
     public Task<CustomCard> ValidateCustomCard(Guid cardId, UserAccount account, bool approvalState);
-    public Task LikeACard(Guid id, UserAccount account);
+    public Task<CustomCard> LikeACard(Guid id, UserAccount account);
 }

@@ -92,7 +92,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         return card;
     }
 
-    public async Task LikeACard(Guid id, UserAccount account) {
+    public async Task<CustomCard> LikeACard(Guid id, UserAccount account) {
         CustomCard? card = await table.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == id);
         if (card is null) throw new KeyNotFoundException("Card was not found");
 
@@ -100,6 +100,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         else { card.LikedUsers.Add(account); card.NumberOfLikes += 1; }
         
         await SaveAsync();
+        return card;
     }
 
     private async void AutomaticCardSet(object? sender, ElapsedEventArgs e)

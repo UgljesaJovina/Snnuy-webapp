@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import { userAtom } from "../atoms";
 import { Navigate, useLocation } from "react-router";
 import { useSearchParams } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 const Account: React.FC = () => {
 
@@ -13,7 +14,11 @@ const Account: React.FC = () => {
 
     return (
         <div>   
-            
+            <button onClick={e => {
+                const cookies = new Cookies();
+                cookies.remove("auth")
+            }}>
+                LogOut</button>
         </div>
     );
 }

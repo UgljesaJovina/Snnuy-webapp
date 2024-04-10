@@ -7,7 +7,7 @@ public class RegistrationResponse
 {
     public Guid Id { get; set; }
     public string Username { get; set; }
-    public string Token { get; set; }
+    public string Token;
 
     public RegistrationResponse(Guid id, string username, string token) {
         Id = id;
