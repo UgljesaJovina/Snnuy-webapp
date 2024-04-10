@@ -20,11 +20,11 @@ function useCustomCardActions() {
     }
 
     async function getAll() {
-        return fwrapper.get({url: baseUrl + "get-all"})
+        return fwrapper.get({ url: baseUrl + "get-all" })
     }
 
     async function getAllFromUser(id: string) {
-        // getAllFromUser/id
+        return fwrapper.get({ url: `get-all/${id}` })
     }
 
     async function getAllNonValidatedCards() {
@@ -41,8 +41,7 @@ function useCustomCardActions() {
     }
 
     async function likeACard(id: string) {
-        // likeACard/id
-        //req auth
+        fwrapper.patch({ url: baseUrl + `like-a-card/${id}`, reqAuth: true })
     }
 
     async function createACard(props: any) { // napraviti tip za creation

@@ -20,7 +20,7 @@ public class CustomCardService : ICustomCardService
         return (await cardRepo.GetAll()).Select(x => new CustomCardDTO(x)).ToList();
     }
 
-    public async Task<ICollection<CustomCardDTO>> GetAllCardsFromUser(Guid id)
+    public async Task<ICollection<CustomCardDTO>> GetAllCards(Guid id)
     {
         return (await cardRepo.GetAll(x => x.OwnerAccount?.Id == id)).Select(x => new CustomCardDTO(x)).ToList();
     }

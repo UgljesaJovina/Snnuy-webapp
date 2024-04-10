@@ -41,7 +41,6 @@
 .like-region, .creator-region {
     display: flex;
     justify-content: center;
-    overflow: hidden;
     margin-bottom: 10px;
 }
 
@@ -53,7 +52,7 @@
 
 .owner-name {
     color: white;
-    margin-left: 10px;
+    margin-left: 5px;
     text-overflow: ellipsis;
     text-wrap: nowrap;
     overflow: hidden;
@@ -61,4 +60,22 @@
 
 .likes {
     margin-left: 5px;
+}
+
+.like {
+    position: relative;
+}
+
+.like:hover::before {
+    content: "";
+    position: absolute;
+    width: 150%;
+    aspect-ratio: 1 / 1;
+    background-color: rgba(255, 0, 0, 0.24);
+    top: -25%;
+    left: -25%;
+}
+
+.liked {
+    color: red;
 }

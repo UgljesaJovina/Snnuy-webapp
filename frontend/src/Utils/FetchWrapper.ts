@@ -10,6 +10,7 @@ function useFetchWrapper() {
         post: request("POST"),
         put: request("PUT"),
         delete: request("DELETE"),
+        patch: request("PATCH")
     };
 
     function request(method: string) {
@@ -35,13 +36,20 @@ function useFetchWrapper() {
     }
 
     function handleResponse(response: Response) {
-        return response.json().then(data => {
+        return response.text().then(data => {
+            let json;
+            try {
+                json = JSON.parse(data);
+            } catch {
+                return "";
+            }
+
             if (response.status !== 200) {
-                const error = data.message || response.statusText;
+                const error = json.message || response.statusText;
                 return Promise.reject(error);
             }
 
-            return data;
+            return json;
         });
     }
 }

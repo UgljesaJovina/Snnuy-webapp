@@ -24,10 +24,10 @@ public class CustomCardController: ControllerBase
         return await cardService.GetAllCards();
     }
 
-    [HttpGet("get-all-from-user/{userId}")]
+    [HttpGet("get-all/{userId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ICollection<CustomCardDTO>> GetAllCardsFromUser(Guid userId) {
-        return await cardService.GetAllCardsFromUser(userId);
+        return await cardService.GetAllCards(userId);
     }
 
     [HttpGet("get-all-non-valid")]

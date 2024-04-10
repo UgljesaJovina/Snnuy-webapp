@@ -7,12 +7,14 @@ import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as hollowHeart } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../atoms";
+import { useCustomCardActions } from "../actions";
 
 const CustomCard: React.FC<{ card: TCustomCard }> = ({ card }) => {
     const user = useRecoilValue(userAtom);
+    const customCardActions = useCustomCardActions();
 
     function like() {
-        
+        customCardActions.likeACard(card.id); //TODO napraviti da se updateuje like
     }
 
     return (
@@ -20,11 +22,14 @@ const CustomCard: React.FC<{ card: TCustomCard }> = ({ card }) => {
             <img className="custom-card-image" src={`${baseUrl}public/CustomCards/${card.id}.png`} alt="" />
             <div className="custom-card-info">
                 <div className="creator-region">
-                    <p className="created-by">Created by: </p>
+                    <p className="created-by">Created by:</p>
                     <Link to={`/users/${card.owner.id}`} className="owner-name">{card.owner.username}</Link>
                 </div>
                 <div className="like-region">
-                    <FontAwesomeIcon icon={user.likedCards.find(x => x === card.id) ? solidHeart : hollowHeart} />
+                    <div className="like" onClick={like}>
+                        <FontAwesomeIcon icon={user.likedCards.find(x => x === card.id) ? solidHeart : hollowHeart}
+                            className={user.likedCards.find(x => x === card.id) ? "liked" : ""} />
+                    </div>
                     <p className="likes">{card.numberOfLikes}</p>
                 </div>
             </div>
