@@ -16,4 +16,5 @@ public enum CardRegions
     Targon = 0b_0010_0000_0000,
     Runeterra = 0b_0100_0000_0000,
     Custom = 0b_1000_0000_0000,
+    All = 4095,
 }

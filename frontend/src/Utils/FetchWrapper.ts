@@ -3,7 +3,7 @@ import { authAtom } from "../atoms";
 import { baseUrl } from "./GlobalVariables";
 
 function useFetchWrapper() {
-const [auth] = useRecoilState(authAtom);
+    const [auth] = useRecoilState(authAtom);
 
     return {
         get: request("GET"),
@@ -17,7 +17,7 @@ const [auth] = useRecoilState(authAtom);
         return (req: TRequestType) => {
             const reqOptions: { method: string, headers: any, body?: string } = {
                 method,
-                headers: setHeaders(req.reqAuth)
+                headers: setAuth(req.reqAuth)
             };
             if (req.body) {
                 reqOptions.headers["Content-Type"] = req.contentType ? req.contentType : "application/json"
@@ -27,7 +27,7 @@ const [auth] = useRecoilState(authAtom);
         }
     }
 
-    function setHeaders(reqAuth: boolean | undefined) {
+    function setAuth(reqAuth: boolean | undefined) {
         if (!reqAuth) return { };
 
         const token = auth;
@@ -39,8 +39,6 @@ const [auth] = useRecoilState(authAtom);
         if (response.status === 204) return Promise.resolve();
 
         return response.json().then(data => {
-            console.log(data);
-            
             if (!response.ok) {
                 const error = data.message || response.statusText;
                 return Promise.reject(error);

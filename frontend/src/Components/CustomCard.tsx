@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TCustomCard } from "../types"
 import { baseUrl } from "../utils/GlobalVariables";
 import { Link } from "react-router-dom";
@@ -8,7 +8,6 @@ import { faHeart as hollowHeart } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../atoms";
 import { useCustomCardActions } from "../actions";
-import Cookies from "universal-cookie";
 
 const CustomCard: React.FC<{ card: TCustomCard }> = ({ card }) => {
     const user = useRecoilValue(userAtom);
@@ -16,20 +15,14 @@ const CustomCard: React.FC<{ card: TCustomCard }> = ({ card }) => {
     const [liked, setLiked] = useState(user.likedCards.some(x => x === card.id));
     const [numberOfLikes, setNumberOfLikes] = useState(card.numberOfLikes);
 
-    function likeSuccess(data: TCustomCard) { 
-        setLiked(curr => !curr); 
-        setNumberOfLikes(curr => curr + (!liked ? 1 : -1));
-        new Cookies()
-    }
-
     function like() {
         const currentLike = liked;
         const currentLikes = card.numberOfLikes;
         customCardActions.likeACard(card.id)
-            .then(likeSuccess)
+            .then(data => { setLiked(data.liked); setNumberOfLikes(data.numberOfLikes); })
             .catch(err => { setLiked(currentLike); setNumberOfLikes(currentLikes) });
     }
-
+    
     return (
         <div className="custom-card">
             <img className="custom-card-image" src={`${baseUrl}public/CustomCards/${card.id}.png`} alt="" />
@@ -40,6 +33,7 @@ const CustomCard: React.FC<{ card: TCustomCard }> = ({ card }) => {
                 </div>
                 <div className="like-region">
                     <div className="like" onClick={like}>
+                        <div className="like-hover-bg"></div>
                         <FontAwesomeIcon icon={liked ? solidHeart : hollowHeart}
                             className={liked ? "liked" : ""} />
                     </div>

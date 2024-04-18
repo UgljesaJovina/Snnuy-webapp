@@ -1,9 +1,11 @@
 using System.Timers;
 using Microsoft.EntityFrameworkCore;
 using Repositories.DAL;
+using Repositories.Filters;
 using Repositories.Interfaces;
 using Repositories.Models;
 using Repositories.Utility;
+using Repositories.Enums;
 
 namespace Repositories.Repositories;
 
@@ -29,7 +31,29 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     }
 
     public async override Task<ICollection<CustomCard>> GetAll() {
-        return await table.Where(c => c.State == Enums.CustomCardApprovalState.Approved).ToListAsync();
+        return await table.Include(x => x.LikedUsers).Where(c => c.ApprovalState == Enums.CustomCardApprovalState.Approved).ToListAsync();
+    }
+
+    public async Task<ICollection<CustomCard>> GetAll(CardFilter filter) {
+        IEnumerable<CustomCard> cards = table.AsQueryable();
+
+        cards = cards.Where(c => c.ApprovalState == filter.ApprovalState);
+        
+        if (filter.ReleasedAfter is not null) cards = cards.Where(c => c.PostingDate > filter.ReleasedAfter);
+        if (filter.ReleasedBefore is not null) cards = cards.Where(c => c.PostingDate < filter.ReleasedBefore);
+
+        cards = cards.Where(c => (c.Regions & filter.Regions) != 0);
+        cards = cards.Where(c => (c.Type & filter.Type) != 0);
+
+        if (filter.ByPopularity != SortByPopularity.None) {
+            if (filter.ByDate == SortByDate.Newest) cards = cards.OrderByDescending(c => c.PostingDate);
+            else cards = cards.OrderBy(c => c.PostingDate);
+        }
+
+        if (filter.ByPopularity == SortByPopularity.MostPopular) cards = cards.OrderByDescending(c => c.NumberOfLikes);
+        else if (filter.ByPopularity == SortByPopularity.LeastPopular) cards = cards.OrderBy(c => c.NumberOfLikes);
+
+        return cards.Skip(filter.Skip).Take(filter.Take).ToList();
     }
 
     public async override Task<CustomCard> Create(CustomCard card)
@@ -60,7 +84,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         if (account is null) 
             ccOTD = new CustomCardOTD(card);
         else {
-            if ((account.Permissions & Enums.UserPermissions.SetCustomCardOfTheDay) == 0) throw new NotAuthorizedException("You do not have permissions for this!");
+            if ((account.Permissions & UserPermissions.SetCustomCardOfTheDay) == 0) throw new NotAuthorizedException("You do not have permissions for this!");
             ccOTD = new CustomCardOTD(card, account);
         }
 
@@ -75,14 +99,14 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         CustomCard? card = await table.FindAsync(cardId);
         if (card is null) throw new KeyNotFoundException("That card was not found!");
         
-        card.State = approvalState ? Enums.CustomCardApprovalState.Approved : Enums.CustomCardApprovalState.Cancelled;
+        card.ApprovalState = approvalState ? CustomCardApprovalState.Approved : CustomCardApprovalState.Cancelled;
         await SaveAsync();
         return card;
     }
 
     public async Task<ICollection<CustomCardOTD>> GetAllCustomCardsOTD()
     {
-        return await ctx.CustomCardsOTD.ToListAsync();
+        return await ctx.CustomCardsOTD.Include(x => x.Card.LikedUsers).ToListAsync();
     }
 
     public async Task<CustomCardOTD> GetLatestCustomCardOTD()
@@ -92,15 +116,17 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         return card;
     }
 
-    public async Task<CustomCard> LikeACard(Guid id, UserAccount account) {
+    public async Task<CardLikeRecord> LikeACard(Guid id, UserAccount account) {
         CustomCard? card = await table.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == id);
         if (card is null) throw new KeyNotFoundException("Card was not found");
+        
+        CardLikeRecord ret;
 
-        if (card.LikedUsers.Contains(account)) { card.LikedUsers.Remove(account); card.NumberOfLikes -= 1; }
-        else { card.LikedUsers.Add(account); card.NumberOfLikes += 1; }
+        if (card.LikedUsers.Contains(account)) { card.LikedUsers.Remove(account); ret = new(false, card.NumberOfLikes); }
+        else { card.LikedUsers.Add(account); ret = new(true, card.NumberOfLikes); }
         
         await SaveAsync();
-        return card;
+        return ret;
     }
 
     private async void AutomaticCardSet(object? sender, ElapsedEventArgs e)

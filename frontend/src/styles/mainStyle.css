@@ -15,6 +15,7 @@
     display: flex;
     flex-direction: row;
     position: relative;
+    min-height: 100vh;
 }
 
 ::-webkit-scrollbar {
@@ -35,25 +36,55 @@
     border-radius: 6px;
 }
 
+@property --bg-grad-x {
+    syntax: "<length>";
+    initial-value: 0px;
+    inherits: false;
+}
+
+@property --bg-grad-y {
+    syntax: "<length>";
+    initial-value: 0px;
+    inherits: false;
+}
+
 body {
     margin: 0;
-    background: linear-gradient(-135deg, var(--gradient-start), var(--gradient-end));
+    background-color: var(--bg-gradient-end);
     /* background-size: 100vw 200vh; */
     font-family: 'Epilogue', sans-serif;
     min-width: 100vw;
     min-height: 100vh;
     overflow-x: hidden;
 
-    --header-color: #2c3e50;
-    --header-hover-color: #496683;
+    --sidebar-color: #212121;
+    --sidebar-hover-color: #485460;
     --eternal-color: #3498db;
     --standard-color: #2ecc71;
     --accept-color: #27ae60;
-    --reject-color: #e74c3c;
-    --gradient-start: #26385a;
-    --gradient-end: #0f151d;
+    --reject-color: #c0392b;
+    --bg-gradient-start: #222222;
+    --bg-gradient-end: #121212;
     --text-color: #ecf0f1;
-    --custom-card-color: #233350;
+    --custom-card-color: #283746;
+    --accent-color: #FF6E40;
+    --link-color: #40C4FF;
+    --button-color: #FFAB91;
+    --border-color: #333333;
+}
+
+#tracking-circle {
+    height: 800px;
+    width: 800px;
+    position: fixed;
+    top: var(--bg-grad-y);
+    left: var(--bg-grad-x);
+    translate: -50% -50%;
+    background: radial-gradient(circle, var(--bg-gradient-start), var(--bg-gradient-end) 70%);
+}
+
+input, textarea, button {
+    font-family: inherit;
 }
 
 .sidebar {
@@ -67,7 +98,7 @@ body {
     width: 15%;
     height: 100vh;
     padding: 2% 0 0;
-    background-color: var(--header-color);
+    background-color: var(--sidebar-color);
     color: var(--text-color);
     transition: min-width .35s, width .35s;
 }
@@ -105,7 +136,7 @@ body {
 .hyperlink:hover,
 .collapse-button:hover,
 .hyperlink.current {
-    background-color: var(--header-hover-color);
+    background-color: var(--sidebar-hover-color);
 }
 
 .hyperlink>*:first-child,

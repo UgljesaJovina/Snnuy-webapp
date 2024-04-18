@@ -5,6 +5,7 @@ using Services.Interfaces;
 using Services.DTOs;
 using Repositories.Enums;
 using System.Drawing;
+using Repositories.Filters;
 
 namespace WebApi.Controllers;
 
@@ -28,6 +29,13 @@ public class CustomCardController: ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ICollection<CustomCardDTO>> GetAllCardsFromUser(Guid userId) {
         return await cardService.GetAllCards(userId);
+    }
+
+    [HttpGet("get-all-filtered")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ICollection<CustomCardDTO>> GetAllCardsFiltered([FromQuery]CardFilter filter)
+    {
+        return await cardService.GetAllCards(filter);
     }
 
     [HttpGet("get-all-non-valid")]
@@ -57,10 +65,9 @@ public class CustomCardController: ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(object))]
     [Authorize(UserPermissions.RateCustomCard)]
-    public async Task<IActionResult> LikeACard(Guid cardId) {
+    public async Task<ActionResult<CardLikeRecord>> LikeACard(Guid cardId) {
         try {
-            await cardService.LikeACard(cardId, (UserAccount)HttpContext.Items["User"]!);
-            return Ok();
+            return Ok(await cardService.LikeACard(cardId, (UserAccount)HttpContext.Items["User"]!));
         } catch(KeyNotFoundException ex) {
             return NotFound(new { message = ex.Message });
         }
@@ -72,7 +79,6 @@ public class CustomCardController: ControllerBase
     [Authorize(UserPermissions.SubmitCustomCard)]
     public async Task<ActionResult<CustomCardDTO>> CreateACard([FromForm]CustomCardExtendedRequest request) {
         try {
-            using var img = Image.FromStream(request.ImageFile.OpenReadStream());
             request.DataStream = request.ImageFile.OpenReadStream();
             request.Owner = (UserAccount)HttpContext.Items["User"]!;
             return Ok(await cardService.CreateCard(request));

@@ -1,10 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useKreyPress } from "../hooks";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useUserActions } from "../actions";
+import { useRecoilValue } from "recoil";
+import { authAtom, userAtom } from "../atoms";
 
 const Login: React.FC = () => {
+    const user = useRecoilValue(userAtom);
+    const auth = useRecoilValue(authAtom);
+
     const userActions = useUserActions();
 
     const [username, setUsername] = useState("");
@@ -12,9 +17,14 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [waitingResponse, setWaitingResponse] = useState(false);
-    const [params, setParams] = useSearchParams();
+    const [params] = useSearchParams();
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user.username && auth)
+            userActions.getMyInfo().then(() => navigate(params.get("from") ?? "/home"))
+    }, []);
 
     const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();

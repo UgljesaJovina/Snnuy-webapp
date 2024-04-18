@@ -3,8 +3,13 @@ import { useUserActions } from "../actions";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useKreyPress } from "../hooks";
+import { useRecoilValue } from "recoil";
+import { authAtom, userAtom } from "../atoms";
 
 const Register: React.FC = () => {
+    const user = useRecoilValue(userAtom);
+    const auth = useRecoilValue(authAtom);
+    
     const userActions = useUserActions();
 
     const [username, setUsername] = useState("");
@@ -15,6 +20,11 @@ const Register: React.FC = () => {
     const [params] = useSearchParams();
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user.username && auth)
+            userActions.getMyInfo().then(() => navigate(params.get("from") ?? "/home"))
+    }, []);
 
     const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();

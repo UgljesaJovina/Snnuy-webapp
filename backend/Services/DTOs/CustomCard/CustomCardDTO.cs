@@ -27,5 +27,5 @@ public class CustomCardDTO
         NumberOfLikes = numberOfLikes;
     }
 
-    public CustomCardDTO(CustomCard card) :this(card.Id, card.CardName, card.PostingDate, card.OwnerAccount, card.Regions, card.Type, card.State, card.NumberOfLikes) { }
+    public CustomCardDTO(CustomCard card) :this(card.Id, card.CardName, card.PostingDate, card.OwnerAccount, card.Regions, card.Type, card.ApprovalState, card.NumberOfLikes) { }
 }

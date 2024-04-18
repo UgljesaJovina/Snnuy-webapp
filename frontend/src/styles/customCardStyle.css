@@ -1,15 +1,15 @@
 .custom-card-page {
     position: relative;
-    display: grid;
-    grid-template-columns: 4fr 1fr;
     flex-grow: 1;
-    gap: 5%;
-    margin: 5vh 0 0 5%;
+    margin: 5vh 3% 0 5%;
     height: 95vh;
+    display: grid;
+    grid-template-columns: 4fr 1.5fr;
+    gap: 3%;
 }
 
 .custom-card-page>* {
-    outline: 1px black solid;
+    outline: 1px white solid;
 }
 
 .custom-card-container {
@@ -24,11 +24,14 @@
     width: 100%;
     height: auto;
     background-color: var(--custom-card-color);
+    border-radius: 10px;
+    padding-top: 3%;
 }
 
 .custom-card-image {
     margin-left: 5%;
     width: 90%;
+    aspect-ratio: 680 / 1024;
 }
 
 .custom-card-info {
@@ -66,15 +69,20 @@
     position: relative;
 }
 
-.like:hover::before {
-    content: "";
+.like>.like-hover-bg {
     position: absolute;
-    width: 150%;
-    aspect-ratio: 1 / 1;
-    background-color: rgba(255, 0, 0, 0.24);
-    top: -25%;
-    left: -25%;
+    width: 0%;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
     border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    background: radial-gradient(circle, rgba(255, 0, 0, .6) 0%, rgba(255, 255, 255, 0) 100%);
+    transition: all .25s;
+}
+
+.like:hover>.like-hover-bg {
+    width: 150%;
 }
 
 .liked {

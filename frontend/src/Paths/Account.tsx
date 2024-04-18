@@ -10,7 +10,8 @@ const Account: React.FC = () => {
     const user = useRecoilValue(userAtom);
     const [params] = useSearchParams();
 
-    if (!user.id) return <Navigate replace to={`/login?from=${params.get("from")}`} />
+    if (!user.id) return <Navigate replace to={`/login?from=${params.get("from") ?? "account"}`} />
+    else params.delete("from");
 
     return (
         <div>   

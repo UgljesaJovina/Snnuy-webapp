@@ -84,4 +84,8 @@ public static class Utils
         foreach (var i in enumerable)
             action(i);
     }
+
+    public static object GetPropertyValue(this object obj, string propertyName) {
+        return obj.GetType().GetProperty(propertyName).GetValue(obj);
+    }
 }

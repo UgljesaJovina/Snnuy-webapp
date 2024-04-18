@@ -58,6 +58,9 @@ namespace Repositories.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("ApprovalState")
+                        .HasColumnType("int");
+
                     b.Property<string>("CardDescription")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -68,9 +71,6 @@ namespace Repositories.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("NumberOfLikes")
-                        .HasColumnType("int");
-
                     b.Property<Guid?>("OwnerAccountId")
                         .HasColumnType("uniqueidentifier");
 
@@ -78,9 +78,6 @@ namespace Repositories.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Regions")
-                        .HasColumnType("int");
-
-                    b.Property<int>("State")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")

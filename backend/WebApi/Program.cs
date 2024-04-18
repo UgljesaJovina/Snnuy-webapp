@@ -20,7 +20,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 #region Dependency Injection
 
     builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings")); 

@@ -7,7 +7,7 @@ public class LoginResponse
 {
     public Guid Id { get; set; }
     public string Username { get; set; }
-    public string Token;
+    public string Token { get; set; }
     public UserPermissions Permissions { get; set; }
     public ICollection<Guid> OwnedCards { get; set; }
     public ICollection<Guid> LikedCards { get; set; }

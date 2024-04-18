@@ -5,16 +5,24 @@ import "./styles/mainStyle.css";
 import "./styles/customCardStyle.css";
 import "./styles/homeStyle.css";
 import "./styles/loginStyle.css";
+import "./styles/filterStyle.css";
+import "./styles/createCardStyle.css";
+import "./styles/dropdownStyle.css";
+import "./styles/modalStyle.css";
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { faTriangleExclamation, faSpinner, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faTriangleExclamation, faSpinner, faArrowLeft, faPlus, faChevronDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useRecoilValue } from 'recoil';
+import { userAtom } from './atoms';
+import { useEffect } from 'react';
+import { useUserActions } from './actions';
 
-library.add(faUser, faTriangleExclamation, faSpinner, faArrowLeft);
+library.add(faUser, faTriangleExclamation, faSpinner, faArrowLeft, faPlus, faChevronDown, faCheck);
 
 function App() {
     return (
         <RecoilRoot>
+            <LoadUser></LoadUser>
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Sidebar />}>
@@ -33,6 +41,18 @@ function App() {
             </BrowserRouter>
         </RecoilRoot>
     );
+}
+
+const LoadUser: React.FC = () => {
+    const user = useRecoilValue(userAtom);
+    const userActions = useUserActions();
+
+    useEffect(() => {
+        if (!user.username)
+            userActions.getMyInfo().catch(err => console.log(err));
+    }, []);
+
+    return <></>;
 }
 
 export default App;

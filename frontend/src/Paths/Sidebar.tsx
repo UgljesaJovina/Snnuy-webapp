@@ -13,13 +13,7 @@ import DeckLib from "../images/deck-lib.svg";
 const Sidebar: React.FC = () => {
     const [collapsed, setCollapsed] = useState(false);
     const user = useRecoilValue(userAtom);
-    const userActions = useUserActions();
     const loc = useLocation();
-
-    useEffect(() => {
-        if (!user.username)
-            userActions.getMyInfo().catch(err => console.log(err));
-    }, []);
 
     return (
         <>
@@ -36,7 +30,7 @@ const Sidebar: React.FC = () => {
                     <img src={DeckLib} />
                     <p className="hyperlink-text">Deck Library</p>
                 </NavLink>
-                <NavLink to={`/account?from=${loc.pathname}`} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
+                <NavLink to={`/account`} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
                     <FontAwesomeIcon icon={["far", "user"]} />
                     <p className="hyperlink-text">{user.username ? user.username : "Login"}</p>
                 </NavLink>

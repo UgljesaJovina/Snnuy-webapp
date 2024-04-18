@@ -4,6 +4,7 @@ using Repositories.Utility;
 using Services.DTOs;
 using Services.Interfaces;
 using Repositories.Enums;
+using Repositories.Filters;
 
 namespace Services.Services;
 
@@ -25,9 +26,13 @@ public class CustomCardService : ICustomCardService
         return (await cardRepo.GetAll(x => x.OwnerAccount?.Id == id)).Select(x => new CustomCardDTO(x)).ToList();
     }
 
+    public async Task<ICollection<CustomCardDTO>> GetAllCards(CardFilter filter) {
+        return (await cardRepo.GetAll(filter)).Select(x => new CustomCardDTO(x)).ToList();
+    }
+
     public async Task<ICollection<CustomCardDTO>> GetAllNonValidated() 
     {
-        return (await cardRepo.GetAll(x => x.State != CustomCardApprovalState.Approved)).Select(x => new CustomCardDTO(x)).ToList();
+        return (await cardRepo.GetAll(x => x.ApprovalState != CustomCardApprovalState.Approved)).Select(x => new CustomCardDTO(x)).ToList();
     }
 
     public async Task<CustomCardOTDDTO> GetLatestCardOfTheDay()
@@ -47,9 +52,9 @@ public class CustomCardService : ICustomCardService
        return new CustomCardDTO(await cardRepo.Create(requset.GetCustomCard()));
     }
 
-    public async Task<CustomCardDTO> LikeACard(Guid id, UserAccount account)
+    public async Task<CardLikeRecord> LikeACard(Guid id, UserAccount account)
     {
-        return new CustomCardDTO(await cardRepo.LikeACard(id, account));
+        return await cardRepo.LikeACard(id, account);
     }
 
     public async Task<CustomCardDTO> ValidateCustomCard(Guid cardId, UserAccount account, bool approvalState) {

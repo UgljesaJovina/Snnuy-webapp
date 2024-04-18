@@ -25,9 +25,11 @@ public class CustomCard
 
     public CardRegions Regions { get; set; }
     public CardTypes Type { get; set; }
-    public CustomCardApprovalState State { get; set; }
+    public CustomCardApprovalState ApprovalState { get; set; }
     public UserAccount? OwnerAccount { get; set; }
-    public int NumberOfLikes { get; set; } = 0;
+
+    [NotMapped]
+    public int NumberOfLikes { get { return LikedUsers.Count; } }
     public ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
     // public virtual ICollection<Keywords> Keywords { get; set; }
     // public virtual ICollection<CustomKeywords> CustomKeywords { get; set; }
@@ -40,7 +42,9 @@ public class CustomCard
         CardDescription = cardDescription;
         Regions = regions;
         Type = type;
-        State = state;
+        ApprovalState = state;
         OwnerAccount = owner;
     }
 }
+
+public record CardLikeRecord(bool Liked, int NumberOfLikes);
