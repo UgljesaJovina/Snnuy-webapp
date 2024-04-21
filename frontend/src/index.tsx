@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(
 
 let prevX = 0, prevY = 0;
 let x = 0, y = 0;
-let trackingSpeed = 0.1;
+let trackingSpeed = .1;
 const circleElem = document.getElementById("tracking-circle")!;
 
 document.body.addEventListener("mousemove", e => {

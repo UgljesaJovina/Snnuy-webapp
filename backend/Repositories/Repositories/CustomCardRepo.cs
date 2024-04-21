@@ -31,11 +31,11 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     }
 
     public async override Task<ICollection<CustomCard>> GetAll() {
-        return await table.Include(x => x.LikedUsers).Where(c => c.ApprovalState == Enums.CustomCardApprovalState.Approved).ToListAsync();
+        return await table.Include(x => x.LikedUsers).AsQueryable().Where(c => c.ApprovalState == CustomCardApprovalState.Approved).ToListAsync();
     }
 
     public async Task<ICollection<CustomCard>> GetAll(CardFilter filter) {
-        IEnumerable<CustomCard> cards = table.AsQueryable();
+        IEnumerable<CustomCard> cards = table.Include(x => x.LikedUsers).AsQueryable();
 
         cards = cards.Where(c => c.ApprovalState == filter.ApprovalState);
         

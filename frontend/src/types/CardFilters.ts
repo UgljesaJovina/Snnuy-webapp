@@ -1,6 +1,6 @@
 import { CardRegions, CardTypes, SortByDate, SortByPopularity } from "../enums"
 
-type TCardFilter = {
+export type TCardFilter = {
     skip: number,
     take: number,
     regions?: CardRegions,
@@ -10,5 +10,3 @@ type TCardFilter = {
     byDate?: SortByDate,
     byPopularity?: SortByPopularity
 }
-
-export type { TCardFilter };

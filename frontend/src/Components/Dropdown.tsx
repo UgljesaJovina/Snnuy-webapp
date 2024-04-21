@@ -1,4 +1,4 @@
-import React, { Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from 'react'
+import React, { Dispatch, ReactNode, SetStateAction, useContext, useEffect, useRef, useState } from 'react'
 import { DropdownContext } from '../contexts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -44,10 +44,28 @@ const DropdownButton: React.FC<{ children: ReactNode, style?: React.CSSPropertie
 }
 
 const DropdownContent: React.FC<{ children: ReactNode, style?: React.CSSProperties }> = ({ children, style }) => {
-    const { open } = useContext(DropdownContext);
+    const { open, setOpen } = useContext(DropdownContext);
+    const div = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const close = () => setOpen(false);
+
+        const handleClickOutside = (e: MouseEvent) => {
+            const boundingBox = div.current?.getBoundingClientRect();
+
+            if (boundingBox && boundingBox.height > 10 
+                && (e.clientX < boundingBox.left || e.clientY < boundingBox.top || e.clientX > boundingBox.right || e.clientY > boundingBox.bottom))
+                    close();
+        }
+
+        if (open) document.addEventListener('click', handleClickOutside);
+
+        return () => document.removeEventListener('click', handleClickOutside);
+
+    }, [open])
 
     return (
-        <div className={`dropdown-content ${open ? "open" : ""}`} style={style}>
+        <div className={`dropdown-content ${open ? "open" : ""}`} style={style} ref={div} >
             { children }
         </div>
     );
@@ -63,9 +81,16 @@ const DropdownList: React.FC<{ children: ReactNode, style?: React.CSSProperties 
     )
 }
 
-const DropdownItem: React.FC<{ children: ReactNode, style?: React.CSSProperties, name: string, value: any }> = ({ children, style, name, value }) => {
+const DropdownItem: React.FC<{ children: ReactNode, style?: React.CSSProperties, name: string, value: any, index?: boolean }> = ({ children, style, name, value, index }) => {
     const { selected, setSelected, setValue, multichoice } = useContext(DropdownContext);
     const clicked = selected.some(x => x === name);
+
+    useEffect(() => {
+        if (index) {
+            setSelected([name]);
+            setValue([value]);
+        }
+    }, [])
 
     function handleClick() {
         if (clicked === false) {

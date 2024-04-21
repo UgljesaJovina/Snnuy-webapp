@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Dropdown, DropdownButton, DropdownContent, DropdownItem, DropdownList } from ".";
 import { baseUrl } from "../utils/GlobalVariables";
 import { useRecoilValue } from "recoil";
 import { authAtom } from "../atoms";
+import { TCustomCard } from "../types";
 
-const CardCreateModal: React.FC = () => {
+const CardCreateModal: React.FC<{ setCards: Dispatch<SetStateAction<TCustomCard[]>> }> = ({ setCards }) => {
     const [file, setFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | ArrayBuffer | null>(null);
     const iconBase = baseUrl + "public/regionicons/";
@@ -38,7 +39,8 @@ const CardCreateModal: React.FC = () => {
         formData.append("imagefile", file!);
         
 
-        fetch("http://localhost:5016/customcard/create-a-card", { method: "POST", body: formData, headers: {Authorization: `Bearer ${auth}`} }).catch(x => console.log(x));
+        fetch("http://localhost:5016/customcard/create-a-card", { method: "POST", body: formData, headers: {Authorization: `Bearer ${auth}`} })
+        .then(x => x.json()).then(x => setCards(curr => [x, ...curr])).catch(x => alert(x));
 
         // createACard({
         //     cardName: nameRef.current!.value,

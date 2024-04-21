@@ -37,7 +37,7 @@
     width: 100%;
     top: 105%;
     height: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     transition: height .35s;
     z-index: 20;
 }
@@ -67,4 +67,5 @@
 .dropdown-check {
     position: absolute;
     right: 2%;
+    color: inherit;
 }
