@@ -1,10 +1,11 @@
-import { CardRegions, CardTypes, SortByDate, SortByPopularity } from "../enums"
+import { CardRegions, DeckType, SortByDate, SortByPopularity } from "../enums"
 
-export type TCardFilter = {
+export type TDeckFilters = {
     skip: number,
     take: number,
+    includeRotation?: boolean,
     regions?: CardRegions,
-    type?: CardTypes,
+    types?: DeckType,
     postedBefore?: Date,
     postedAfter?: Date,
     byDate?: SortByDate,

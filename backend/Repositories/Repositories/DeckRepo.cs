@@ -4,6 +4,8 @@ using Repositories.Interfaces;
 using Repositories.Utility;
 using Microsoft.EntityFrameworkCore;
 using System.Timers;
+using Repositories.Filters;
+using Repositories.Enums;
 
 namespace Repositories.Repositories;
 
@@ -25,6 +27,28 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
         if (deck is null) throw new KeyNotFoundException();
 
         return deck;
+    }
+
+    public async Task<ICollection<Deck>> GetAll(DeckFilter filter) {
+        IEnumerable<Deck> decks = table.Include(x => x.LikedUsers).AsQueryable();
+
+        if (filter.PostedAfter is not null) decks = decks.Where(d => d.PostingDate > filter.PostedAfter);
+        if (filter.PostedBefore is not null) decks = decks.Where(d => d.PostingDate < filter.PostedBefore);
+
+        decks = decks.Where(d => (d.DeckRegions & filter.Regions) != 0);
+        decks = decks.Where(d => (d.Type & filter.Types) != 0);
+
+        if (!filter.IncludeEternal) decks = decks.Where(d => d.Standard);
+
+        if (filter.ByPopularity == SortByPopularity.None)
+        {
+            if (filter.ByDate == SortByDate.Newest) decks = decks.OrderByDescending(c => c.PostingDate);
+            else decks = decks.OrderBy(c => c.PostingDate);
+        }
+        else if (filter.ByPopularity == SortByPopularity.MostPopular) decks = decks.OrderByDescending(c => c.NumberOfLikes);
+        else if (filter.ByPopularity == SortByPopularity.LeastPopular) decks = decks.OrderBy(c => c.NumberOfLikes);
+
+        return decks.Skip(filter.Skip).Take(filter.Take).ToList();
     }
 
     public async Task<DeckOTD> SetDeckOfTheDay(Guid deckId, UserAccount? account = null, Deck? deck = null)
@@ -71,7 +95,7 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
 
     private async void AutomaticDeckSet(object? sender, ElapsedEventArgs e)
     {
-        if (DateTime.Now - Utils.LAST_CARDOTD_SET >= Utils.AUTOMATIC_CARDOTD_DELAY) {
+        if (DateTime.Now - Utils.LAST_DECKOTD_SET >= Utils.AUTOMATIC_DECKOTD_DELAY) {
             var deckOTDIds = ctx.DecksOTD.Select(dotd => dotd.Deck.Id);
             IEnumerable<Deck> decks = (await GetAll()).Where(d => !deckOTDIds.Contains(d.Id));
 

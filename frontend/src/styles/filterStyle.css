@@ -34,5 +34,17 @@
 }
 
 .filter-option {
+    position: relative;
     padding: 2% 4%;
+    margin-bottom: 3%;
+}
+
+.filter-option>*:first-child {
+    margin-bottom: 5%;
+}
+
+.date-filter {
+    font-size: 1.25rem;
+    margin-left: 50%;
+    translate: -50% 0;
 }

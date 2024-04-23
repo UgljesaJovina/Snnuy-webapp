@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Enums;
+using Repositories.Filters;
 using Repositories.Models;
 using Services.DTOs;
 using Services.Interfaces;
@@ -25,9 +26,14 @@ namespace WebApi.Controllers
         [HttpGet("get-all-from-user/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ICollection<DeckDTO>> GetAll(Guid id) {
-            return await deckService.GetAllFromUser(id);
+            return await deckService.GetAll(id);
         }
 
+        [HttpGet("get-all-filtered")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ICollection<DeckDTO>> GetAll([FromQuery]DeckFilter filter) {
+            return await deckService.GetAll(filter);
+        }
         
         [HttpGet("get-latest-deck-otd")]
         [ProducesResponseType(StatusCodes.Status200OK)]

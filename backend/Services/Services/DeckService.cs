@@ -1,3 +1,4 @@
+using Repositories.Filters;
 using Repositories.Interfaces;
 using Repositories.Models;
 using Services.DTOs;
@@ -19,6 +20,11 @@ public class DeckService : IDeckService
         return (await deckRepo.GetAll()).Select(x => new DeckDTO(x)).ToList();
     }
 
+    public async Task<ICollection<DeckDTO>> GetAll(DeckFilter filter)
+    {
+        return (await deckRepo.GetAll(filter)).Select(x => new DeckDTO(x)).ToList();
+    }
+
     public async Task<ICollection<DeckOTDDTO>> GetAllDecksOTD()
     {
         return (await deckRepo.GetAllDecksOTD()).Select(x => new DeckOTDDTO(x)).ToList();
@@ -35,7 +41,7 @@ public class DeckService : IDeckService
         return new(await deckRepo.Create(deck));
     }
 
-    public async Task<ICollection<DeckDTO>> GetAllFromUser(Guid userId)
+    public async Task<ICollection<DeckDTO>> GetAll(Guid userId)
     {
         return (await deckRepo.GetAll(x => x.Id == userId)).Select(x => new DeckDTO(x)).ToList();
     }

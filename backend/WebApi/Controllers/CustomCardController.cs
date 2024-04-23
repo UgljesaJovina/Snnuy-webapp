@@ -55,6 +55,18 @@ public class CustomCardController: ControllerBase
         }
     }
 
+    [HttpGet("set-custom-card-otd/{cardId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(UserPermissions.SetCustomCardOfTheDay)]
+    public async Task<ActionResult<CustomCardOTD>> SetCustomCardOTD(Guid cardId) {
+        try {
+            return Ok(await cardService.SetCustomCardOTD(cardId, (UserAccount)HttpContext.Items["User"]!));
+        } catch(KeyNotFoundException ex) {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
     [HttpGet("get-all-cards-otd")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ICollection<CustomCardOTDDTO>> GetAllCardsOTD() {

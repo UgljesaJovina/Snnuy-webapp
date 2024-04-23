@@ -1,14 +1,16 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "../atoms";
-import { Navigate, useLocation } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { defaultUser } from "../types";
 
 const Account: React.FC = () => {
 
-    const user = useRecoilValue(userAtom);
+    const [user, setUser] = useRecoilState(userAtom);
     const [params] = useSearchParams();
+    const navigate = useNavigate();
 
     if (!user.id) return <Navigate replace to={`/login?from=${params.get("from") ?? "account"}`} />
     else params.delete("from");
@@ -17,7 +19,9 @@ const Account: React.FC = () => {
         <div>   
             <button onClick={e => {
                 const cookies = new Cookies();
-                cookies.remove("auth")
+                cookies.remove("auth");
+                setUser(defaultUser);
+                navigate("/login?from=account");
             }}>
                 LogOut</button>
         </div>

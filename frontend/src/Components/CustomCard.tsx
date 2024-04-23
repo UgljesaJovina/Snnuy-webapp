@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { TCustomCard } from "../types"
 import { baseUrl } from "../utils/GlobalVariables";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import { useRecoilValue } from "recoil";
 import { userAtom } from "../atoms";
 import { useCustomCardActions } from "../actions";
 
-const CustomCard: React.FC<{ card: TCustomCard }> = ({ card }) => {
+const CustomCard: React.FC<{ card: TCustomCard, style?: CSSProperties }> = ({ card, style }) => {
     const user = useRecoilValue(userAtom);
     const customCardActions = useCustomCardActions();
     const [liked, setLiked] = useState(user.likedCards.some(x => x === card.id));
@@ -24,7 +24,7 @@ const CustomCard: React.FC<{ card: TCustomCard }> = ({ card }) => {
     }
     
     return (
-        <div className="custom-card">
+        <div className="custom-card" style={style}>
             <img className="custom-card-image" src={`${baseUrl}public/CustomCards/${card.id}.png`} alt="" />
             <div className="custom-card-info">
                 <div className="creator-region">

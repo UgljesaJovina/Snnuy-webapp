@@ -60,4 +60,9 @@ public class CustomCardService : ICustomCardService
     public async Task<CustomCardDTO> ValidateCustomCard(Guid cardId, UserAccount account, bool approvalState) {
         return new(await cardRepo.ValidateCustomCard(cardId, account, approvalState));
     }
+
+    public async Task<CustomCardOTDDTO> SetCustomCardOTD(Guid id, UserAccount acc)
+    {
+        return new(await cardRepo.SetCustomCardOTD(id, acc));
+    }
 }

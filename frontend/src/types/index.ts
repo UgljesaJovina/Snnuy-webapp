@@ -6,3 +6,4 @@ export * from "./UserShortObject";
 export * from "./User";
 export * from "./CardFilters";
 export * from "./CardCreation";
+export * from "./DeckFilters";

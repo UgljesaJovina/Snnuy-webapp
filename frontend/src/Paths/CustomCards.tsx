@@ -18,8 +18,8 @@ const CustomCards: React.FC = () => {
 
     const [regions, setRegions] = useState<any[]>([]);
     const [types, setTypes] = useState<any[]>([]);
-    const [releasedBefore, setReleasedBefore] = useState<string>("");
-    const [releasedAfter, setReleasedAfter] = useState<string>("");
+    const [postedBefore, setReleasedBefore] = useState<string>("");
+    const [postedAfter, setReleasedAfter] = useState<string>("");
     const [byDate, setByDate] = useState<SortByDate[]>([SortByDate.Newest]);
     const [byPopularity, setByPopularity] = useState<SortByPopularity[]>([SortByPopularity.None]);
 
@@ -37,7 +37,7 @@ const CustomCards: React.FC = () => {
         cDiv.addEventListener("scrollend", scrollFunc);
 
         return () => cDiv.removeEventListener("scrollend", scrollFunc);
-    }, [cardsDiv.current]);
+    }, [cardsDiv.current, cards]);
 
     useEffect(() => {
         const f: TCardFilter = {
@@ -47,14 +47,14 @@ const CustomCards: React.FC = () => {
             type: types.length === 0 ? CardTypes.All : types.reduce((a, b) => a + b),
             byDate: byDate[0],
             byPopularity: byPopularity[0],
-            releasedBefore: !!releasedBefore ? new Date(releasedBefore) : undefined,
-            releasedAfter: !!releasedAfter ? new Date(releasedAfter) : undefined
+            postedBefore: !!postedBefore ? new Date(postedBefore) : undefined,
+            postedAfter: !!postedAfter ? new Date(postedAfter) : undefined
         }
 
         customCardActions.getAllFiltered(f).then(data => setCards(data)).catch(e => console.log(e));
         setFilters(f);
 
-    }, [regions, types, releasedBefore, releasedAfter, byDate, byPopularity]);
+    }, [regions, types, postedBefore, postedAfter, byDate, byPopularity]);
 
     return (
         <div className="custom-card-page">
@@ -109,11 +109,11 @@ const CustomCards: React.FC = () => {
                 </div>
                 <div className="filter-option">
                     <h2>Released before:</h2>
-                    <input type="date" onChange={e => setReleasedBefore(e.target.value)} />
+                    <input type="date" onChange={e => setReleasedBefore(e.target.value)} className="date-filter" />
                 </div>
                 <div className="filter-option">
                     <h2>Released after:</h2>
-                    <input type="date" onChange={e => setReleasedAfter(e.target.value)} />
+                    <input type="date" onChange={e => setReleasedAfter(e.target.value)} className="date-filter" />
                 </div>
                 <div className="filter-option">
                     <h2>Sort by date</h2>

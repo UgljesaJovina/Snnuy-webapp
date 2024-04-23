@@ -11,6 +11,7 @@ public interface ICustomCardService
     public Task<ICollection<CustomCardDTO>> GetAllCards(CardFilter filter);
     public Task<ICollection<CustomCardDTO>> GetAllNonValidated();
     public Task<CustomCardOTDDTO> GetLatestCardOfTheDay();
+    public Task<CustomCardOTDDTO> SetCustomCardOTD(Guid id, UserAccount acc);
     public Task<ICollection<CustomCardOTDDTO>> GetAllCardsOfTheDay();
     public Task<CardLikeRecord> LikeACard(Guid id, UserAccount account);
     public Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset);

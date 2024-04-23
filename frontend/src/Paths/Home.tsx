@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { CustomCardOTD } from "../components";
+import { CustomCard, CustomCardOTD } from "../components";
 import { useCustomCardActions } from "../actions";
 import { useRecoilValue } from "recoil";
 import { LatestCustomCardAtom } from "../atoms";
@@ -19,9 +19,9 @@ const Home: React.FC = () => {
                 <div>
                     <h2>Featured Card</h2>
                     <hr />
-                    <h4>A card made by Ugljesa Starcevic called Void Anomaly was chosen as the featured card for the day 10/3</h4>
+                    <h4>A card made by ' {card.card.owner.username} ' called ' {card.card.cardName} ' was chosen as the featured card for the day {new Date(card.settingDate).toLocaleDateString()}</h4>
                 </div>
-                <CustomCardOTD card={card} />
+                <CustomCard card={card.card} style={{width: "50%", marginBottom: "10%", marginLeft: "25%"}} />
                 <h1>*Deck*</h1>
                 <div>
                     <h2>Featured Deck</h2>

@@ -2,12 +2,13 @@ using Repositories.Enums;
 
 namespace Repositories.Filters;
 
-public record CardFilter {
+public class DeckFilter
+{
     public int Skip { get; set; } = 0;
     public int Take { get; set; } = 20;
+    public bool IncludeEternal { get; set; } = true;
     public CardRegions Regions { get; set; } = CardRegions.All;
-    public CardTypes Type { get; set; } = CardTypes.All;
-    public CustomCardApprovalState ApprovalState { get; set; } = CustomCardApprovalState.Approved;
+    public DeckType Types { get; set; } = DeckType.All;
     public DateTime? PostedBefore { get; set; }
     public DateTime? PostedAfter { get; set; }
     public SortByDate ByDate { get; set; } = SortByDate.Newest;
