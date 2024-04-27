@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../atoms";
-import { useUserActions } from "../actions";
 import Home from "../images/home.svg";
 import Cards from "../images/cards.svg";
 import DeckLib from "../images/deck-lib.svg";
@@ -30,7 +29,7 @@ const Sidebar: React.FC = () => {
                     <img src={DeckLib} />
                     <p className="hyperlink-text">Deck Library</p>
                 </NavLink>
-                <NavLink to={`/account`} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
+                <NavLink to={user.username ? `/account` : `/login?from=${loc.pathname}`} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
                     <FontAwesomeIcon icon={["far", "user"]} />
                     <p className="hyperlink-text">{user.username ? user.username : "Login"}</p>
                 </NavLink>

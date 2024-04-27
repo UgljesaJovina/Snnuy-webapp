@@ -51,7 +51,7 @@ function useCustomCardActions() {
     }
 
     async function getLatestCardOTD() {
-        return fwrapper.get({ url: baseUrl + "get-latest-card-otd" }).then(data => setLatestCC(data));
+        return fwrapper.get({ url: baseUrl + "get-latest-card-otd" }).then(data => { setLatestCC(data); return data; });
     }
 
     async function getAllCardsOTD() {

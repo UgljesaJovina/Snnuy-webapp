@@ -38,7 +38,7 @@ const Register: React.FC = () => {
 
         if (!usernameError && !passwordError) {
             setWaitingResponse(true);
-            userActions.register(username, password).then(data => navigate(params.get("from") ?? "/home")).catch(err => console.log(err)).finally(() => setWaitingResponse(false));
+            userActions.register(username, password).then(data => navigate(params.get("from") ?? "/home")).catch(err => alert(err)).finally(() => setWaitingResponse(false));
         } 
     }
 

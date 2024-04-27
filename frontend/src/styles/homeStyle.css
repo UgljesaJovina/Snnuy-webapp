@@ -8,13 +8,20 @@
 }
 
 .featured-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    column-gap: 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
     justify-content: center;
+    min-width: 800px;
     width: 60%;
     margin-bottom: 5%;
+}
+
+.featured-section> * {
+    flex: 1 1 0;
+    display: grid;
+    grid-template-columns: 3fr 5fr;
+    column-gap: 5%;
 }
 
 .featured-section hr {

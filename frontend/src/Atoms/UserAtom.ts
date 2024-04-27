@@ -2,7 +2,7 @@ import { atom } from "recoil";
 import { TUser, defaultUser } from "../types";
 
 const userAtom = atom<TUser>({
-    key: "users",
+    key: "user",
     default: defaultUser
 });
 

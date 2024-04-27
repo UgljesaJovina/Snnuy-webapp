@@ -38,7 +38,7 @@ const Login: React.FC = () => {
 
         if (!usernameError && !passwordError) {
             setWaitingResponse(true);
-            userActions.login(username, password).then(data => navigate(params.get("from") ?? "/home")).catch(err => console.log(err)).finally(() => setWaitingResponse(false));
+            userActions.login(username, password).then(data => navigate(params.get("from") ?? "/home")).catch(err => alert(err)).finally(() => setWaitingResponse(false));
         } 
     }
 

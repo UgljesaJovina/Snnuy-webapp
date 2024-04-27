@@ -15,6 +15,11 @@ const CustomCard: React.FC<{ card: TCustomCard, style?: CSSProperties }> = ({ ca
     const [liked, setLiked] = useState(user.likedCards.some(x => x === card.id));
     const [numberOfLikes, setNumberOfLikes] = useState(card.numberOfLikes);
 
+    useEffect(() => {
+        setNumberOfLikes(card.numberOfLikes);
+        setLiked(user.likedCards.some(x => x === card.id));
+    }, [card.numberOfLikes, user])
+    
     function like() {
         const currentLike = liked;
         const currentLikes = card.numberOfLikes;

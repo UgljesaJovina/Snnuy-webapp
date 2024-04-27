@@ -69,7 +69,7 @@ const CustomCards: React.FC = () => {
                         <FontAwesomeIcon icon={faPlus} className="create-svg" />
                         <button className="create-button">Create a Card</button>
                     </div>
-                    <hr style={{ width: "90%", marginTop: "20px" }} />
+                    <hr style={{ width: "90%", marginTop: "10px" }} />
                 </div>
                 <div className="filter-option">
                     <h2>Regions:</h2>
