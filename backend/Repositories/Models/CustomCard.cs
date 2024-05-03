@@ -19,10 +19,7 @@ public class CustomCard
     [MaxLength(500)]
     public string CardDescription { get; set; }
     // public string CardImageName { get; set; } koristicu id karte
-
-    public Stream FileSteam;
-    // Stream se dobije od IFormFile.GetReadableSteam() il tako nesto, treba da sluzi samo da kad dodje karta moze odmah da se zapise, razmislicu da uklonim polje skroz
-
+    public string CardImageName { get; set; }
     public CardRegions Regions { get; set; }
     public CardTypes Type { get; set; }
     public CustomCardApprovalState ApprovalState { get; set; }
@@ -36,10 +33,11 @@ public class CustomCard
 
     public CustomCard() { }
 
-    public CustomCard(string cardName, string cardDescription, CardRegions regions, CardTypes type, CustomCardApprovalState state, UserAccount owner) 
+    public CustomCard(string cardName, string cardDescription, string imagePath, CardRegions regions, CardTypes type, CustomCardApprovalState state, UserAccount owner) 
     {
         CardName = cardName;
         CardDescription = cardDescription;
+        CardImageName = imagePath;
         Regions = regions;
         Type = type;
         ApprovalState = state;

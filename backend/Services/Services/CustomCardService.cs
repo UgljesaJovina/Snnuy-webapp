@@ -8,13 +8,10 @@ using Repositories.Filters;
 
 namespace Services.Services;
 
-public class CustomCardService : ICustomCardService
+public class CustomCardService(ICustomCardRepo _cardRepo) : ICustomCardService
 {
-    private readonly ICustomCardRepo cardRepo;
-
-    public CustomCardService(ICustomCardRepo _cardRepo) {
-        cardRepo = _cardRepo;
-    }
+    private readonly ICustomCardRepo cardRepo = _cardRepo;
+    readonly string cardPath = Path.Combine("public", "CustomCards");
 
     public async Task<ICollection<CustomCardDTO>> GetAllCards()
     {
@@ -48,6 +45,9 @@ public class CustomCardService : ICustomCardService
     public async Task<CustomCardDTO> CreateCard(CustomCardCreationRequset requset)
     {
         if (requset.CardDescription.Length > 500 || requset.CardName.Length > 50) throw new ArgumentException("Card description or card name is too long!");
+
+        using var stream = File.Create(Path.Combine(cardPath, requset.CardImageName));
+        await requset.DataStream.CopyToAsync(stream);
 
        return new CustomCardDTO(await cardRepo.Create(requset.GetCustomCard()));
     }

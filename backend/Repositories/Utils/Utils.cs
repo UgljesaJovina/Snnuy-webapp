@@ -84,6 +84,13 @@ public static class Utils
         foreach (var i in enumerable)
             action(i);
     }
+    
+    public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T, int> action)
+    {
+        int k = 0;
+        foreach (var i in enumerable)
+            action(i, k++);
+    }
 
     public static object GetPropertyValue(this object obj, string propertyName) {
         return obj.GetType().GetProperty(propertyName).GetValue(obj);

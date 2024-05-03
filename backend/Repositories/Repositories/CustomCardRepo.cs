@@ -23,10 +23,8 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     public async override Task<CustomCard> GetById(Guid id) {
         CustomCard? card = await table
             .Include(x => x.LikedUsers)
-            .FirstOrDefaultAsync(x => x.Id == id);
-
-        if (card is null) throw new KeyNotFoundException("The card was not found in the database");
-
+            .FirstOrDefaultAsync(x => x.Id == id) 
+            ?? throw new KeyNotFoundException("The card was not found in the database");
         return card;
     }
 
@@ -55,24 +53,6 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         return cards.Skip(filter.Skip).Take(filter.Take).ToList();
     }
 
-    public async override Task<CustomCard> Create(CustomCard card)
-    {
-        if (card.FileSteam is null) throw new ArgumentException("The image was not readable");
-
-        await table.AddAsync(card);
-        
-        await SaveCard(card);
-        await SaveAsync();
-        return card;
-    }
-
-    async Task SaveCard(CustomCard card)
-    {
-        string fileName = card.Id.ToString() + ".png";
-        using var stream = File.Create(Utils.CUSTOM_CARD_PATH + fileName);
-        await card.FileSteam.CopyToAsync(stream);
-    }
-
     public async Task<CustomCardOTD> SetCustomCardOTD(Guid cardId, UserAccount? account = null, CustomCard? card = null)
     {
         card ??= await table.FindAsync(cardId);
@@ -95,9 +75,9 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 
     public async Task<CustomCard> ValidateCustomCard(Guid cardId, UserAccount account, bool approvalState)
     {
-        CustomCard? card = await table.FindAsync(cardId);
-        if (card is null) throw new KeyNotFoundException("That card was not found!");
-        
+        CustomCard? card = await table.FindAsync(cardId) 
+            ?? throw new KeyNotFoundException("That card was not found!");
+
         card.ApprovalState = approvalState ? CustomCardApprovalState.Approved : CustomCardApprovalState.Cancelled;
         await SaveAsync();
         return card;
@@ -110,8 +90,9 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 
     public async Task<CustomCardOTD> GetLatestCustomCardOTD()
     {
-        var card = await ctx.CustomCardsOTD.Include(x => x.Card).ThenInclude(x => x.LikedUsers).FirstOrDefaultAsync();
-        if (card is null) throw new KeyNotFoundException("There are no custom cards of the day");
+        var card = await ctx.CustomCardsOTD.Include(x => x.Card).ThenInclude(x => x.LikedUsers).FirstOrDefaultAsync() 
+            ?? throw new KeyNotFoundException("There are no custom cards of the day");
+            
         return card;
     }
 
@@ -123,7 +104,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
 
         if (card.LikedUsers.Contains(account)) { card.LikedUsers.Remove(account); ret = new(false, card.NumberOfLikes); }
         else { card.LikedUsers.Add(account); ret = new(true, card.NumberOfLikes); }
-        
+
         await SaveAsync();
         return ret;
     }
@@ -134,7 +115,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
             var cardOTDIds = ctx.CustomCardsOTD.Select(cotd => cotd.Card.Id);
             IEnumerable<CustomCard> cards = (await GetAll()).Where(c => !cardOTDIds.Contains(c.Id));
 
-            if (cards.Count() == 0) return;
+            if (!cards.Any()) return;
 
             CustomCard newCardOTD = cards.OrderBy(x => x.NumberOfLikes).First();
             await SetCustomCardOTD(newCardOTD.Id, card: newCardOTD);

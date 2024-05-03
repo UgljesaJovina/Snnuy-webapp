@@ -1,38 +1,50 @@
 using Repositories.Enums;
 using Repositories.Models;
+using Repositories.Utility;
 
 namespace Services.DTOs;
 
-public class DeckDTO
+public class DeckDTO(Guid id, string deckCode, string deckName, DateTime postingDate, bool standard, UserAccount? owner, DeckType type, CardRegions deckRegions,
+    int numberOfLikes, ICollection<DeckItem> deckContent)
 {
-    public Guid Id { get; set; }
-    public string DeckCode { get; set; }
-    public string DeckName { get; set; }
-    public DateTime PostingDate { get; set; }
-    public bool Standard { get; set; }
-    public UserShortObject? Owner { get; set; }
-    public string DeckType { get; set; }
-    public string DeckRegions { get; set; }
-    public int NumberOfLikes { get; set; }
-    public ICollection<string> Champions { get; set; }
+    public Guid Id { get; set; } = id;
+    public string DeckCode { get; set; } = deckCode;
+    public string DeckName { get; set; } = deckName;
+    public DateTime PostingDate { get; set; } = postingDate;
+    public bool Standard { get; set; } = standard;
+    public UserShortObject? Owner { get; set; } = owner is null ? null : new(owner);
+    public DeckType DeckType { get; set; } = type;
+    public CardRegions DeckRegions { get; set; } = deckRegions;
+    public int NumberOfLikes { get; set; } = numberOfLikes;
+    public ICollection<string> Champions { get; set; } = deckContent.Where(x => x.Card.Rarity == CardRarity.Champion).Select(x => x.Card.CardName).ToList();
+    public Dictionary<CardRegions, int> RegionCardCount { get {
+        Dictionary<CardRegions, int> dict = [];
+        List<Card> trackedCards = [];
 
-    public DeckDTO() { }
-    
-    public DeckDTO(Guid id, string deckCode, string deckName, DateTime postingDate, bool standard, UserAccount? owner, DeckType type, CardRegions deckRegions, 
-        int numberOfLikes, ICollection<DeckItem> deckContent) 
-    {
-        Id = id;
-        DeckCode = deckCode;
-        DeckName = deckName;
-        PostingDate = postingDate;
-        Standard = standard;
-        Owner = owner is null ? null : new(owner);
-        DeckType = type.ToString();
-        DeckRegions = deckRegions.ToString();
-        NumberOfLikes = numberOfLikes;
-        Champions = deckContent.Where(x => x.Card.Rarity == CardRarity.Champion).Select(x => x.Card.CardName).ToList();
-    }
+        for (int i = 1; i < (int)DeckRegions; i <<= 1)
+            if ((i & (int)DeckRegions) != 0) dict.Add((CardRegions)i, 0);
+            
+        foreach(var i in dict)
+            foreach (var k in deckContent)
+                if ((i.Key & k.Card.Regions) != 0 && !trackedCards.Contains(k.Card)) {
+                    dict[i.Key] += k.Count;
+                    trackedCards.Add(k.Card);
+                }
+        
+        if (dict.Count > 2 && dict.ContainsKey(CardRegions.Runeterra)) {
+            CardRegions biggestRegion = dict.MaxBy(x => x.Value).Key;
+            dict.ForEach(x => {
+                if (((biggestRegion | CardRegions.Runeterra) & x.Key) == 0) {
+                    dict[CardRegions.Runeterra] += dict[x.Key];
+                    dict[x.Key] = 0;
+                }
+            });
+            dict.Where(x => x.Value == 0).ForEach(x => dict.Remove(x.Key));
+        }
+        
+        return dict;
+    }}
 
-    public DeckDTO(Deck deck) :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, deck.Type, deck.DeckRegions, deck.NumberOfLikes, deck.DeckContent)
-        { }
+    public DeckDTO(Deck deck): this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard,
+        deck.OwnerAccount, deck.Type, deck.DeckRegions, deck.NumberOfLikes, deck.DeckContent) { }
 }

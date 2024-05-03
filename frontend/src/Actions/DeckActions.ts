@@ -7,6 +7,13 @@ export const useDeckActions = () => {
     const fwrapper = useFetchWrapper();
     // const setLatestDeck = useSetRecoilState(LatestDeckAtom)
 
+    return {
+        getAll,
+        getAllFiltered,
+        postADeck,
+        likeADeck
+    }
+
     function getAll() {
         return fwrapper.get({ url: baseUrl + "get-all" });
     }
@@ -29,5 +36,9 @@ export const useDeckActions = () => {
 
     function postADeck(props: TDeckCreation) {
         return fwrapper.post({ url: baseUrl + "create-a-deck", body: props, reqAuth: true });
+    }
+
+    function likeADeck(id: string) {
+        return fwrapper.put({ url: baseUrl + `like-a-deck/${id}`, reqAuth: true });
     }
 }

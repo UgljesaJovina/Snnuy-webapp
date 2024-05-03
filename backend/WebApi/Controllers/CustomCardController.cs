@@ -91,6 +91,8 @@ public class CustomCardController: ControllerBase
     [Authorize(UserPermissions.SubmitCustomCard)]
     public async Task<ActionResult<CustomCardDTO>> CreateACard([FromForm]CustomCardExtendedRequest request) {
         try {
+            string imageName = Guid.NewGuid().ToString() + Path.GetExtension(request.ImageFile.FileName);
+            request.CardImageName = imageName;
             request.DataStream = request.ImageFile.OpenReadStream();
             request.Owner = (UserAccount)HttpContext.Items["User"]!;
             return Ok(await cardService.CreateCard(request));

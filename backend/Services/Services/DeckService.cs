@@ -6,14 +6,9 @@ using Services.Interfaces;
 
 namespace Services.Services;
 
-public class DeckService : IDeckService
+public class DeckService(IDeckRepo _deckRepo) : IDeckService
 {
-    private readonly IDeckRepo deckRepo;
-
-    public DeckService(IDeckRepo _deckRepo)
-    {
-        deckRepo = _deckRepo;
-    }
+    private readonly IDeckRepo deckRepo = _deckRepo;
 
     public async Task<ICollection<DeckDTO>> GetAll()
     {

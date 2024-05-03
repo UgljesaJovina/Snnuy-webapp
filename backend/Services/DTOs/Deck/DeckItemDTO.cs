@@ -12,9 +12,9 @@ public class DeckItemDTO
     public int HealthValue { get; set; } 
     public string CardImageLink { get; set; }
     public bool Standard { get; set; }
-    public string Regions { get; set; }
-    public string Type { get; set; }
-    public int Rarity { get; set; }
+    public CardRegions Regions { get; set; }
+    public CardTypes Type { get; set; }
+    public CardRarity Rarity { get; set; }
 
     public DeckItemDTO() { }
 
@@ -26,9 +26,9 @@ public class DeckItemDTO
         HealthValue = healthValue;
         CardImageLink = cardImageLink;
         Standard = standard;
-        Regions = regions.ToString();
-        Type = type.ToString();
-        Rarity = (int)rarity;
+        Regions = regions;
+        Type = type;
+        Rarity = rarity;
     }
 
     public DeckItemDTO(DeckItem item) :this(item.Count, item.Card.CardName, item.Card.ManaCost, item.Card.AttackPower, item.Card.HealthValue, item.Card.CardImageLink,

@@ -13,9 +13,9 @@ public class DeckDetailedDTO
     public UserShortObject Owner { get; set; }
     public int NumberOfLikes { get; set; }
     public ICollection<DeckItemDTO> DeckContent { get; set; }
-    public string DeckType { get; set; }
-    public string DeckRegions { get; set; }
-    public int DeckCost { get { return DeckContent.Select(x => x.Rarity).Sum(); }}
+    public DeckType DeckType { get; set; }
+    public CardRegions DeckRegions { get; set; }
+    public int DeckCost { get { return DeckContent.Select(x => x.Rarity).Sum(x => (int)x); }}
 
     public DeckDetailedDTO() { }
 
@@ -28,8 +28,8 @@ public class DeckDetailedDTO
         Owner = owner is null ? null : new(owner);
         NumberOfLikes = numberOfLikes;
         DeckContent = deckContent.Select(x => new DeckItemDTO(x)).ToList();
-        DeckRegions = deckRegions.ToString();
-        DeckType = type.ToString();
+        DeckRegions = deckRegions;
+        DeckType = type;
     }
 
     public DeckDetailedDTO(Deck deck) :this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard, deck.OwnerAccount, deck.NumberOfLikes, deck.DeckContent, deck.DeckRegions, deck.Type) { }

@@ -9,8 +9,6 @@ public class DeckOTDDTO : DeckDTO
     public bool SetAutomatically { get; set; }
     public UserShortObject? SettingUser { get; set; }
 
-    public DeckOTDDTO() { }
-
     public DeckOTDDTO(Guid id, string deckCode, string deckName, DateTime postingDate, bool standard, UserAccount? owner, DeckType type, CardRegions deckRegions, 
         int numberOfLikes, ICollection<DeckItem> deckContent, DateTime settingDate, bool setAutomatically, UserAccount? settingUser)
         :base(id, deckCode, deckName, postingDate, standard, owner, type, deckRegions, numberOfLikes, deckContent) 

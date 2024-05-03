@@ -3,7 +3,7 @@ import {  } from "../types"
 
 const Deck: React.FC = () => {
     return (
-        <div>   
+        <div>
             
         </div>
     );

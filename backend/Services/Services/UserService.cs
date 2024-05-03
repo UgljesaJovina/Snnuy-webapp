@@ -9,19 +9,13 @@ using Services.Utility.JWT;
 
 namespace Services.Services;
 
-public class UserService : IUserService
+public class UserService(IUserRepo _userRepo, IJwtGenerator _jwtGenerator, IPasswordHasher _passwordHashser) : IUserService
 {
-    private readonly IUserRepo userRepo;
-    private readonly IJwtGenerator jwtGenerator;
-    private readonly IPasswordHasher passwordHasher;
+    private readonly IUserRepo userRepo = _userRepo;
+    private readonly IJwtGenerator jwtGenerator = _jwtGenerator;
+    private readonly IPasswordHasher passwordHasher = _passwordHashser;
 
     readonly string usernameMatch = @"^[a-zA-Z0-9_\.]+$";
-
-    public UserService(IUserRepo _userRepo, IJwtGenerator _jwtGenerator, IPasswordHasher _passwordHashser) {
-        userRepo = _userRepo;
-        jwtGenerator = _jwtGenerator;
-        passwordHasher = _passwordHashser;
-    }
 
     public async Task<LoginResponse> Authenticate(AuthenticationRequest request)
     {
