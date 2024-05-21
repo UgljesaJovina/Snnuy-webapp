@@ -14,7 +14,7 @@ function useFetchWrapper() {
     };
 
     function request(method: string) {
-        return (req: TRequestType) => {
+        return async (req: TRequestType) => {
             const reqOptions: { method: string, headers: any, body?: string } = {
                 method,
                 headers: setAuth(req.reqAuth)
@@ -35,7 +35,7 @@ function useFetchWrapper() {
         return !token ? { } : { Authorization: `Bearer ${token}` };
     }
 
-    function handleResponse(response: Response) {
+    async function handleResponse(response: Response) {
         if (response.status === 204) return Promise.resolve();
 
         return response.json().then(data => {

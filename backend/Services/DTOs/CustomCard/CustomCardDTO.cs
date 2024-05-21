@@ -3,7 +3,8 @@ using Repositories.Models;
 
 namespace Services.DTOs;
 
-public class CustomCardDTO(Guid id, string cardName, string cardDescription, string imagePath, DateTime postingDate, UserAccount? owner, CardRegions regions, CardTypes type, CustomCardApprovalState state, int numberOfLikes)
+public class CustomCardDTO(Guid id, string cardName, string cardDescription, string imagePath, DateTime postingDate,
+    UserAccount? owner, CardRegions regions, CardTypes type, CustomCardApprovalState state, int numberOfLikes)
 {
     public Guid Id { get; set; } = id;
     public string CardName { get; set; } = cardName;

@@ -14,7 +14,7 @@ public class Deck
     [MaxLength(50)]
     public string DeckName { get; set; }
     public DateTime PostingDate { get; set; } = DateTime.Now;
-    public UserAccount? OwnerAccount { get; set; }
+    public UserAccount OwnerAccount { get; set; }
     ICollection<DeckItem> deckContent;
     
     [NotMapped]
@@ -31,15 +31,19 @@ public class Deck
         } 
     }
     CardRegions deckRegions = CardRegions.None;
-    [NotMapped] // nalazim sve karte koje imaju samo jedan region, i onda postavljam njihove regione kao regione deka, malo glupo al jbg
+    [NotMapped] 
     public CardRegions DeckRegions { get {
         if (deckRegions == CardRegions.None)
-            DeckContent.ForEach(x => deckRegions |= x.Card.Regions);
+            DeckContent.ForEach(x => {
+                    if ((x.Card.Regions & (x.Card.Regions - 1)) == 0)
+                        deckRegions |= x.Card.Regions;
+                }
+            );
         return deckRegions;
     } }
     public DeckType Type { get; set; }
     public int NumberOfLikes { get; set; } = 0;
-    public ICollection<UserAccount> LikedUsers { get; set; } = new List<UserAccount>();
+    public ICollection<UserAccount> LikedUsers { get; set; } = [];
 
     public Deck() { }
 

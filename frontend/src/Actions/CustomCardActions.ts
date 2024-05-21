@@ -17,7 +17,6 @@ function useCustomCardActions() {
         getLatestCardOTD,
         getAllCardsOTD,
         likeACard,
-        // createACard,
         validateACard
     }
 

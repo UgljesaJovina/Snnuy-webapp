@@ -6,10 +6,10 @@ import { useRef } from "react";
 import Cookies from "universal-cookie";
 
 function useUserActions() {
-    const baseUrl = "user/"
+    const baseUrl = "user/";
+    const fwrapper = useFetchWrapper();
     const [user, setUser] = useRecoilState(userAtom);
     const [auth, setAuth] = useRecoilState(authAtom);
-    const fwrapper = useFetchWrapper();
     const cookies = useRef(new Cookies());
 
     return {
@@ -44,7 +44,7 @@ function useUserActions() {
     }
 
     async function getById(id: string) {
-        
+        return fwrapper.get({ url: baseUrl + `get-by-id/${id}` });
     }
 
     async function getMyInfo() {

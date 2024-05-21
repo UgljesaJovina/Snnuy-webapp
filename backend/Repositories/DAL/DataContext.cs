@@ -9,7 +9,6 @@ public class DataContext : DbContext {
     public DbSet<UserAccount> UserAccounts { get; set; }
     public DbSet<CustomCard> CustomCards { get; set; }
     public DbSet<CustomCardOTD> CustomCardsOTD { get; set; }
-    // public DbSet<Card> Cards { get; set; }
     public DbSet<Deck> Decks { get; set; }
     public DbSet<DeckOTD> DecksOTD { get; set; }
 
@@ -32,7 +31,5 @@ public class DataContext : DbContext {
         builder.Entity<Deck>().Navigation(x => x.OwnerAccount).AutoInclude();
         builder.Entity<DeckOTD>().Navigation(x => x.Deck).AutoInclude();
         builder.Entity<DeckOTD>().Navigation(x => x.DeckSetter).AutoInclude();
-
-        // TODO: OVE AUTO-INCLUDEOVE POPRAVITI AKO POSTANU PROBLEM
     }
 }

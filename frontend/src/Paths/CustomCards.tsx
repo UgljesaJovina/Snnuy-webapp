@@ -39,22 +39,22 @@ const CustomCards: React.FC = () => {
         return () => cDiv.removeEventListener("scrollend", scrollFunc);
     }, [cardsDiv.current, cards]);
 
-    useEffect(() => {
-        const f: TCardFilter = {
-            skip: 0,
-            take: 20,
-            regions: regions.length === 0 ? CardRegions.All : regions.reduce((a, b) => a + b),
-            type: types.length === 0 ? CardTypes.All : types.reduce((a, b) => a + b),
-            byDate: byDate[0],
-            byPopularity: byPopularity[0],
-            postedBefore: !!postedBefore ? new Date(postedBefore) : undefined,
-            postedAfter: !!postedAfter ? new Date(postedAfter) : undefined
-        }
+useEffect(() => {
+    const f: TCardFilter = {
+        skip: 0,
+        take: 20,
+        regions: regions.length === 0 ? CardRegions.All : regions.reduce((a, b) => a + b),
+        type: types.length === 0 ? CardTypes.All : types.reduce((a, b) => a + b),
+        byDate: byDate[0],
+        byPopularity: byPopularity[0],
+        postedBefore: !!postedBefore ? new Date(postedBefore) : undefined,
+        postedAfter: !!postedAfter ? new Date(postedAfter) : undefined
+    }
 
-        customCardActions.getAllFiltered(f).then(data => setCards(data)).catch(e => console.log(e));
-        setFilters(f);
+    customCardActions.getAllFiltered(f).then(data => setCards(data)).catch(e => console.log(e));
+    setFilters(f);
 
-    }, [regions, types, postedBefore, postedAfter, byDate, byPopularity]);
+}, [regions, types, postedBefore, postedAfter, byDate, byPopularity]);
 
     return (
         <div className="custom-card-page">
