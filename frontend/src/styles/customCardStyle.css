@@ -8,23 +8,18 @@
     gap: 3%;
 }
 
-.custom-card-page>* {
-    outline: 1px white solid;
-}
-
 .custom-card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 240px);
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     justify-content: center;
     width: 100%;
+    font-size: 1.1rem;
 }
 
 .custom-card {
     width: 100%;
     height: auto;
-    background-color: var(--custom-card-color);
-    border-radius: 10px;
+    border: 1px white dashed;
     padding-top: 3%;
 }
 
@@ -32,6 +27,15 @@
     margin-left: 5%;
     width: 90%;
     aspect-ratio: 680 / 1024;
+    border-radius: 5px;
+}
+
+.card-name {
+    text-align: center;
+    margin-bottom: 10px;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    overflow: hidden;
 }
 
 .custom-card-info {

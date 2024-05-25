@@ -36,7 +36,11 @@ builder.Services.AddSwaggerGen();
 
     builder.Services.AddDbContext<DataContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        x => x.MigrationsAssembly("Repositories"))
+            x => { 
+                x.MigrationsAssembly("Repositories"); 
+                x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+            }
+        )
     );
 
 #endregion

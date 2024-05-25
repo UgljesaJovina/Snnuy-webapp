@@ -10,7 +10,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         ccActions.getLatestCardOTD().catch(err => console.log(err));
-    }, []);
+    });
 
     return (
         <div className="home-page-container">
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
                     <div>
                         <h2>Featured Card</h2>
                         <hr />
-                        <h4>A card made by <u>{card.card.owner.username}</u> called <u>{card.card.cardName}</u> was chosen as the featured card for the day {new Date(card.settingDate).toLocaleDateString()}</h4>
+                        <p>A card made by <u>{card.card.owner.username}</u> called <u>{card.card.cardName}</u> was chosen as the featured card for the day {new Date(card.settingDate).toLocaleDateString()}</p>
                     </div>
                     <CustomCard card={card.card} style={{width: "50%", marginBottom: "10%", marginLeft: "25%"}} />
                 </div>
@@ -28,7 +28,7 @@ const Home: React.FC = () => {
                     <div>
                         <h2>Featured Deck</h2>
                         <hr />
-                        <h4>A card made by Ugljesa Starcevic called Void Anomaly was chosen as the featured deck for the day 10/3</h4>
+                        <p>A card made by Ugljesa Starcevic called Void Anomaly was chosen as the featured deck for the day 10/3</p>
                     </div>
                 </div>
                 <div>

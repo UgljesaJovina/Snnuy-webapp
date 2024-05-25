@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 import { authAtom } from "../atoms";
 import { TCustomCard } from "../types";
 
-const CardCreateModal: React.FC<{ setCards: Dispatch<SetStateAction<TCustomCard[]>> }> = ({ setCards }) => {
+const CardCreateModal: React.FC<{ setCards: Dispatch<SetStateAction<TCustomCard[]>>, setOpen: Dispatch<boolean> }> = ({ setCards, setOpen }) => {
     const [file, setFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | ArrayBuffer | null>(null);
     const iconBase = baseUrl + "public/regionicons/";
@@ -40,7 +40,7 @@ const CardCreateModal: React.FC<{ setCards: Dispatch<SetStateAction<TCustomCard[
         
 
         fetch("http://localhost:5016/customcard/create-a-card", { method: "POST", body: formData, headers: {Authorization: `Bearer ${auth}`} })
-        .then(x => x.json()).then(x => setCards(curr => [x, ...curr])).catch(x => alert(x));
+        .then(x => x.json()).then(x => { setCards(curr => [x, ...curr]); setOpen(false) }).catch(x => alert(x));
 
         // createACard({
         //     cardName: nameRef.current!.value,

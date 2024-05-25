@@ -2,15 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { useCustomCardActions } from "../actions";
 import { TCardFilter, TCustomCard } from "../types";
 import { CardCreateModal, CustomCard, Dropdown, DropdownButton, DropdownContent, DropdownItem, DropdownList, Modal } from "../components";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { baseUrl } from "../utils/GlobalVariables";
 import { CardRegions, CardTypes, SortByDate, SortByPopularity } from "../enums";
 
 const CustomCards: React.FC = () => {
-    const user = useRecoilValue(userAtom);
     const customCardActions = useCustomCardActions();
     const [cards, setCards] = useState<TCustomCard[]>([]);
     const [filters, setFilters] = useState<TCardFilter>({ skip: 0, take: 20 });
@@ -37,24 +34,24 @@ const CustomCards: React.FC = () => {
         cDiv.addEventListener("scrollend", scrollFunc);
 
         return () => cDiv.removeEventListener("scrollend", scrollFunc);
-    }, [cardsDiv.current, cards]);
+    }, [cardsDiv.current, cards, customCardActions, filters]);
 
-useEffect(() => {
-    const f: TCardFilter = {
-        skip: 0,
-        take: 20,
-        regions: regions.length === 0 ? CardRegions.All : regions.reduce((a, b) => a + b),
-        type: types.length === 0 ? CardTypes.All : types.reduce((a, b) => a + b),
-        byDate: byDate[0],
-        byPopularity: byPopularity[0],
-        postedBefore: !!postedBefore ? new Date(postedBefore) : undefined,
-        postedAfter: !!postedAfter ? new Date(postedAfter) : undefined
-    }
+    useEffect(() => {
+        const f: TCardFilter = {
+            skip: 0,
+            take: 20,
+            regions: regions.length === 0 ? CardRegions.All : regions.reduce((a, b) => a + b),
+            type: types.length === 0 ? CardTypes.All : types.reduce((a, b) => a + b),
+            byDate: byDate[0],
+            byPopularity: byPopularity[0],
+            postedBefore: !!postedBefore ? new Date(postedBefore) : undefined,
+            postedAfter: !!postedAfter ? new Date(postedAfter) : undefined
+        }
 
-    customCardActions.getAllFiltered(f).then(data => setCards(data)).catch(e => console.log(e));
-    setFilters(f);
+        customCardActions.getAllFiltered(f).then(data => setCards(data)).catch(e => console.log(e));
+        setFilters(f);
 
-}, [regions, types, postedBefore, postedAfter, byDate, byPopularity]);
+    }, [regions, types, postedBefore, postedAfter, byDate, byPopularity, customCardActions]);
 
     return (
         <div className="custom-card-page">
@@ -142,7 +139,7 @@ useEffect(() => {
                 </div>
             </div>
             <Modal isOpen={creationModal} setOpen={setCreationModal}>
-                <CardCreateModal setCards={setCards} />
+                <CardCreateModal setCards={setCards} setOpen={setCreationModal} />
             </Modal>
         </div>
     );

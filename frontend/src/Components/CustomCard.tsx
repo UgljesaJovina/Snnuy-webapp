@@ -30,8 +30,9 @@ const CustomCard: React.FC<{ card: TCustomCard, style?: CSSProperties }> = ({ ca
     
     return (
         <div className="custom-card" style={style}>
-            <img className="custom-card-image" src={`${baseUrl}public/CustomCards/${card.id}.png`} alt="" />
+            <img className="custom-card-image" src={`${baseUrl}public/CustomCards/${card.cardImagePath}`} alt="" />
             <div className="custom-card-info">
+                <p className="card-name">{card.cardName}</p>
                 <div className="creator-region">
                     <p className="created-by">Created by:</p>
                     <Link to={`/users/${card.owner.id}`} className="owner-name">{card.owner.username}</Link>

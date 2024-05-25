@@ -69,6 +69,7 @@ body {
     --link-color: #40C4FF;
     --button-color: #FFAB91;
     --border-color: #333333;
+    --dropdown-color: ;
 }
 
 #tracking-circle {
@@ -92,10 +93,10 @@ input, textarea, button {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    justify-content: center;
     min-width: 15rem;
     width: 15%;
     height: 100vh;
-    padding: 2% 0 0;
     background-color: var(--sidebar-color);
     color: var(--text-color);
     transition: min-width .35s, width .35s;
@@ -143,10 +144,14 @@ input, textarea, button {
     margin: 0 10px 0;
 }
 
+.hyperlink:first-of-type,
+.collapse-button {
+    margin-top: auto;
+}
+
 .collapse-button {
     background-color: transparent;
     border: none;
-    margin-top: auto;
     padding: 0;
 }
 
