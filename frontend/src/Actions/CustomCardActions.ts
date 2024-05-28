@@ -1,13 +1,14 @@
 import { useSetRecoilState } from "recoil";
 import { useFetchWrapper } from "../utils/FetchWrapper"
-import { LatestCustomCardAtom } from "../atoms";
-import { TCardCreation, TCardFilter } from "../types";
+import { LatestCustomCardAtom, userAtom } from "../atoms";
+import { TCardFilter } from "../types";
 
 
 function useCustomCardActions() {
     const baseUrl = "customcard/";
     const fwrapper = useFetchWrapper();
     const setLatestCC = useSetRecoilState(LatestCustomCardAtom);
+    const setUser = useSetRecoilState(userAtom);
 
     return {
         getAll,
@@ -33,7 +34,7 @@ function useCustomCardActions() {
 
         for (const [key, value] of Object.entries(filters)) {
             if (value !== undefined) {
-                if (key === 'releasedBefore' || key === 'releasedAfter') {
+                if (key === 'postedBefore' || key === 'postedAfter') {
                     activeFilters.push(`${key}=${(value as Date).toISOString()}`);
                 } else {
                     activeFilters.push(`${key}=${value}`);
@@ -58,27 +59,14 @@ function useCustomCardActions() {
     }
 
     async function likeACard(id: string) {
-        return fwrapper.patch({ url: baseUrl + `like-a-card/${id}`, reqAuth: true });
+        return fwrapper.patch({ url: baseUrl + `like-a-card/${id}`, reqAuth: true })
+        .then(data => {
+            if (data.liked) setUser(curr => ({ ...curr, likedCards: [...curr.likedCards, data.id] }));
+            else setUser(curr => ({ ...curr, likedCards: [...curr.likedCards.filter(x => x != data.id)] }));
+
+            return data;
+        });
     }
-
-    // async function createACard(props: TCardCreation) { 
-    //     /*
-    //         public string CardName { get; set; }
-    //         public string CardDescription { get; set; }
-    //         public CardTypes CardType { get; set; } 
-    //         public Stream DataStream;
-    //         public UserAccount Owner;
-    //         public IFormFile ImageFile { get; set; }
-    //     */ 
-
-    //     const formData = new FormData();
-
-    //     return fwrapper.post({ url: baseUrl + "create-a-card", reqAuth: true, body: props,  })
-
-    //     // createACard
-    //     // body: props, multipart/form
-    //     // req auth
-    // }
 
     async function validateACard(id: string, state: boolean) {
         // validateACard/id?state

@@ -28,20 +28,22 @@ const CustomCards: React.FC = () => {
         if (!cDiv) return;
 
         const scrollFunc = (e: Event) => {
-            customCardActions.getAllFiltered({...filters, skip: cards.length, take: cards.length + 20}).then(data => setCards(curr => [...curr, ...data])).catch(e => console.log(e))
+            const isAtBottom = cDiv.scrollTop + cDiv.clientHeight >= cDiv.scrollHeight;
+            if (isAtBottom)
+                customCardActions.getAllFiltered({ ...filters, skip: cards.length, take: cards.length + 20 }).then(data => setCards(curr => [...curr, ...data])).catch(e => console.log(e))
         }
 
-        cDiv.addEventListener("scrollend", scrollFunc);
+        cDiv.addEventListener("scroll", scrollFunc);
 
-        return () => cDiv.removeEventListener("scrollend", scrollFunc);
-    }, [cardsDiv.current, cards, customCardActions, filters]);
+        return () => cDiv.removeEventListener("scroll", scrollFunc);
+    }, [cardsDiv.current, cards, filters]);
 
     useEffect(() => {
         const f: TCardFilter = {
             skip: 0,
             take: 20,
             regions: regions.length === 0 ? CardRegions.All : regions.reduce((a, b) => a + b),
-            type: types.length === 0 ? CardTypes.All : types.reduce((a, b) => a + b),
+            cardTypes: types.length === 0 ? CardTypes.All : types.reduce((a, b) => a + b),
             byDate: byDate[0],
             byPopularity: byPopularity[0],
             postedBefore: !!postedBefore ? new Date(postedBefore) : undefined,
@@ -50,8 +52,7 @@ const CustomCards: React.FC = () => {
 
         customCardActions.getAllFiltered(f).then(data => setCards(data)).catch(e => console.log(e));
         setFilters(f);
-
-    }, [regions, types, postedBefore, postedAfter, byDate, byPopularity, customCardActions]);
+    }, [regions, types, postedBefore, postedAfter, byDate, byPopularity]);
 
     return (
         <div className="custom-card-page">
@@ -74,14 +75,14 @@ const CustomCards: React.FC = () => {
                         <DropdownButton>Card regions</DropdownButton>
                         <DropdownContent>
                             <DropdownList>
-                                <DropdownItem name="Bandle City" value={1}><img alt="" src={iconBase + "bandlecity.png"} />Bandle City</DropdownItem>
+                                <DropdownItem name="Bandle City" value={1}><img alt="" src={iconBase + "bandle_city.png"} />Bandle City</DropdownItem>
                                 <DropdownItem name="Bilgewater" value={2}><img alt="" src={iconBase + "bilgewater.png"} />Bilgewater</DropdownItem>
                                 <DropdownItem name="Demacia" value={4}><img alt="" src={iconBase + "demacia.png"} />Demacia</DropdownItem>
                                 <DropdownItem name="Freljord" value={8}><img alt="" src={iconBase + "freljord.png"} />Feljord</DropdownItem>
                                 <DropdownItem name="Ionia" value={16}><img alt="" src={iconBase + "ionia.png"} />Ionia</DropdownItem>
                                 <DropdownItem name="Noxus" value={32}><img alt="" src={iconBase + "noxus.png"} />Noxus</DropdownItem>
-                                <DropdownItem name="P & Z" value={64}><img alt="" src={iconBase + "piltoverzaun.png"} />Piltover & Zaun</DropdownItem>
-                                <DropdownItem name="Shadow Isles" value={128}><img alt="" src={iconBase + "shadowisles.png"} />Shadow Isles</DropdownItem>
+                                <DropdownItem name="Piltover & Zaun" value={64}><img alt="" src={iconBase + "pnz.png"} />Piltover & Zaun</DropdownItem>
+                                <DropdownItem name="Shadow Isles" value={128}><img alt="" src={iconBase + "shadow_isles.png"} />Shadow Isles</DropdownItem>
                                 <DropdownItem name="Shurima" value={256}><img alt="" src={iconBase + "shurima.png"} />Shurima</DropdownItem>
                                 <DropdownItem name="Targon" value={512}><img alt="" src={iconBase + "targon.png"} />Targon</DropdownItem>
                                 <DropdownItem name="Runterra" value={1024}><img alt="" src={iconBase + "runeterra.png"} />Runeterra</DropdownItem>
@@ -105,11 +106,11 @@ const CustomCards: React.FC = () => {
                     </Dropdown>
                 </div>
                 <div className="filter-option">
-                    <h2>Released before:</h2>
+                    <h2>Posted before:</h2>
                     <input type="date" onChange={e => setReleasedBefore(e.target.value)} className="date-filter" />
                 </div>
                 <div className="filter-option">
-                    <h2>Released after:</h2>
+                    <h2>Posted after:</h2>
                     <input type="date" onChange={e => setReleasedAfter(e.target.value)} className="date-filter" />
                 </div>
                 <div className="filter-option">

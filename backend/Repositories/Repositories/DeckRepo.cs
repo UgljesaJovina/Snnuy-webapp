@@ -22,10 +22,11 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
 
     public override async Task<Deck> GetById(Guid id)
     {
-        Deck? deck = await table.FindAsync(id);
-
-        if (deck is null) throw new KeyNotFoundException();
-
+        Deck? deck = await table
+            .Include(x => x.LikedUsers)
+            .FirstOrDefaultAsync(x => x.Id == id) 
+            ?? throw new KeyNotFoundException();
+            
         return deck;
     }
 
@@ -36,7 +37,7 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
         if (filter.PostedBefore is not null) decks = decks.Where(d => d.PostingDate < filter.PostedBefore);
 
         decks = decks.Where(d => (d.DeckRegions & filter.Regions) != 0);
-        decks = decks.Where(d => (d.Type & filter.Types) != 0);
+        decks = decks.Where(d => (d.Type & filter.DeckTypes) != 0);
 
         if (!filter.IncludeEternal) decks = decks.Where(d => d.Standard);
 
@@ -73,8 +74,9 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
 
     public async Task<DeckOTD> GetLatestDeckOTD()
     {
-        var deck = await ctx.DecksOTD.FirstOrDefaultAsync();
-        if (deck is null) throw new KeyNotFoundException("There are no decks of the day");
+        var deck = await ctx.DecksOTD.Include(x => x.Deck).ThenInclude(x => x.LikedUsers).FirstOrDefaultAsync()
+        ?? throw new KeyNotFoundException("There are no decks of the day");
+
         return deck;
     }
 
@@ -83,14 +85,17 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
         return await ctx.DecksOTD.ToListAsync();
     }
 
-    public async Task LikeADeck(Guid id, UserAccount account) {
-        Deck? deck = await table.FindAsync(id);
-        if (deck is null) throw new KeyNotFoundException("The deck was not found");
+    public async Task<DeckLikeRecord> LikeADeck(Guid id, UserAccount account) {
+        Deck? deck = await table.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == id) ?? throw new KeyNotFoundException("The deck was not found");
 
-        if (deck.LikedUsers.Contains(account)) { deck.LikedUsers.Remove(account); deck.NumberOfLikes -= 1; }
-        else { deck.LikedUsers.Add(account); deck.NumberOfLikes += 1; }
+        DeckLikeRecord ret;
+
+        if (deck.LikedUsers.Contains(account)) { deck.LikedUsers.Remove(account); ret = new(deck.Id, false, deck.NumberOfLikes); }
+        else { deck.LikedUsers.Add(account); ret = new(deck.Id, true, deck.NumberOfLikes); }
 
         await SaveAsync();
+
+        return ret;
     }
 
     private async void AutomaticDeckSet(object? sender, ElapsedEventArgs e)
@@ -99,7 +104,7 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
             var deckOTDIds = ctx.DecksOTD.Select(dotd => dotd.Deck.Id);
             IEnumerable<Deck> decks = (await GetAll()).Where(d => !deckOTDIds.Contains(d.Id));
 
-            if (decks.Count() == 0) return;
+            if (!decks.Any()) return;
 
             Deck newDeckOTD = decks.OrderBy(x => x.NumberOfLikes).First();
             await SetDeckOfTheDay(newDeckOTD.Id, deck: newDeckOTD);

@@ -35,4 +35,4 @@ public class CustomCard
     }
 }
 
-public record CardLikeRecord(bool Liked, int NumberOfLikes);
+public record CardLikeRecord(Guid Id, bool Liked, int NumberOfLikes);

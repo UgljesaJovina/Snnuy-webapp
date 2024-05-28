@@ -4,20 +4,15 @@ using WebApi.Utils.Attributes;
 using Services.Interfaces;
 using Services.DTOs;
 using Repositories.Enums;
-using System.Drawing;
 using Repositories.Filters;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CustomCardController: ControllerBase
+public class CustomCardController(ICustomCardService service) : ControllerBase
 {
-    private readonly ICustomCardService cardService;
-
-    public CustomCardController(ICustomCardService service) {
-        cardService = service;
-    }
+    private readonly ICustomCardService cardService = service;
 
     [HttpGet("get-all")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -55,11 +50,11 @@ public class CustomCardController: ControllerBase
         }
     }
 
-    [HttpGet("set-custom-card-otd/{cardId}")]
+    [HttpPatch("set-custom-card-otd/{cardId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(UserPermissions.SetCustomCardOfTheDay)]
-    public async Task<ActionResult<CustomCardOTD>> SetCustomCardOTD(Guid cardId) {
+    public async Task<ActionResult<CustomCardOTDDTO>> SetCustomCardOTD(Guid cardId) {
         try {
             return Ok(await cardService.SetCustomCardOTD(cardId, (UserAccount)HttpContext.Items["User"]!));
         } catch(KeyNotFoundException ex) {

@@ -41,7 +41,7 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
         if (filter.PostedBefore is not null) cards = cards.Where(c => c.PostingDate < filter.PostedBefore);
 
         cards = cards.Where(c => (c.Regions & filter.Regions) != 0);
-        cards = cards.Where(c => (c.Type & filter.Type) != 0);
+        cards = cards.Where(c => (c.Type & filter.CardTypes) != 0);
 
         if (filter.ByPopularity == SortByPopularity.None) {
             if (filter.ByDate == SortByDate.Newest) cards = cards.OrderByDescending(c => c.PostingDate);
@@ -97,13 +97,12 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     }
 
     public async Task<CardLikeRecord> LikeACard(Guid id, UserAccount account) {
-        CustomCard? card = await table.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == id);
-        if (card is null) throw new KeyNotFoundException("Card was not found");
-        
+        CustomCard? card = await table.Include(x => x.LikedUsers).FirstOrDefaultAsync(x => x.Id == id) ?? throw new KeyNotFoundException("Card was not found");
+
         CardLikeRecord ret;
 
-        if (card.LikedUsers.Contains(account)) { card.LikedUsers.Remove(account); ret = new(false, card.NumberOfLikes); }
-        else { card.LikedUsers.Add(account); ret = new(true, card.NumberOfLikes); }
+        if (card.LikedUsers.Contains(account)) { card.LikedUsers.Remove(account); ret = new(card.Id, false, card.NumberOfLikes); }
+        else { card.LikedUsers.Add(account); ret = new(card.Id, true, card.NumberOfLikes); }
 
         await SaveAsync();
         return ret;

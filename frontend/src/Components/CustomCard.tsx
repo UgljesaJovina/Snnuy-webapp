@@ -16,16 +16,13 @@ const CustomCard: React.FC<{ card: TCustomCard, style?: CSSProperties }> = ({ ca
     const [numberOfLikes, setNumberOfLikes] = useState(card.numberOfLikes);
 
     useEffect(() => {
-        setNumberOfLikes(card.numberOfLikes);
         setLiked(user.likedCards.some(x => x === card.id));
-    }, [card.numberOfLikes, user])
+        setNumberOfLikes(card.numberOfLikes);
+    }, [card])
     
     function like() {
-        const currentLike = liked;
-        const currentLikes = card.numberOfLikes;
         customCardActions.likeACard(card.id)
-            .then(data => { setLiked(data.liked); setNumberOfLikes(data.numberOfLikes); })
-            .catch(err => { setLiked(currentLike); setNumberOfLikes(currentLikes) });
+            .then(data => { setLiked(data.liked); setNumberOfLikes(data.numberOfLikes) });
     }
     
     return (

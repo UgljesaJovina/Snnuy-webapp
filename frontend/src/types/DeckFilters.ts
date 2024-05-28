@@ -3,9 +3,9 @@ import { CardRegions, DeckType, SortByDate, SortByPopularity } from "../enums"
 export type TDeckFilters = {
     skip: number,
     take: number,
-    includeRotation?: boolean,
+    includeEternal?: boolean,
     regions?: CardRegions,
-    types?: DeckType,
+    deckTypes?: DeckType,
     postedBefore?: Date,
     postedAfter?: Date,
     byDate?: SortByDate,

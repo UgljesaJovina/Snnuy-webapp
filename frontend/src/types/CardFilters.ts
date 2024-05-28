@@ -4,7 +4,7 @@ export type TCardFilter = {
     skip: number,
     take: number,
     regions?: CardRegions,
-    type?: CardTypes,
+    cardTypes?: CardTypes,
     postedBefore?: Date,
     postedAfter?: Date,
     byDate?: SortByDate,

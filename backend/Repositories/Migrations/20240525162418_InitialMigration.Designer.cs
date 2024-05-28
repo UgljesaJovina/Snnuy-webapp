@@ -12,15 +12,15 @@ using Repositories.DAL;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230924214844_initial")]
-    partial class initial
+    [Migration("20240525162418_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -61,18 +61,22 @@ namespace Repositories.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("ApprovalState")
+                        .HasColumnType("int");
+
                     b.Property<string>("CardDescription")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("CardImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CardName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("NumberOfLikes")
-                        .HasColumnType("int");
 
                     b.Property<Guid?>("OwnerAccountId")
                         .HasColumnType("uniqueidentifier");
@@ -80,7 +84,7 @@ namespace Repositories.Migrations
                     b.Property<DateTime>("PostingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("State")
+                    b.Property<int>("Regions")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")

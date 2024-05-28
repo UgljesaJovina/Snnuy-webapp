@@ -42,7 +42,8 @@ public class Deck
         return deckRegions;
     } }
     public DeckType Type { get; set; }
-    public int NumberOfLikes { get; set; } = 0;
+    [NotMapped]
+    public int NumberOfLikes { get { return LikedUsers.Count; } }
     public ICollection<UserAccount> LikedUsers { get; set; } = [];
 
     public Deck() { }
@@ -63,3 +64,5 @@ public class Deck
         }
     }
 }
+
+public record DeckLikeRecord(Guid Id, bool Liked, int NumberOfLikes);

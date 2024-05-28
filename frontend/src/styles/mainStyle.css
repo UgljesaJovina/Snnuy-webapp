@@ -48,7 +48,7 @@
 
 body {
     margin: 0;
-    background-color: var(--bg-gradient-end);
+    background-color: var(--bg-color);
     /* background-size: 100vw 200vh; */
     font-family: 'Epilogue', sans-serif;
     min-width: 100vw;
@@ -57,19 +57,33 @@ body {
 
     --sidebar-color: #212121;
     --sidebar-hover-color: #485460;
-    --eternal-color: #3498db;
-    --standard-color: #2ecc71;
     --accept-color: #27ae60;
     --reject-color: #c0392b;
-    --bg-gradient-start: #222222;
-    --bg-gradient-end: #121212;
+    --mouse-follow-color: #222222;
+    --bg-color: #121212;
     --text-color: #ecf0f1;
     --custom-card-color: #283746;
     --accent-color: #FF6E40;
     --link-color: #40C4FF;
     --button-color: #FFAB91;
     --border-color: #333333;
-    --dropdown-color: ;
+    --dropdown-color: #283746;
+    --input-color: #283746;
+    --filters-background: #1c1c1c;
+    --modal-background: #1c1c1c;
+    --custom-card-page-bg: #1c1c1c;
+
+    --bandle-city: #dae371;
+    --bilgewater: #823322;
+    --demacia: #e2d2ae;
+    --freljord: #6bcff0;
+    --ionia: #c97491;
+    --noxus: #ac3c34;
+    --pnz: #f0a15d;
+    --runeterra: #a38d55;
+    --shadow-isles: #0cac91;
+    --shurima: #e8c62f;
+    --targon: #8053f3;
 }
 
 #tracking-circle {
@@ -79,7 +93,7 @@ body {
     top: var(--bg-grad-y);
     left: var(--bg-grad-x);
     translate: -50% -50%;
-    background: radial-gradient(circle, var(--bg-gradient-start), var(--bg-gradient-end) 70%);
+    background: radial-gradient(circle, var(--mouse-follow-color), var(--bg-color) 70%);
 }
 
 input, textarea, button {

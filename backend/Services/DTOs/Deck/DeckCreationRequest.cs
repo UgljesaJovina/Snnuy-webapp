@@ -8,9 +8,9 @@ public class DeckCreationRequest
     public string DeckCode { get; set; }   
     public string DeckName { get; set; }
     public UserAccount Owner;
-    public DeckType Type { get; set; }
+    public DeckType DeckType { get; set; }
 
     public Deck GetDeck() {
-        return new(DeckCode, DeckName, Owner, Type);
+        return new(DeckCode, DeckName, Owner, DeckType);
     }
 }

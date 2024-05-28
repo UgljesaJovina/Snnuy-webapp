@@ -1,30 +1,35 @@
 import { useFetchWrapper } from "../utils/FetchWrapper"
 import { TDeckFilters } from "../types";
 import { TDeckCreation } from "../types/DeckCreation";
+import { useSetRecoilState } from "recoil";
+import { LatestDeckAtom, userAtom } from "../atoms";
 
 export const useDeckActions = () => {
     const baseUrl = "deck/";
     const fwrapper = useFetchWrapper();
-    // const setLatestDeck = useSetRecoilState(LatestDeckAtom)
+    const setUser = useSetRecoilState(userAtom);
+    const setLatestDeck = useSetRecoilState(LatestDeckAtom);
 
     return {
         getAll,
         getAllFiltered,
         postADeck,
-        likeADeck
+        likeADeck,
+        getLatestDeckOTD
     }
 
     function getAll() {
         return fwrapper.get({ url: baseUrl + "get-all" });
     }
 
-    function getAllFiltered(filters: TDeckFilters) {
+    async function getAllFiltered(filters: TDeckFilters) {
         const activeFilters: string[] = [];
 
         for (const [key, value] of Object.entries(filters)) {
             if (value !== undefined) {
-                if (key === 'releasedBefore' || key === 'releasedAfter') {
+                if (key === 'postedBefore' || key === 'postedAfter') {
                     activeFilters.push(`${key}=${(value as Date).toISOString()}`);
+                    console.log((value as Date).toISOString());
                 } else {
                     activeFilters.push(`${key}=${value}`);
                 }
@@ -34,11 +39,21 @@ export const useDeckActions = () => {
         return fwrapper.get({ url: baseUrl + `get-all-filtered?${activeFilters.join("&")}` });
     }
 
-    function postADeck(props: TDeckCreation) {
+    async function postADeck(props: TDeckCreation) {
         return fwrapper.post({ url: baseUrl + "create-a-deck", body: props, reqAuth: true });
     }
 
-    function likeADeck(id: string) {
-        return fwrapper.put({ url: baseUrl + `like-a-deck/${id}`, reqAuth: true });
+    async function likeADeck(id: string) {
+        return fwrapper.patch({ url: baseUrl + `like-a-deck/${id}`, reqAuth: true })
+        .then(data => {
+            if (data.liked) setUser(curr => ({ ...curr, likedDecks: [...curr.likedDecks, data.id] }))
+            else setUser(curr => ({ ...curr, likedDecks: [...curr.likedDecks.filter(x => x != data.id)] }))
+            
+            return data;
+        });
+    }
+
+    async function getLatestDeckOTD() {
+        return fwrapper.get({ url: baseUrl + "get-latest-deck-otd" }).then(data => { setLatestDeck(data); return data; });
     }
 }

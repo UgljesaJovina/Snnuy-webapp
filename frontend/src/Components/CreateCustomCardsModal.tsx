@@ -13,17 +13,26 @@ const CardCreateModal: React.FC<{ setCards: Dispatch<SetStateAction<TCustomCard[
     const imageRef = useRef<HTMLInputElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
     const descRef = useRef<HTMLTextAreaElement>(null);
-    const [type, setType] = useState<any[]>([]);
+    const [cardType, setType] = useState<any[]>([]);
     const [regions, setRegions] = useState<any[]>([]);
     const auth = useRecoilValue(authAtom);
 
     // const { createACard } = useCustomCardActions();
 
+    const clearFields = () => {
+        setFile(null);
+        setPreviewUrl(null);
+        nameRef.current!.value = "";
+        descRef.current!.value = "";
+        setType([]);
+        setRegions([]);
+    }
+
     const handleSubmit = () => {
         const notFilledFields: string[] = []
         if (!file) notFilledFields.push("card image");
         if (!imageRef.current?.value) notFilledFields.push("card name");
-        if (type.length === 0) notFilledFields.push("card type");
+        if (cardType.length === 0) notFilledFields.push("card type");
         if (regions.length === 0) notFilledFields.push("card regions");
 
         if (notFilledFields.length > 0) {
@@ -35,22 +44,17 @@ const CardCreateModal: React.FC<{ setCards: Dispatch<SetStateAction<TCustomCard[
         formData.append("cardname", nameRef.current!.value);
         formData.append("carddescription", descRef.current?.value ? descRef.current.value : "");
         formData.append("regions", regions.reduce((a, b) => a + b));
-        formData.append("cardtype", type[0]);
+        formData.append("cardtype", cardType[0]);
         formData.append("imagefile", file!);
         
 
         fetch("http://localhost:5016/customcard/create-a-card", { method: "POST", body: formData, headers: {Authorization: `Bearer ${auth}`} })
-        .then(x => x.json()).then(x => { setCards(curr => [x, ...curr]); setOpen(false) }).catch(x => alert(x));
-
-        // createACard({
-        //     cardName: nameRef.current!.value,
-        //     cardDescription: !descRef.current?.value ? "" : descRef.current.value,
-        //     regions: regions.reduce((a, b) => a + b),
-        //     cardType: type[0],
-        //     imageFile: previewUrl as string
-        // }).catch(x => alert(x));
-
-        // CRINGE ^^
+        .then(x => x.json())
+        .then(x => { 
+            setCards(curr => [x, ...curr]); 
+            setOpen(false);
+            clearFields();
+        }).catch(x => alert(x));
     }
 
     useEffect(() => {
@@ -105,14 +109,14 @@ const CardCreateModal: React.FC<{ setCards: Dispatch<SetStateAction<TCustomCard[
                             <DropdownButton>Card regions</DropdownButton>
                             <DropdownContent>
                                 <DropdownList>
-                                    <DropdownItem name="Bandle City" value={1}><img alt="" src={iconBase+"bandlecity.png"} />Bandle City</DropdownItem>
+                                    <DropdownItem name="Bandle City" value={1}><img alt="" src={iconBase+"bandle_city.png"} />Bandle City</DropdownItem>
                                     <DropdownItem name="Bilgewater" value={2}><img alt="" src={iconBase+"bilgewater.png"} />Bilgewater</DropdownItem>
                                     <DropdownItem name="Demacia" value={4}><img alt="" src={iconBase + "demacia.png"} />Demacia</DropdownItem>
                                     <DropdownItem name="Freljord" value={8}><img alt="" src={iconBase + "freljord.png"} />Feljord</DropdownItem>
                                     <DropdownItem name="Ionia" value={16}><img alt="" src={iconBase + "ionia.png"} />Ionia</DropdownItem>
-                                    <DropdownItem name="Noxus" value={32}><img alt="" src={iconBase+"noxus.png"} />Noxus</DropdownItem>
-                                    <DropdownItem name="P & Z" value={64}><img alt="" src={iconBase+"piltoverzaun.png"} />Piltover & Zaun</DropdownItem>
-                                    <DropdownItem name="Shadow Isles" value={128}><img alt="" src={iconBase+"shadowisles.png"} />Shadow Isles</DropdownItem>
+                                    <DropdownItem name="Noxus" value={32}><img alt="" src={iconBase + "noxus.png"} />Noxus</DropdownItem>
+                                    <DropdownItem name="Piltover & Zaun" value={64}><img alt="" src={iconBase + "pnz.png"} />Piltover & Zaun</DropdownItem>
+                                    <DropdownItem name="Shadow Isles" value={128}><img alt="" src={iconBase+"shadow_isles.png"} />Shadow Isles</DropdownItem>
                                     <DropdownItem name="Shurima" value={256}><img alt="" src={iconBase+"shurima.png"} />Shurima</DropdownItem>
                                     <DropdownItem name="Targon" value={512}><img alt="" src={iconBase+"targon.png"} />Targon</DropdownItem>
                                     <DropdownItem name="Runterra" value={1024}><img alt="" src={iconBase+"runeterra.png"} />Runeterra</DropdownItem>

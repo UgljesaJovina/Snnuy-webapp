@@ -51,8 +51,12 @@ public class DeckService(IDeckRepo _deckRepo) : IDeckService
         return new(await deckRepo.GetLatestDeckOTD());
     }
 
-    public async Task LikeADeck(Guid id, UserAccount account)
+    public async Task<DeckOTDDTO> SetDeckOTD(Guid deckId, UserAccount acc) {
+        return new(await deckRepo.SetDeckOfTheDay(deckId, acc));
+    }
+
+    public async Task<DeckLikeRecord> LikeADeck(Guid id, UserAccount account)
     {
-        await deckRepo.LikeADeck(id, account);
+        return await deckRepo.LikeADeck(id, account);
     }
 }

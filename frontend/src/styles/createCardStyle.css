@@ -82,10 +82,12 @@
     font-size: 1.25rem;
     padding: 10px;
     border-radius: 5px;
+    color: var(--text-color);
+    background-color: var(--dropdown-color);
 }
 
 .desc-section> label {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     margin-bottom: 5%;
 }
 
@@ -97,6 +99,8 @@
     width: 100%;
     flex: 1 1;
     height: auto;
+    color: var(--text-color);
+    background-color: var(--dropdown-color);
 }
 
 .type-section, .region-section {

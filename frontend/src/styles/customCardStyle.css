@@ -1,6 +1,6 @@
 .custom-card-page {
     position: relative;
-    flex-grow: 1;
+    flex: 1;
     margin: 5vh 3% 0 5%;
     height: 95vh;
     display: grid;
@@ -11,16 +11,20 @@
 .custom-card-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-auto-rows: max-content;
     justify-content: center;
+    min-height: 100%;
     width: 100%;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    background-color: var(--custom-card-page-bg);
 }
 
 .custom-card {
     width: 100%;
     height: auto;
-    border: 1px white dashed;
+    border: 1px white solid;
     padding-top: 3%;
+    color: var(--text-color);
 }
 
 .custom-card-image {
@@ -28,11 +32,12 @@
     width: 90%;
     aspect-ratio: 680 / 1024;
     border-radius: 5px;
+    color: var(--text-color);
 }
 
 .card-name {
+    font-size: 1.25rem;
     text-align: center;
-    margin-bottom: 10px;
     text-overflow: ellipsis;
     text-wrap: nowrap;
     overflow: hidden;
@@ -41,14 +46,19 @@
 .custom-card-info {
     display: flex;
     flex-direction: column;
+    gap: 10px;
     width: 100%;
-    color: white;
 }
 
-.like-region, .creator-region {
+.like-region {
     display: flex;
     justify-content: center;
     margin-bottom: 10px;
+}
+
+.creator-region {
+    display: flex;
+    justify-content: center;
 }
 
 .created-by {

@@ -7,3 +7,5 @@ export * from "./User";
 export * from "./CardFilters";
 export * from "./CardCreation";
 export * from "./DeckFilters";
+export * from "./Deck";
+export * from "./DeckOTD";

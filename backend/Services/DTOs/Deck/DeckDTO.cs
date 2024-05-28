@@ -16,8 +16,9 @@ public class DeckDTO(Guid id, string deckCode, string deckName, DateTime posting
     public DeckType DeckType { get; set; } = type;
     public CardRegions DeckRegions { get; set; } = deckRegions;
     public int NumberOfLikes { get; set; } = numberOfLikes;
-    public ICollection<string> Champions { get; set; } = deckContent.Where(x => x.Card.Rarity == CardRarity.Champion).Select(x => x.Card.CardName).ToList();
-    public Dictionary<CardRegions, int> RegionCardCount { get {
+    public Card HighestCostCard { get { return deckContent.MaxBy(x => x.Card.ManaCost)!.Card; } }
+    public ICollection<Card> Champions { get; set; } = deckContent.Where(x => x.Card.Rarity == CardRarity.Champion).Select(x => x.Card).ToList();
+    public Dictionary<int, int> RegionCardCount { get {
         Dictionary<CardRegions, int> dict = [];
         List<Card> trackedCards = [];
 
@@ -42,7 +43,7 @@ public class DeckDTO(Guid id, string deckCode, string deckName, DateTime posting
             dict.Where(x => x.Value == 0).ForEach(x => dict.Remove(x.Key));
         }
         
-        return dict;
+        return dict.ToDictionary(x => (int)x.Key, x => x.Value);
     }}
 
     public DeckDTO(Deck deck): this(deck.Id, deck.DeckCode, deck.DeckName, deck.PostingDate, deck.Standard,

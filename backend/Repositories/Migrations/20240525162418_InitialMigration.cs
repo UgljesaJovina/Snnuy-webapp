@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,10 +33,11 @@ namespace Repositories.Migrations
                     CardName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PostingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CardDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CardImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Regions = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    OwnerAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    NumberOfLikes = table.Column<int>(type: "int", nullable: false)
+                    ApprovalState = table.Column<int>(type: "int", nullable: false),
+                    OwnerAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {

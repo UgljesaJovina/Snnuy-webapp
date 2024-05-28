@@ -7,13 +7,9 @@ using Repositories.Utility;
 
 namespace Services.Utility.JWT;
 
-public class JwtGenerator : IJwtGenerator
+public class JwtGenerator(IOptions<AppSettings> _appSettings) : IJwtGenerator
 {
-    private AppSettings appSettings;
-
-    public JwtGenerator(IOptions<AppSettings> _appSettings) {
-        appSettings = _appSettings.Value;
-    }
+    private readonly AppSettings appSettings = _appSettings.Value;
 
     public string GenerateJWTToken(UserAccount account)
     {
