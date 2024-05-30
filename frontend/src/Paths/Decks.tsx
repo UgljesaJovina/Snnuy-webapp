@@ -6,7 +6,7 @@ import { baseUrl } from "../utils/GlobalVariables";
 import { Deck } from "../components/Deck";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CardCreateModal, DeckCreateModal, DeckDisplay, Dropdown, DropdownButton, DropdownContent, DropdownItem, DropdownList, Modal } from "../components";
+import { DeckCreateModal, DeckDisplay, Dropdown, DropdownButton, DropdownContent, DropdownItem, DropdownList, Modal } from "../components";
 
 const Decks: React.FC = () => {
     const [decks, setDecks] = useState<TDeck[]>([]);

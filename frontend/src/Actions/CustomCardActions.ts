@@ -62,7 +62,7 @@ function useCustomCardActions() {
         return fwrapper.patch({ url: baseUrl + `like-a-card/${id}`, reqAuth: true })
         .then(data => {
             if (data.liked) setUser(curr => ({ ...curr, likedCards: [...curr.likedCards, data.id] }));
-            else setUser(curr => ({ ...curr, likedCards: [...curr.likedCards.filter(x => x != data.id)] }));
+            else setUser(curr => ({ ...curr, likedCards: [...curr.likedCards.filter(x => x !== data.id)] }));
 
             return data;
         });

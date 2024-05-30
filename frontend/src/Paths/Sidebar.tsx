@@ -19,15 +19,15 @@ const Sidebar: React.FC = () => {
         <>
             <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
                 <NavLink to={"/home"} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
-                    <img src={Home} />
+                    <img src={Home} alt="" />
                     <p className="hyperlink-text">Home</p>
                 </NavLink>
                 <NavLink to={"/custom-cards"} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
-                    <img src={Cards} />
+                    <img src={Cards} alt="" />
                     <p className="hyperlink-text">Custom Cards</p>
                 </NavLink>
                 <NavLink to={"/decks"} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
-                    <img src={DeckLib} />
+                    <img src={DeckLib} alt="" />
                     <p className="hyperlink-text">Deck Library</p>
                 </NavLink>
                 <NavLink to={user.username ? `/account` : `/login?from=${loc.pathname}`} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>

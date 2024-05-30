@@ -52,7 +52,7 @@ export const useDeckActions = () => {
         return fwrapper.patch({ url: baseUrl + `like-a-deck/${id}`, reqAuth: true })
         .then(data => {
             if (data.liked) setUser(curr => ({ ...curr, likedDecks: [...curr.likedDecks, data.id] }))
-            else setUser(curr => ({ ...curr, likedDecks: [...curr.likedDecks.filter(x => x != data.id)] }))
+            else setUser(curr => ({ ...curr, likedDecks: [...curr.likedDecks.filter(x => x !== data.id)] }))
             
             return data;
         });

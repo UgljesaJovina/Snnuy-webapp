@@ -8,7 +8,7 @@ const Modal: React.FC<{
     contentStyle?: React.CSSProperties 
 }> = ({ children, isOpen, setOpen, contentStyle }) => {
 
-    const key = useKreyPress(["Escape"], () => setOpen(false));
+    useKreyPress(["Escape"], () => setOpen(false));
 
     return (
         <div className={`modal ${isOpen ? "show" : ""}`}>

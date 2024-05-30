@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { authAtom, userAtom } from "../atoms";
 import { useFetchWrapper } from "../utils/FetchWrapper";
 import { UserPermissions } from "../enums";
@@ -9,7 +9,7 @@ function useUserActions() {
     const baseUrl = "user/";
     const fwrapper = useFetchWrapper();
     const [user, setUser] = useRecoilState(userAtom);
-    const [auth, setAuth] = useRecoilState(authAtom);
+    const setAuth = useSetRecoilState(authAtom);
     const cookies = useRef(new Cookies());
 
     return {

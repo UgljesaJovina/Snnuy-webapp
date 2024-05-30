@@ -2,7 +2,6 @@ import React from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { authAtom, userAtom } from "../atoms";
 import { Navigate, useNavigate } from "react-router";
-import { useSearchParams } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { defaultUser } from "../types";
 
@@ -10,7 +9,6 @@ const Account: React.FC = () => {
 
     const [user, setUser] = useRecoilState(userAtom);
     const setAuth = useSetRecoilState(authAtom);
-    const [params] = useSearchParams();
     const navigate = useNavigate();
 
     if (!user.id) return <Navigate replace to={`/login?from=account`} />

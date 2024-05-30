@@ -17,7 +17,7 @@ const Card: React.FC<{card: TCard & { count: number }}> = ({ card }) => {
     function getHighestCardRegion(card: TCard) {
         let max = CardRegions.None;
         for (let i = 1; i < CardRegions.Custom; i <<= 1) {
-            if ((card.regions & i) != 0 && max < i)
+            if ((card.regions & i) !== 0 && max < i)
                 max = i
         }
         return max;

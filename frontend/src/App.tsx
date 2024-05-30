@@ -53,7 +53,7 @@ const LoadUser: React.FC = () => {
     useEffect(() => {
         if (!user.username)
             userActions.getMyInfo().catch(err => console.log(err));
-    }, []);
+    }, [user.username]);
 
     return <></>;
 }

@@ -28,7 +28,7 @@ export const DeckDisplay: React.FC<{ deckId: string }> = ({ deckId }) => {
     function getHighestCardRegion(card: TCard) {
         let max = CardRegions.None;
         for (let i = 1; i < CardRegions.Custom; i <<= 1) {
-            if ((card.regions & i) != 0 && max < i)
+            if ((card.regions & i) !== 0 && max < i)
                 max = i
         }
         return max;
@@ -106,7 +106,7 @@ export const DeckDisplay: React.FC<{ deckId: string }> = ({ deckId }) => {
                 <div className="deck-detail" style={deckDetailStyle}>
                     <div className="description">Rarities</div>
                     <div className="shards">
-                        <img src={`${baseUrl}public/rarities/shards.svg`} />
+                        <img src={`${baseUrl}public/rarities/shards.svg`} alt="" />
                         <span>{deck.deckContent.map(x => x.rarity * x.count).reduce((a, b) => a + b)}</span>
                     </div>
                     <div className="rarities">

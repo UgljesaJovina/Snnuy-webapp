@@ -1,4 +1,4 @@
-import React, { CSSProperties, Dispatch, useEffect, useRef, useState } from "react";
+import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { TDeck } from "../types"
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../atoms";
@@ -26,7 +26,7 @@ const Deck: React.FC<{ deck: TDeck, style?: CSSProperties, onClick?: (e?: React.
         setLiked(user.likedDecks.some(x => x === deck.id));
         setNumberOfLikes(deck.numberOfLikes);
         setRegCount(Object.entries(deck.regionCardCount).sort((a, b) => b[1] - a[1]));
-    }, [deck]);
+    }, [deck, user.likedDecks]);
 
     function getFeaturedCard() {
         if (deck.champions.length > 0) {
@@ -65,7 +65,7 @@ const Deck: React.FC<{ deck: TDeck, style?: CSSProperties, onClick?: (e?: React.
             <div className="deck-info">
                 <p className="deck-name">{deck.deckName}</p>
                 <div className="region-card-count">
-                    {regCount.filter(x => x[1] != 0).map(x => <RegionCount key={x[0]} regName={CardRegions[+x[0]].toLowerCase()} regCount={x[1]} />)}
+                    {regCount.filter(x => x[1] !== 0).map(x => <RegionCount key={x[0]} regName={CardRegions[+x[0]].toLowerCase()} regCount={x[1]} />)}
                 </div>
                 <div className="creator-region">
                     <p className="created-by">Created by:</p>
