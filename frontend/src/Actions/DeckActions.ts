@@ -30,7 +30,7 @@ export const useDeckActions = () => {
             if (value !== undefined) {
                 if (key === 'postedBefore' || key === 'postedAfter') {
                     activeFilters.push(`${key}=${(value as Date).toISOString()}`);
-                    console.log((value as Date).toISOString());
+
                 } else {
                     activeFilters.push(`${key}=${value}`);
                 }

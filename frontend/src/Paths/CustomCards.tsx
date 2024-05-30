@@ -30,7 +30,7 @@ const CustomCards: React.FC = () => {
         const scrollFunc = (e: Event) => {
             const isAtBottom = cDiv.scrollTop + cDiv.clientHeight >= cDiv.scrollHeight;
             if (isAtBottom)
-                customCardActions.getAllFiltered({ ...filters, skip: cards.length, take: cards.length + 20 }).then(data => setCards(curr => [...curr, ...data])).catch(e => console.log(e))
+                customCardActions.getAllFiltered({ ...filters, skip: cards.length, take: cards.length + 20 }).then(data => setCards(curr => [...curr, ...data])).catch(e => alert(e))
         }
 
         cDiv.addEventListener("scroll", scrollFunc);
@@ -50,7 +50,7 @@ const CustomCards: React.FC = () => {
             postedAfter: !!postedAfter ? new Date(postedAfter) : undefined
         }
 
-        customCardActions.getAllFiltered(f).then(data => setCards(data)).catch(e => console.log(e));
+        customCardActions.getAllFiltered(f).then(data => setCards(data)).catch(e => alert(e));
         setFilters(f);
     }, [regions, types, postedBefore, postedAfter, byDate, byPopularity]);
 

@@ -34,7 +34,7 @@ const Decks: React.FC = () => {
         const scrollFunc = (e: Event) => {
             const isAtBottom = dDiv.scrollTop + dDiv.clientHeight >= dDiv.scrollHeight;
             if (isAtBottom)
-                deckActions.getAllFiltered({ ...filters, skip: decks.length, take: decks.length + 20 }).then(data => setDecks(curr => [...curr, ...data])).catch(e => console.log(e));
+                deckActions.getAllFiltered({ ...filters, skip: decks.length, take: decks.length + 20 }).then(data => setDecks(curr => [...curr, ...data])).catch(e => alert(e));
         }
 
         dDiv.addEventListener("scroll", scrollFunc);
@@ -55,7 +55,7 @@ const Decks: React.FC = () => {
             postedAfter: !!postedAfter ? new Date(postedAfter) : undefined,
         }
 
-        deckActions.getAllFiltered(f).then(data => setDecks(data)).catch(e => console.log(e));
+        deckActions.getAllFiltered(f).then(data => setDecks(data)).catch(e => alert(e));
         setFilters(f);
     }, [regions, deckTypes, postedBefore, postedAfter, byDate, byPopularity, standard]);
 

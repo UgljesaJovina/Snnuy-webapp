@@ -22,7 +22,7 @@ const CustomCard: React.FC<{ card: TCustomCard, style?: CSSProperties }> = ({ ca
     
     function like() {
         customCardActions.likeACard(card.id)
-            .then(data => { setLiked(data.liked); setNumberOfLikes(data.numberOfLikes) });
+            .then(data => { setLiked(data.liked); setNumberOfLikes(data.numberOfLikes) }).catch(e => alert(e));
     }
     
     return (

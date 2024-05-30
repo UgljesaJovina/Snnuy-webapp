@@ -21,6 +21,7 @@ const Deck: React.FC<{ deck: TDeck, style?: CSSProperties, onClick?: (e?: React.
     const [regCount, setRegCount] = useState<[string, number][]>([]);
     
     const copyButton = useRef<HTMLDivElement>(null);
+    const likeButton = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setLiked(user.likedDecks.some(x => x === deck.id));
@@ -55,11 +56,11 @@ const Deck: React.FC<{ deck: TDeck, style?: CSSProperties, onClick?: (e?: React.
     
     function like() {
         deckActions.likeADeck(deck.id)
-            .then(data => { setLiked(data.liked); setNumberOfLikes(data.numberOfLikes); })
+            .then(data => { setLiked(data.liked); setNumberOfLikes(data.numberOfLikes); }).catch(e => alert(e));
     }
 
     return (
-        <div className="deck" style={style} onClick={(e) => { if (onClick && e.target !== copyButton.current) onClick(e) }}>
+        <div className="deck" style={style} onClick={(e) => { if (onClick && e.target !== copyButton.current && e.target !== likeButton.current) onClick(e) }}>
             <div className="featured-card" style={{backgroundImage: `url(${getFeaturedCard().cardBackgroundLink})`}}></div>
             <div className="deck-region-gradient" style={{background: getGradientString()}}></div>
             <div className="deck-info">
@@ -72,8 +73,8 @@ const Deck: React.FC<{ deck: TDeck, style?: CSSProperties, onClick?: (e?: React.
                     <Link to={`/users/${deck.owner.id}`} className="owner-name">{deck.owner.username}</Link>
                 </div>
                 <div className="like-region">
-                    <div className="like" onClick={like}>
-                        <div className="like-hover-bg"></div>
+                    <div className="like" onClick={like} >
+                        <div className="like-hover-bg" ref={likeButton} ></div>
                         <FontAwesomeIcon icon={liked ? solidHeart : hollowHeart} className={liked ? "liked" : ""} />
                     </div>
                     <p className="likes">{numberOfLikes}</p>

@@ -24,7 +24,7 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         if (!user.username && auth)
-            userActions.getMyInfo().then(() => navigate(params.get("from") ?? "/home"))
+            userActions.getMyInfo().then(() => navigate(params.get("from") ?? "/home")).catch(e => alert(e))
     }, []);
 
     const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {

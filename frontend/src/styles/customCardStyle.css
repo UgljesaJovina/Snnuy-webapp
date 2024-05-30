@@ -81,6 +81,7 @@
 
 .like {
     position: relative;
+    cursor: pointer;
 }
 
 .like>.like-hover-bg {

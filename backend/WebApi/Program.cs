@@ -67,4 +67,10 @@ app.UseStaticFiles(new StaticFileOptions() {
     RequestPath = new PathString("/public")
 });
 
+app.UseFileServer(new FileServerOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
+    RequestPath = ""
+});
+
 app.Run();

@@ -78,7 +78,7 @@ export const DeckDisplay: React.FC<{ deckId: string }> = ({ deckId }) => {
     useEffect(() => {
         if (deckId) {
             setLoading(true);
-            deckActions.getDeckInfo(deckId).then(data => { setDeck(data); setLoading(false); });
+            deckActions.getDeckInfo(deckId).then(data => { setDeck(data); setLoading(false); }).catch(e => alert(e));
         }
     }, [deckId]);
     
@@ -222,7 +222,7 @@ export const DeckDisplay: React.FC<{ deckId: string }> = ({ deckId }) => {
                 <div className="card-row">
                     <div className="card-column">
                         <div className="column-info">
-                            <h2>Equipment</h2>
+                            <h2>Followers</h2>
                             <div className="card-count">
                                 <span style={{ fontSize: "1.25rem" }}>
                                     {getTypeCount(CardTypes.Follower)}
@@ -235,7 +235,7 @@ export const DeckDisplay: React.FC<{ deckId: string }> = ({ deckId }) => {
                 <div className="card-row">
                     <div className="card-column">
                         <div className="column-info">
-                            <h2>Equipment</h2>
+                            <h2>Spells</h2>
                             <div className="card-count">
                                 <span style={{ fontSize: "1.25rem" }}>
                                     {getTypeCount(CardTypes.Spell)}

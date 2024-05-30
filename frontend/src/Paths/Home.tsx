@@ -16,10 +16,10 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         if (card.id === "") 
-            ccActions.getLatestCardOTD().catch(err => console.log(err));
+            ccActions.getLatestCardOTD().catch(err => alert(err));
 
         if (deck.id === "")
-            deckActions.getLatestDeckOTD().catch(err => console.log(err));
+            deckActions.getLatestDeckOTD().catch(err => alert(err));
     }, []);
 
     return (

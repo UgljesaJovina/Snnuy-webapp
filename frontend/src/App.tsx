@@ -59,15 +59,3 @@ const LoadUser: React.FC = () => {
 }
 
 export default App;
-
-
-// fetch("http://localhost:5016/WeatherForecast")
-// .then(data => data.blob())
-// .then(blob => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(blob);
-//     reader.onloadend = () => {
-//         const base64 = reader.result;
-//         if (base64) setData(base64);
-//     }
-// }) iscitavanje slike koja mora biti encodirana kao base-64 string
