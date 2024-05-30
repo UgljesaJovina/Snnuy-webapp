@@ -15,7 +15,8 @@ export const useDeckActions = () => {
         getAllFiltered,
         postADeck,
         likeADeck,
-        getLatestDeckOTD
+        getLatestDeckOTD,
+        getDeckInfo
     }
 
     function getAll() {
@@ -37,6 +38,10 @@ export const useDeckActions = () => {
         }
 
         return fwrapper.get({ url: baseUrl + `get-all-filtered?${activeFilters.join("&")}` });
+    }
+
+    async function getDeckInfo(deckId: string) {
+        return fwrapper.get({ url: baseUrl + `get-deck-info/${deckId}` });
     }
 
     async function postADeck(props: TDeckCreation) {

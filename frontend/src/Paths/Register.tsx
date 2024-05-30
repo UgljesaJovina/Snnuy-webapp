@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useKreyPress } from "../hooks";
 import { useRecoilValue } from "recoil";
 import { authAtom, userAtom } from "../atoms";
+import { faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 const Register: React.FC = () => {
     const user = useRecoilValue(userAtom);
@@ -58,7 +59,7 @@ const Register: React.FC = () => {
                         <label htmlFor="username">Username</label>
                         <input type="text" name="username" id="username" required onChange={e => setUsername(e.target.value)} />
                         <div className={`input-error ${usernameError ? "active" : ""}`}>
-                            <FontAwesomeIcon icon={["fas", "triangle-exclamation"]} />
+                            <FontAwesomeIcon icon={faTriangleExclamation} />
                             <p>{usernameError}</p>
                         </div>
                     </div>
@@ -66,11 +67,11 @@ const Register: React.FC = () => {
                         <label htmlFor="password">Password</label>
                         <input type="password" name="password" id="password" required onChange={e => setPassword(e.target.value)} />
                         <div className={`input-error ${passwordError ? "active" : ""}`}>
-                            <FontAwesomeIcon icon={["fas", "triangle-exclamation"]} />
+                            <FontAwesomeIcon icon={faTriangleExclamation} />
                             <p>{passwordError}</p>
                         </div>
                     </div>
-                    <button type="submit">{waitingResponse ? <FontAwesomeIcon icon={["fas", "spinner"]} className="fa-spin" /> : "Register"}</button>
+                    <button type="submit">{waitingResponse ? <FontAwesomeIcon icon={faSpinner} className="fa-spin" /> : "Register"}</button>
                 </form>
                 <div className="redirect">
                     <section>Already have an account?</section>

@@ -6,7 +6,7 @@ import { baseUrl } from "../utils/GlobalVariables";
 import { Deck } from "../components/Deck";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CardCreateModal, DeckCreateModal, Dropdown, DropdownButton, DropdownContent, DropdownItem, DropdownList, Modal } from "../components";
+import { CardCreateModal, DeckCreateModal, DeckDisplay, Dropdown, DropdownButton, DropdownContent, DropdownItem, DropdownList, Modal } from "../components";
 
 const Decks: React.FC = () => {
     const [decks, setDecks] = useState<TDeck[]>([]);
@@ -23,6 +23,8 @@ const Decks: React.FC = () => {
     const [standard, setStandard] = useState<boolean[]>([true]);
 
     const [creationModal, setCreationModal] = useState(false);
+    const [deckModal, setDeckModal] = useState(false);
+    const [selectedDeck, setSelectedDeck] = useState("");
     const decksDiv = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -54,13 +56,14 @@ const Decks: React.FC = () => {
         }
 
         deckActions.getAllFiltered(f).then(data => setDecks(data)).catch(e => console.log(e));
+        setFilters(f);
     }, [regions, deckTypes, postedBefore, postedAfter, byDate, byPopularity, standard]);
 
     return (
         <div className="deck-page">
             <div style={{overflow: "hidden auto"}}>
                 <div className="deck-container">
-                    {decks.map(deck => <Deck key={deck.id} deck={deck} />)}
+                    {decks.map(deck => <Deck key={deck.id} deck={deck} onClick={() => { setDeckModal(true); setSelectedDeck(deck.id) }} />)}
                 </div>
             </div>
             <div className="filters">
@@ -154,10 +157,13 @@ const Decks: React.FC = () => {
                         </Dropdown>
                     </div>
                 </div>
-                <Modal isOpen={creationModal} setOpen={setCreationModal} contentStyle={{width: "30%", height: "50%", minWidth: "300px", minHeight: "400px"}}>
-                    <DeckCreateModal setDecks={setDecks} setOpen={setCreationModal} />
-                </Modal>
             </div>
+            <Modal isOpen={creationModal} setOpen={setCreationModal} contentStyle={{width: "30%", height: "50%", minWidth: "300px", minHeight: "400px"}}>
+                <DeckCreateModal setDecks={setDecks} setOpen={setCreationModal} />
+            </Modal>
+            <Modal isOpen={deckModal} setOpen={setDeckModal} contentStyle={{ backgroundColor: "transparent" }}>
+                <DeckDisplay deckId={selectedDeck} />
+            </Modal>
         </div>
     );
 }

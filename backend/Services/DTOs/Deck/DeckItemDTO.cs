@@ -6,6 +6,7 @@ namespace Services.DTOs;
 public class DeckItemDTO
 {
     public int Count { get; set; }
+    public string CardCode { get; set; }
     public string CardName { get; set; }
     public int ManaCost { get; set; }
     public int AttackPower { get; set; }
@@ -19,10 +20,11 @@ public class DeckItemDTO
 
     public DeckItemDTO() { }
 
-    public DeckItemDTO(int count, string cardName, int manaCost, int attackPower, int healthValue, string cardImageLink,
+    public DeckItemDTO(int count, string cardCode, string cardName, int manaCost, int attackPower, int healthValue, string cardImageLink,
         string cardBackgroundLink, bool standard, CardRegions regions, CardTypes type, CardRarity rarity) 
     {
         Count = count;
+        CardCode = cardCode;
         CardName = cardName;
         ManaCost = manaCost;
         AttackPower = attackPower;
@@ -35,7 +37,7 @@ public class DeckItemDTO
         Rarity = rarity;
     }
 
-    public DeckItemDTO(DeckItem item) :this(item.Count, item.Card.CardName, item.Card.ManaCost, item.Card.AttackPower,
+    public DeckItemDTO(DeckItem item) :this(item.Count, item.Card.CardCode, item.Card.CardName, item.Card.ManaCost, item.Card.AttackPower,
         item.Card.HealthValue, item.Card.CardImageLink, item.Card.CardBackgroundLink, item.Card.Standard,
         item.Card.Regions, item.Card.Type, item.Card.Rarity) { }
 }

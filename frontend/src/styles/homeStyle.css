@@ -22,6 +22,11 @@
     display: grid;
     grid-template-columns: 3fr 5fr;
     column-gap: 5%;
+    justify-items: center;
+}
+
+.featured-section>div>div {
+    width: 100%;
 }
 
 .featured-section hr {

@@ -10,15 +10,17 @@ import "./styles/createCardStyle.css";
 import "./styles/dropdownStyle.css";
 import "./styles/modalStyle.css";
 import "./styles/deckStyle.css";
+import "./styles/deckDisplayStyle.css";
+import "./styles/cardStyle.css";
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { faTriangleExclamation, faSpinner, faArrowLeft, faPlus, faChevronDown, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faTriangleExclamation, faSpinner, faArrowLeft, faPlus, faChevronDown, faCheck, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import { userAtom } from './atoms';
 import { useEffect } from 'react';
 import { useUserActions } from './actions';
 
-library.add(faUser, faTriangleExclamation, faSpinner, faArrowLeft, faPlus, faChevronDown, faCheck);
+library.add(faUser, faTriangleExclamation, faSpinner, faArrowLeft, faPlus, faChevronDown, faCheck, faCopy);
 
 function App() {
     return (

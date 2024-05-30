@@ -1,8 +1,8 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { CSSProperties, Dispatch, useEffect, useRef, useState } from "react";
 import { TDeck } from "../types"
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../atoms";
-import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as hollowHeart } from "@fortawesome/free-regular-svg-icons";
 import { useDeckActions } from "../actions";
 import { CardRegions } from "../enums";
@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { RegionCount } from "./RegionCount";
 import { baseUrl } from "../utils/GlobalVariables";
 
-const Deck: React.FC<{ deck: TDeck, style?: CSSProperties }> = ({deck, style}) => {
+const Deck: React.FC<{ deck: TDeck, style?: CSSProperties, onClick?: (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void }> = ({ deck, style, onClick }) => {
     const user = useRecoilValue(userAtom);
     const deckActions = useDeckActions();
     const [liked, setLiked] = useState<boolean>(false);
@@ -19,6 +19,8 @@ const Deck: React.FC<{ deck: TDeck, style?: CSSProperties }> = ({deck, style}) =
     const eternalIcon = baseUrl + "public/format/eternal.png";
     const standardIcon = baseUrl + "public/format/standard.png";
     const [regCount, setRegCount] = useState<[string, number][]>([]);
+    
+    const copyButton = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setLiked(user.likedDecks.some(x => x === deck.id));
@@ -46,6 +48,10 @@ const Deck: React.FC<{ deck: TDeck, style?: CSSProperties }> = ({deck, style}) =
         
         return `linear-gradient(90deg, var(${getStyle(sr[0].region)}) ${sr[0].count / cardCount * 100}%, var(${getStyle(sr[1].region)}) ${sr[0].count / cardCount * 100}%)`
     }
+
+    function copyCode() {
+        navigator.clipboard.writeText(deck.deckCode);
+    }
     
     function like() {
         deckActions.likeADeck(deck.id)
@@ -53,7 +59,7 @@ const Deck: React.FC<{ deck: TDeck, style?: CSSProperties }> = ({deck, style}) =
     }
 
     return (
-        <div className="deck" style={style}>
+        <div className="deck" style={style} onClick={(e) => { if (onClick && e.target !== copyButton.current) onClick(e) }}>
             <div className="featured-card" style={{backgroundImage: `url(${getFeaturedCard().cardBackgroundLink})`}}></div>
             <div className="deck-region-gradient" style={{background: getGradientString()}}></div>
             <div className="deck-info">
@@ -75,6 +81,9 @@ const Deck: React.FC<{ deck: TDeck, style?: CSSProperties }> = ({deck, style}) =
             </div>
             <div className="format-background">
                 <div className="format-icon" style={{backgroundImage: `url(${deck.standard ? standardIcon : eternalIcon})`}}></div>
+            </div>
+            <div onClick={copyCode} ref={copyButton} className="copy-wrapper">
+                <FontAwesomeIcon icon={faCopy} className="copy-button" />
             </div>
         </div>
     );

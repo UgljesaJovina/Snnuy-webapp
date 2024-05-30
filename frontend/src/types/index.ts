@@ -9,3 +9,4 @@ export * from "./CardCreation";
 export * from "./DeckFilters";
 export * from "./Deck";
 export * from "./DeckOTD";
+export * from "./DetailedDeck";

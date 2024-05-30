@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router";
 import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +8,7 @@ import { userAtom } from "../atoms";
 import Home from "../images/home.svg";
 import Cards from "../images/cards.svg";
 import DeckLib from "../images/deck-lib.svg";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 const Sidebar: React.FC = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -30,7 +31,7 @@ const Sidebar: React.FC = () => {
                     <p className="hyperlink-text">Deck Library</p>
                 </NavLink>
                 <NavLink to={user.username ? `/account` : `/login?from=${loc.pathname}`} className={({ isActive }) => `hyperlink ${isActive ? "current" : ""}`}>
-                    <FontAwesomeIcon icon={["far", "user"]} />
+                    <FontAwesomeIcon icon={faUser} />
                     <p className="hyperlink-text">{user.username ? user.username : "Login"}</p>
                 </NavLink>
                 <button className="collapse-button" onClick={() => setCollapsed(cur => !cur)}>

@@ -31,25 +31,27 @@ public class DeckRepo : Repository<Deck>, IDeckRepo
     }
 
     public async Task<ICollection<Deck>> GetAll(DeckFilter filter) {
-        IEnumerable<Deck> decks = table.Include(x => x.LikedUsers).AsQueryable();
+        return await Task.Run(() => {
+            IEnumerable<Deck> decks = table.Include(x => x.LikedUsers).AsQueryable();
 
-        if (filter.PostedAfter is not null) decks = decks.Where(d => d.PostingDate > filter.PostedAfter);
-        if (filter.PostedBefore is not null) decks = decks.Where(d => d.PostingDate < filter.PostedBefore);
+            if (filter.PostedAfter is not null) decks = decks.Where(d => d.PostingDate > filter.PostedAfter);
+            if (filter.PostedBefore is not null) decks = decks.Where(d => d.PostingDate < filter.PostedBefore);
 
-        decks = decks.Where(d => (d.DeckRegions & filter.Regions) != 0);
-        decks = decks.Where(d => (d.Type & filter.DeckTypes) != 0);
+            decks = decks.Where(d => (d.DeckRegions & filter.Regions) != 0);
+            decks = decks.Where(d => (d.Type & filter.DeckTypes) != 0);
 
-        if (!filter.IncludeEternal) decks = decks.Where(d => d.Standard);
+            if (!filter.IncludeEternal) decks = decks.Where(d => d.Standard);
 
-        if (filter.ByPopularity == SortByPopularity.None)
-        {
-            if (filter.ByDate == SortByDate.Newest) decks = decks.OrderByDescending(c => c.PostingDate);
-            else decks = decks.OrderBy(c => c.PostingDate);
-        }
-        else if (filter.ByPopularity == SortByPopularity.MostPopular) decks = decks.OrderByDescending(c => c.NumberOfLikes);
-        else if (filter.ByPopularity == SortByPopularity.LeastPopular) decks = decks.OrderBy(c => c.NumberOfLikes);
+            if (filter.ByPopularity == SortByPopularity.None)
+            {
+                if (filter.ByDate == SortByDate.Newest) decks = decks.OrderByDescending(c => c.PostingDate);
+                else decks = decks.OrderBy(c => c.PostingDate);
+            }
+            else if (filter.ByPopularity == SortByPopularity.MostPopular) decks = decks.OrderByDescending(c => c.NumberOfLikes);
+            else if (filter.ByPopularity == SortByPopularity.LeastPopular) decks = decks.OrderBy(c => c.NumberOfLikes);
 
-        return decks.Skip(filter.Skip).Take(filter.Take).ToList();
+            return decks.Skip(filter.Skip).Take(filter.Take).ToList();
+        });
     }
 
     public async Task<DeckOTD> SetDeckOfTheDay(Guid deckId, UserAccount? account = null, Deck? deck = null)

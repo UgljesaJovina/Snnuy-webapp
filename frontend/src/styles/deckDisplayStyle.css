@@ -1,0 +1,200 @@
+.deck-display {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.deck-background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-position: 50% 50%;
+    background-size: cover;
+    z-index: -1;
+}
+
+.background-shade {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: -1;
+}
+
+.deck-details {
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    gap: 2%;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.deck-detail {
+    position: relative;
+    border: 3px solid;
+    border-color: var(--region-color);
+    border-radius: 15px;
+    flex: 1;
+    height: 150px;
+    min-width: 200px;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.deck-detail>.description {
+    position: absolute;
+    top: -20px;
+    left: -10px;
+    width: 150px;
+    height: 2rem;
+    background-color: var(--region-color);
+    border-radius: 5px;
+    display: grid;
+    place-items: center;
+    font-size: 1.4rem;
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+.region {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 2%;
+    grid-template-rows: 1fr;
+}
+
+.shards {
+    margin-left: 15px;
+    height: 1.5rem;
+    margin-top: 30px;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.shards> img {
+    height: 100%;
+    margin-right: 5px;
+}
+
+.shards> span {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.rarities {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0 10px;
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+.rarity {
+    position: relative;
+    flex: 1;
+    max-width: 70px;
+}
+
+.rarity-count {
+    position: absolute;
+    font-size: 1rem;
+    color: var(--text-color);
+    bottom: 0;
+    right: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: #242424;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #6c5809;
+    border-radius: 50%;
+}
+
+.mana-costs {
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    height: 100%;
+    align-items: center;
+    color: var(--text-color);
+    margin: 20px 0 20px 2.5%;
+    font-size: 1.25rem;
+}
+
+.cost-graph {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.graph {
+    flex: 1;
+    border: 1px rgba(255, 255, 255, 0.5) solid;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background: linear-gradient(0deg, var(--region-color) var(--card-ratio), transparent var(--card-ratio));
+}
+
+.region-img {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.region-info {
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.card-rows {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 95%;
+    gap: 2%;
+    color: var(--text-color);
+    margin-top: 10px;
+}
+
+.card-row {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.card-column {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.column-info {
+    display: flex;
+    flex-direction: row;
+}

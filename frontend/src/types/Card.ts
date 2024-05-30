@@ -1,7 +1,7 @@
-import { CardRarity } from "../enums";
+import { CardRarity, CardRegions, CardTypes } from "../enums";
 
 type TCard = {
-    count: number,
+    cardCode: string,
     cardName: string,
     manaCost: number,
     attackPower: number,
@@ -9,14 +9,14 @@ type TCard = {
     cardImageLink: string,
     cardBackgroundLink: string,
     standard: boolean,
-    regions: string,
-    type: string,
+    regions: CardRegions,
+    type: CardTypes,
     rarity: CardRarity,
     deckRegions: string
 }
 
 export const defaultCard: TCard = {
-    count: 0,
+    cardCode: "",
     cardName: "",
     manaCost: 0,
     attackPower: 0,
@@ -24,8 +24,8 @@ export const defaultCard: TCard = {
     cardImageLink: "",
     cardBackgroundLink: "",
     standard: false,
-    regions: "",
-    type: "",
+    regions: CardRegions.None,
+    type: CardTypes.None,
     rarity: 0,
     deckRegions: ""
 }

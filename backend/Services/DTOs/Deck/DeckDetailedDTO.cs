@@ -16,6 +16,7 @@ public class DeckDetailedDTO(Guid id, string deckCode, string deckName, DateTime
     public DeckType DeckType { get; set; } = type;
     public CardRegions DeckRegions { get; set; } = deckRegions;
     public ICollection<Card> Champions { get; set; } = deckContent.Where(x => x.Card.Rarity == CardRarity.Champion).Select(x => x.Card).ToList();
+    public Card HighestCostCard { get { return deckContent.Where(x => (x.Card.Type & (CardTypes.Landmark | CardTypes.Champion | CardTypes.Follower)) != 0).MaxBy(x => x.Card.ManaCost)!.Card; } }
     public Dictionary<int, int> RegionCardCount
     {
         get

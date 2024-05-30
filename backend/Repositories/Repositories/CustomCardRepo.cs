@@ -33,24 +33,26 @@ public class CustomCardRepo : Repository<CustomCard>, ICustomCardRepo
     }
 
     public async Task<ICollection<CustomCard>> GetAll(CardFilter filter) {
-        IEnumerable<CustomCard> cards = table.Include(x => x.LikedUsers).AsQueryable();
+        return await Task.Run(() => {
+            IEnumerable<CustomCard> cards = table.Include(x => x.LikedUsers).AsQueryable();
 
-        cards = cards.Where(c => c.ApprovalState == filter.ApprovalState);
-        
-        if (filter.PostedAfter is not null) cards = cards.Where(c => c.PostingDate > filter.PostedAfter);
-        if (filter.PostedBefore is not null) cards = cards.Where(c => c.PostingDate < filter.PostedBefore);
+            cards = cards.Where(c => c.ApprovalState == filter.ApprovalState);
+            
+            if (filter.PostedAfter is not null) cards = cards.Where(c => c.PostingDate > filter.PostedAfter);
+            if (filter.PostedBefore is not null) cards = cards.Where(c => c.PostingDate < filter.PostedBefore);
 
-        cards = cards.Where(c => (c.Regions & filter.Regions) != 0);
-        cards = cards.Where(c => (c.Type & filter.CardTypes) != 0);
+            cards = cards.Where(c => (c.Regions & filter.Regions) != 0);
+            cards = cards.Where(c => (c.Type & filter.CardTypes) != 0);
 
-        if (filter.ByPopularity == SortByPopularity.None) {
-            if (filter.ByDate == SortByDate.Newest) cards = cards.OrderByDescending(c => c.PostingDate);
-            else cards = cards.OrderBy(c => c.PostingDate);
-        }   
-        else if (filter.ByPopularity == SortByPopularity.MostPopular) cards = cards.OrderByDescending(c => c.NumberOfLikes);
-        else if (filter.ByPopularity == SortByPopularity.LeastPopular) cards = cards.OrderBy(c => c.NumberOfLikes);
+            if (filter.ByPopularity == SortByPopularity.None) {
+                if (filter.ByDate == SortByDate.Newest) cards = cards.OrderByDescending(c => c.PostingDate);
+                else cards = cards.OrderBy(c => c.PostingDate);
+            }   
+            else if (filter.ByPopularity == SortByPopularity.MostPopular) cards = cards.OrderByDescending(c => c.NumberOfLikes);
+            else if (filter.ByPopularity == SortByPopularity.LeastPopular) cards = cards.OrderBy(c => c.NumberOfLikes);
 
-        return cards.Skip(filter.Skip).Take(filter.Take).ToList();
+            return cards.Skip(filter.Skip).Take(filter.Take).ToList();
+        });
     }
 
     public async Task<CustomCardOTD> SetCustomCardOTD(Guid cardId, UserAccount? account = null, CustomCard? card = null)

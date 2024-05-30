@@ -5,4 +5,6 @@ export * from "./Dropdown";
 export * from "./CreateCustomCardsModal";
 export * from "./Modal";
 export * from "./RegionCount";
+export * from "./RegionCountDetailed";
 export * from "./CreateDeckModal";
+export * from "./DeckDisplay";
