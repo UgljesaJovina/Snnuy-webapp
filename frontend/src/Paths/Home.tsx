@@ -38,7 +38,7 @@ const Home: React.FC = () => {
                     <div>
                         <h2>Featured Deck</h2>
                         <hr />
-                        <p>A card made by <u>{deck.deck.owner.username}</u> called <u>{deck.deck.deckName}</u> was chosen as the featured deck for the day {new Date(card.settingDate).toLocaleDateString()}</p>
+                        <p>A deck made by <u>{deck.deck.owner.username}</u> called <u>{deck.deck.deckName}</u> was chosen as the featured deck for the day {new Date(card.settingDate).toLocaleDateString()}</p>
                     </div>
                 </div>
                 <div>

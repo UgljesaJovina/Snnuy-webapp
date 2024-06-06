@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.OpenApi.Models;
 using Repositories.DAL;
 using Repositories.Interfaces;
 using Repositories.Repositories;
@@ -67,7 +66,7 @@ app.UseStaticFiles(new StaticFileOptions() {
     RequestPath = new PathString("/public")
 });
 
-app.UseFileServer(new FileServerOptions()
+app.UseStaticFiles(new StaticFileOptions()
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
     RequestPath = ""

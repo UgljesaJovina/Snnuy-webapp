@@ -23,7 +23,12 @@ export const DeckCreateModal: React.FC<{ setDecks: Dispatch<SetStateAction<TDeck
         }
 
         deckActions.postADeck({ deckCode: deckCode.current.value, deckName: deckName.current.value, deckType: deckType[0] })
-            .then(x => { setDecks(curr => [x, ...curr]); setOpen(false); }).catch(x => alert(x));
+            .then(x => { 
+                setDecks(curr => [x, ...curr]); 
+                setOpen(false); 
+                if (deckCode.current) deckCode.current.value = "";
+                if (deckName.current) deckName.current.value = "";
+            }).catch(x => alert(x));
     }
 
     return (

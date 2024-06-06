@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.e9615dc6.css",
-    "main.js": "/static/js/main.b219df0c.js",
+    "main.css": "/static/css/main.6fcda1de.css",
+    "main.js": "/static/js/main.b8e0e4b9.js",
     "static/media/deck-lib.svg": "/static/media/deck-lib.59d505daa2eb5fb228a9acfaf3ef45b1.svg",
     "static/media/cards.svg": "/static/media/cards.d355a9353fb4c39d797dcae83ac23f50.svg",
     "static/media/home.svg": "/static/media/home.a3b9b14074a813f11187d838b7e6b368.svg",
     "index.html": "/index.html",
-    "main.e9615dc6.css.map": "/static/css/main.e9615dc6.css.map",
-    "main.b219df0c.js.map": "/static/js/main.b219df0c.js.map"
+    "main.6fcda1de.css.map": "/static/css/main.6fcda1de.css.map",
+    "main.b8e0e4b9.js.map": "/static/js/main.b8e0e4b9.js.map"
   },
   "entrypoints": [
-    "static/css/main.e9615dc6.css",
-    "static/js/main.b219df0c.js"
+    "static/css/main.6fcda1de.css",
+    "static/js/main.b8e0e4b9.js"
   ]
 }

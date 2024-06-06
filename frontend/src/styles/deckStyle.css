@@ -25,6 +25,7 @@
     height: auto;
     border: 1px white solid;
     color: var(--text-color);
+    cursor: pointer;
 }
 
 .featured-card {
